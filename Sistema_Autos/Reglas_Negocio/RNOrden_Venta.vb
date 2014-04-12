@@ -197,6 +197,31 @@ Public Class RNOrden_Venta
             cn = Nothing
         End Try
     End Sub
+    Sub AtenderVenta(ByVal objOrden_Venta As Orden_Venta)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_AtenderVenta", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_venta", objOrden_Venta.id_venta)
+            .AddWithValue("@estado", objOrden_Venta.Estado)
+        End With
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+    End Sub
     Public Function Listar() As DataTable
         Dim ds As New DataTable
         Dim cn As New SqlConnection(My.Settings.conexion)

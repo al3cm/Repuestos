@@ -119,7 +119,6 @@ Public Class RNOrden_Compra
             .AddWithValue("@serie_documento", objOrden_Compra.serie_documento)
             .AddWithValue("@id_proveedor", objOrden_Compra.id_proveedor)
             .AddWithValue("@id_almacen", objOrden_Compra.id_almacen)
-            .AddWithValue("@id_sucursal", objOrden_Compra.id_sucursal)
             .AddWithValue("@tipo_pago", objOrden_Compra.Tipo_Pago)
         End With
 
@@ -166,6 +165,31 @@ Public Class RNOrden_Compra
         Dim cmd As New SqlCommand("sp_EliminarCompra", cn)
         cmd.CommandType = CommandType.StoredProcedure
         cmd.Parameters.AddWithValue("@id_compra", id_Compra)
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+    End Sub
+    Sub AtenderCompra(ByVal objOrden_Compra As Orden_Compra)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_AtenderCompra", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_compra", objOrden_Compra.id_compra)
+            .AddWithValue("@estado", objOrden_Compra.Estado)
+        End With
 
         Try
             cn.Open()

@@ -116,7 +116,7 @@ Public Class RNNota_Debito_Proveedor
         Dim cn As New SqlConnection(My.Settings.conexion)
         Dim cmd As New SqlCommand("sp_EliminarNota_Debito_Proveedor", cn)
         cmd.CommandType = CommandType.StoredProcedure
-        cmd.Parameters.AddWithValue("@@id_nota_Debito", id_Nota_Debito_Proveedor)
+        cmd.Parameters.AddWithValue("@id_nota_Debito", id_Nota_Debito_Proveedor)
         Try
             cn.Open()
             cmd.ExecuteNonQuery()

@@ -13,7 +13,6 @@ Public Class RNKardex
             .AddWithValue("@id_tipodocumento", objKardex.id_tipodocumento)
             .AddWithValue("@id_producto", objKardex.id_producto)
             .AddWithValue("@id_almacen", objKardex.id_almacen)
-            .AddWithValue("@id_sucursal", objKardex.id_sucursal)
             .AddWithValue("@stock", objKardex.stock)
             .AddWithValue("@cantidad", objKardex.cantidad)
             .AddWithValue("@precio", objKardex.precio)

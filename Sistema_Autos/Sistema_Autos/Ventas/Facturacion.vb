@@ -2,16 +2,22 @@
 Imports Reglas_Negocio
 Public Class frmFacturacion
     Dim nTipoDocumento As New RNTipoDocumento
-    Dim nCaja As New RNCaja
     Dim nMoneda As New RNMoneda
     Dim nAlmacen As New RNAlmacen
     Dim nPersonal As New RNPersonal
+    Dim nProducto_Almacen As New RNProducto_Almacen
+    Dim nKardex As New RNKardex
+    Dim nDetalle_Caja As New RNDetalle_Caja
     Dim nClientes As New RNCliente
     Dim nOrden_Venta As New RNOrden_Venta
     Dim nFacturacion As New RNFacturacion
     Dim objFacturacion As New Facturacion
     Dim objOrden_Venta As New Orden_Venta
     Dim objClientes As New Cliente
+    Dim objDetalle_Caja As New Detalle_Caja
+    Dim objKardex As New Kardex
+    Dim objProducto_Almacen As New Producto_Almacen
+    Dim Tabla As DataTable
     Private Sub frmFacturacion_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Limpiar()
     End Sub
@@ -26,7 +32,6 @@ Public Class frmFacturacion
             ' -----------------------------------------------------------------
 
             Limpiar()
-            LlenaCombos()
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -127,48 +132,71 @@ Public Class frmFacturacion
     '---------------------------------------------
     '-----------------FUNCIONALIDAD
     '---------------------------------------------
+
     Sub Grabar()
         Try
             If Valida() Then
-                'objOrden_Venta.fecha_emision = Me.dtpFecha.Value
-                'objOrden_Venta.total = Me.TxtTotal.Text.Trim
-                'objOrden_Venta.subtotal = Me.txtPrecio_neto.Text.Trim
-                'objOrden_Venta.igv = Me.txtigv.Text.Trim
-                'objOrden_Venta.numero_documento = Me.Txtnumero_documento.Text.ToString
-                'objOrden_Venta.serie_documento = Me.Txtserie_documento.Text.ToString
-                'objOrden_Venta.id_cliente = Me.Txtid_Cliente.Text.Trim
-                'objOrden_Venta.Tipo_Pago = Me.cboTipoPago.SelectedValue
-                'objOrden_Venta.pago_inicial = Me.txtinicial.Text.Trim
-                'objOrden_Venta.id_tipodocumento = Me.cboTipo_documento.SelectedValue
-                'objOrden_Venta.id_Moneda = Me.cboMoneda.SelectedValue
-                'objOrden_Venta.id_sucursal = Me.cboSucursal.SelectedValue
-                'objOrden_Venta.id_almacen = Me.cboAlmacen.SelectedValue
-                'objOrden_Venta.id_personal = Me.cboVendedor.SelectedValue
-                'objOrden_Venta.monto_financiado = Me.txtmonto_financiado.Text.Trim
-                'objOrden_Venta.nro_cuotas = Me.txtnro_cuotas.Text.Trim
-                'objOrden_Venta.Monto_cuota = Me.txtMonto_cuota.Text.Trim
+                objFacturacion.id_caja = Me.cboCaja.SelectedValue
+                objFacturacion.Id_Operacion = Me.TxtIdOrden.Text.Trim
+                objFacturacion.id_almacen = Me.cboAlmacen.SelectedValue
+                objFacturacion.id_tipodocumento = Me.cboTipo_Documento.SelectedValue
+                objFacturacion.numero_documento = Me.txtnro_documento.Text.ToString
+                objFacturacion.serie_documento = Me.txtserie_documento.Text.ToString
+                objFacturacion.Tipo_movimiento = "E"
+                objFacturacion.monto = Me.TxtTotal.Text.Trim
+                objFacturacion.fecha_movimiento = Me.dtpfecha_emision.Value
                 If MessageBox.Show("¿Desea registrar los datos de este Orden de Venta?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-                    'objOrden_Venta = nOrden_Venta.RegistrarVenta(objOrden_Venta)
-                    'Dim Dgv As DataGridView
-                    'Dgv = Me.dtvListado_Productos
+                    objFacturacion = nFacturacion.RegistrarFacturacion(objFacturacion)
+                    objKardex.fecha = Me.dtpfecha_emision.Value
+                    objKardex.total = Me.TxtTotal.Text.Trim
+                    objKardex.subtotal = Me.txtPrecio_neto.Text.Trim
+                    objKardex.igv = Me.txtigv.Text.Trim
+                    objKardex.numero_documento = Me.txtnro_documento.Text.ToString
+                    objKardex.serie_documento = Me.txtserie_documento.Text.ToString
+                    objKardex.id_compra = Me.TxtIdOrden.Text.Trim
+                    objKardex.Tipo_Pago = Me.TxtTipo_pago.Text.Trim
+                    objKardex.id_tipodocumento = Me.cboTipo_Documento.SelectedValue
+                    objKardex.pago_inicial = Me.txtinicial.Text
+                    objKardex.id_almacen = Me.cboAlmacen.SelectedValue
+                    objKardex.monto_financiado = Me.txtfinanciado.Text.Trim
+                    objKardex.nro_cuotas = Me.txtnro_cuotas.Text.Trim
+                    objKardex.Monto_cuota = Me.txtMonto_cuota.Text.Trim
+                    objKardex.tipo = "S"
+                    Dim Dgv As DataGridView
+                    Dgv = Me.dtvListado_Productos
                     Try
-                        'For i As Integer = 0 To Dgv.RowCount - 1
-                        'objOrden_Venta.id_producto = CInt(Dgv.Item(0, i).Value)
-                        'objOrden_Venta.cantidad = CInt(Dgv.Item(2, i).Value)
-                        'objOrden_Venta.precio_venta = CDbl(Dgv.Item(4, i).Value)
-                        'objOrden_Venta.descuento = CDbl(Dgv.Item(5, i).Value)
-                        'objOrden_Venta.Sub_Total = CDbl(Dgv.Item(6, i).Value)
-                        'If objOrden_Venta.id_producto <> 0 Then
-                        'nOrden_Venta.RegistrarVenta_Producto(objOrden_Venta)
-                        'End If
-                        'Next
+                        For i As Integer = 0 To Dgv.RowCount - 1
+                            objKardex.id_producto = CInt(Dgv.Item(0, i).Value)
+                            objKardex.cantidad = CInt(Dgv.Item(2, i).Value)
+                            objKardex.precio = CDbl(Dgv.Item(4, i).Value)
+                            objKardex.Descuentro = CDbl(Dgv.Item(5, i).Value)
+                            objKardex.Sub_Total = CDbl(Dgv.Item(6, i).Value)
+                            If objKardex.id_producto <> 0 Then
+                                objProducto_Almacen.id_almacen = Me.cboAlmacen.SelectedValue
+                                objProducto_Almacen.id_producto = objKardex.id_producto
+                                Tabla = nProducto_Almacen.Listar(objProducto_Almacen)
+                                For Each Fila As DataRow In Tabla.Rows
+                                    objProducto_Almacen.id_producto = Fila.Item("id_producto")
+                                    objProducto_Almacen.id_almacen = Fila.Item("id_almacen")
+                                    objProducto_Almacen.stock = Fila.Item("stock")
+                                    objProducto_Almacen.descripcion = Fila.Item("descripcion")
+                                Next
+                                objKardex.stock = objProducto_Almacen.stock
+                                objKardex = nKardex.RegistrarKardex(objKardex)
+                                objProducto_Almacen.stock = objKardex.stock - objKardex.cantidad
+                                nProducto_Almacen.AutorizaStock(objProducto_Almacen)
+                            End If
+                        Next
                     Catch ex As Exception
                         MsgBox(ex.Message.ToString)
                     End Try
-                    'Dim TextoError As String
-                    'TextoError = "Serie: OV/ " & Me.Txtnumero_documento.Text & " - " & Me.Txtserie_documento.Text
-                    'MessageBox.Show("Los datos se guardaron satisfactoriamente" & vbCrLf & TextoError, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    'Me.lblCodigo.Text = objOrden_Venta.id_venta
+                    objOrden_Venta.id_venta = Me.TxtIdOrden.Text.Trim
+                    objOrden_Venta.Estado = "2"
+                    nOrden_Venta.AtenderVenta(objOrden_Venta)
+                    Dim TextoError As String
+                    TextoError = "Serie: F/ " & Me.txtnro_documento.Text & " - " & Me.txtserie_documento.Text
+                    MessageBox.Show("Los datos se guardaron satisfactoriamente" & vbCrLf & TextoError, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Me.lblCodigo.Text = objFacturacion.id_movimiento
                     Me.btnGrabar.Enabled = False
                     Me.btnNuevo.Enabled = True
                     Me.btnAnular.Enabled = True
@@ -252,25 +280,25 @@ Public Class frmFacturacion
             'Dim ToDescuento As Double
             'Dim suma As Double
             'Tabla = nOrden_Venta.Listar(objOrden_Venta.id_venta)
-            For Each Fila As DataRow In Tabla.Rows
-                'objOrden_Venta.id_venta = Fila.Item("id_Venta")
-                'objOrden_Venta.fecha_emision = Fila.Item("fecha_emision")
-                'objOrden_Venta.total = Fila.Item("total")
-                'objOrden_Venta.subtotal = Fila.Item("subtotal")
-                'objOrden_Venta.igv = Fila.Item("igv")
-                'objOrden_Venta.numero_documento = Fila.Item("numero_documento")
-                'objOrden_Venta.serie_documento = Fila.Item("serie_documento")
-                'objOrden_Venta.id_Moneda = Fila.Item("id_moneda")
-                'objOrden_Venta.id_cliente = Fila.Item("id_cliente")
-                'objOrden_Venta.id_almacen = Fila.Item("id_almacen")
-                'objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
-                'objOrden_Venta.Tipo_Pago = Fila.Item("tipo_pago")
-                'objOrden_Venta.pago_inicial = Fila.Item("pago_inicial")
-                'objOrden_Venta.id_personal = Fila.Item("id_personal")
-                'objOrden_Venta.monto_financiado = Fila.Item("monto_financiado")
-                'objOrden_Venta.nro_cuotas = Fila.Item("nro_cuotas")
-                'objOrden_Venta.Monto_cuota = Fila.Item("Monto_cuota")
-            Next
+            'For Each Fila As DataRow In Tabla.Rows
+            'objOrden_Venta.id_venta = Fila.Item("id_Venta")
+            'objOrden_Venta.fecha_emision = Fila.Item("fecha_emision")
+            'objOrden_Venta.total = Fila.Item("total")
+            'objOrden_Venta.subtotal = Fila.Item("subtotal")
+            'objOrden_Venta.igv = Fila.Item("igv")
+            'objOrden_Venta.numero_documento = Fila.Item("numero_documento")
+            'objOrden_Venta.serie_documento = Fila.Item("serie_documento")
+            'objOrden_Venta.id_Moneda = Fila.Item("id_moneda")
+            'objOrden_Venta.id_cliente = Fila.Item("id_cliente")
+            'objOrden_Venta.id_almacen = Fila.Item("id_almacen")
+            'objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
+            'objOrden_Venta.Tipo_Pago = Fila.Item("tipo_pago")
+            'objOrden_Venta.pago_inicial = Fila.Item("pago_inicial")
+            'objOrden_Venta.id_personal = Fila.Item("id_personal")
+            'objOrden_Venta.monto_financiado = Fila.Item("monto_financiado")
+            'objOrden_Venta.nro_cuotas = Fila.Item("nro_cuotas")
+            'objOrden_Venta.Monto_cuota = Fila.Item("Monto_cuota")
+            'Next
             'Me.lblCodigo.Text = objOrden_Venta.id_venta
             'Me.Txtnumero_documento.Text = objOrden_Venta.numero_documento
             'Me.Txtserie_documento.Text = objOrden_Venta.serie_documento
@@ -368,7 +396,6 @@ Public Class frmFacturacion
                 objOrden_Venta.id_Moneda = Fila.Item("id_moneda")
                 objOrden_Venta.id_cliente = Fila.Item("id_cliente")
                 objOrden_Venta.id_almacen = Fila.Item("id_almacen")
-                objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
                 objOrden_Venta.Tipo_Pago = Fila.Item("tipo_pago")
                 objOrden_Venta.pago_inicial = Fila.Item("pago_inicial")
                 objOrden_Venta.id_personal = Fila.Item("id_personal")
@@ -384,6 +411,13 @@ Public Class frmFacturacion
             Me.txtPrecio_neto.Text = objOrden_Venta.subtotal
             Me.txtigv.Text = objOrden_Venta.igv
             Me.TxtTotal.Text = objOrden_Venta.total
+            Me.TxtTipo_pago.Text = objOrden_Venta.Tipo_Pago
+            Me.txtnro_cuotas.Text = objOrden_Venta.nro_cuotas
+            Me.txtMonto_cuota.Text = objOrden_Venta.Monto_cuota
+            'Added 2014.04.11-------------------------------------------
+            Me.txtserie_documento.Text = objOrden_Venta.serie_documento
+            Me.txtnro_documento.Text = objOrden_Venta.numero_documento
+            '-----------------------------------------------------------
             Tabla = nClientes.Listar(objOrden_Venta.id_cliente)
             For Each Fila As DataRow In Tabla.Rows
                 objClientes.razon_social = Fila.Item("razon_social")
@@ -397,16 +431,21 @@ Public Class frmFacturacion
             If objClientes.tipo_cliente = "N" Then
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_Documento.SelectedValue = "2"
+                    Me.cboTipo_Documento.SelectedValue = "002"
                 End If
             Else
                 Me.txtdocumento.Text = objClientes.ruc
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_Documento.SelectedValue = "1"
+                    Me.cboTipo_Documento.SelectedValue = "001"
                 End If
             End If
             Me.txtCliente.Text = objClientes.razon_social
             Me.txtdireccion.Text = objClientes.direccion
+            'Added 2014.04.12
+            LlenaCombos(objOrden_Venta.id_almacen, objOrden_Venta.Tipo_Pago)
+
+            'LlenaCombos(objOrden_Venta.id_almacen)
+            'Me.cboCaja.SelectedValue = 1
             LlenarCombos()
             Me.cboMoneda.SelectedValue = objOrden_Venta.id_Moneda
             Me.cboAlmacen.SelectedValue = objOrden_Venta.id_almacen
@@ -478,6 +517,7 @@ Public Class frmFacturacion
         Me.txtCliente.Enabled = False
         Me.txtdireccion.Enabled = False
         Me.TxtIdOrden.Visible = False
+        Me.TxtTipo_pago.Visible = False
         Me.txtOrden_Venta.Enabled = False
         Me.cboAlmacen.Enabled = False
         Me.dtpfecha_emision.Enabled = False
@@ -488,9 +528,14 @@ Public Class frmFacturacion
         Me.txtdocumento.Enabled = False
         Me.cboTipo_Documento.Enabled = False
         Me.cboVendedor.Enabled = False
+        Me.txtnro_cuotas.Enabled = False
+        Me.txtMonto_cuota.Enabled = False
         Me.txtCliente.Text = ""
         Me.txtdireccion.Text = ""
         Me.TxtIdOrden.Text = ""
+        Me.TxtTipo_pago.Text = ""
+        Me.txtnro_cuotas.Text = ""
+        Me.txtMonto_cuota.Text = ""
         Me.cboTipo_Documento.SelectedValue = "1"
         Me.cboCaja.SelectedValue = "1"
         Me.cboVendedor.SelectedValue = "0"
@@ -529,27 +574,27 @@ Public Class frmFacturacion
         ' -----------------------------------------------------------------
         Me.cboCaja.Focus()
     End Sub
-    Sub LlenaCombos()
-        'Try
-        '    Dim Caja As DataTable = nCaja.Listar
-        '    Me.cboCaja.ValueMember = "id_caja"
-        '    Me.cboCaja.DisplayMember = "fecha"
-        '    If Caja.Rows.Count > 0 Then
-        'Me.cboCaja.DataSource = Caja
-        '    Else
-        'Dim SinCaja As New DataTable
-        'SinCaja.Columns.Add("id_caja")
-        'SinCaja.Columns.Add("fecha")
-        'SinCaja.Rows.Add("0", "No hay Caja registradas")
-        'Me.cboMoneda.DataSource = SinCaja
-        'Me.cboMoneda.ValueMember = "id_caja"
-        'Me.cboMoneda.DisplayMember = "fecha"
-        'Me.cboMoneda.SelectedValue = "0"
-        'Me.btnGrabar.Enabled = False
-        '    End If
-        'Catch ex As Exception
-        'MessageBox.Show(ex.Message)
-        'End Try
+    Sub LlenaCombos(ByVal Id_Almacen As Integer)
+        Try
+            Dim Caja As DataTable = nDetalle_Caja.Listar(Id_Almacen)
+            Me.cboCaja.ValueMember = "id_caja"
+            Me.cboCaja.DisplayMember = "descripcion"
+            Me.cboCaja.DataSource = Caja
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+    'Added 2014.04.12
+    Sub LlenaCombos(ByVal Id_Almacen As Integer, ByVal Tipo_Pago As String)
+        Try
+            Dim Caja As DataTable = nDetalle_Caja.Listar(Id_Almacen, Tipo_Pago)
+            Me.cboCaja.DataSource = Caja
+            Me.cboCaja.ValueMember = "id_caja"
+            Me.cboCaja.DisplayMember = "descripcion"
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
     Sub LenarDocumento()
         Dim TipoDocumento As DataTable = nTipoDocumento.Listar()
@@ -640,9 +685,9 @@ Public Class frmFacturacion
         'If Me.Txtnumero_documento.Text.Trim = "" Then
         'TextoError = TextoError & "- Debe ingresar un Numero de Documento." & vbCrLf
         'End If
-        If Me.txtserie_documento.Text.Trim = "" Then
-            TextoError = TextoError & "- Debe ingresar un Serie de Documento." & vbCrLf
-        End If
+        'If Me.txtserie_documento.Text.Trim = "" Then
+        '    TextoError = TextoError & "- Debe ingresar un Serie de Documento." & vbCrLf
+        'End If
         If Me.txtCliente.Text.Trim = "" Then
             TextoError = TextoError & "- Debe ingresar un Clientes." & vbCrLf
         End If

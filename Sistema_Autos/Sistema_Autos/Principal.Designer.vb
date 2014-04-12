@@ -58,7 +58,7 @@ Partial Class frmPrincipal
         Me.NotaDeCréditoClienteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.NotaDeDébitoClienteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CajaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.CajayBancosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ResumenDeCajaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CuentasPorCobrarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CuentasPorPagarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CanjeDeLetrasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -73,6 +73,7 @@ Partial Class frmPrincipal
         Me.ExcelToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.WordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AcercaDeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.GastosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.mns_principal.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -294,16 +295,16 @@ Partial Class frmPrincipal
         '
         'CajaToolStripMenuItem
         '
-        Me.CajaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CajayBancosToolStripMenuItem, Me.CuentasPorCobrarToolStripMenuItem, Me.CuentasPorPagarToolStripMenuItem, Me.CanjeDeLetrasToolStripMenuItem})
+        Me.CajaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ResumenDeCajaToolStripMenuItem, Me.CuentasPorCobrarToolStripMenuItem, Me.CuentasPorPagarToolStripMenuItem, Me.CanjeDeLetrasToolStripMenuItem, Me.GastosToolStripMenuItem})
         Me.CajaToolStripMenuItem.Name = "CajaToolStripMenuItem"
         Me.CajaToolStripMenuItem.Size = New System.Drawing.Size(42, 20)
         Me.CajaToolStripMenuItem.Text = "Caja"
         '
-        'CajayBancosToolStripMenuItem
+        'ResumenDeCajaToolStripMenuItem
         '
-        Me.CajayBancosToolStripMenuItem.Name = "CajayBancosToolStripMenuItem"
-        Me.CajayBancosToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
-        Me.CajayBancosToolStripMenuItem.Text = "Caja y Bancos"
+        Me.ResumenDeCajaToolStripMenuItem.Name = "ResumenDeCajaToolStripMenuItem"
+        Me.ResumenDeCajaToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.ResumenDeCajaToolStripMenuItem.Text = "Resumen de Caja"
         '
         'CuentasPorCobrarToolStripMenuItem
         '
@@ -392,6 +393,12 @@ Partial Class frmPrincipal
         Me.AcercaDeToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
         Me.AcercaDeToolStripMenuItem.Text = "Acerca de"
         '
+        'GastosToolStripMenuItem
+        '
+        Me.GastosToolStripMenuItem.Name = "GastosToolStripMenuItem"
+        Me.GastosToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.GastosToolStripMenuItem.Text = "Gastos"
+        '
         'frmPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -431,7 +438,7 @@ Partial Class frmPrincipal
     Friend WithEvents AcercaDeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HerramientasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ProveedorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents CajayBancosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ResumenDeCajaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UnidadToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ActualizarPreciosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents VehiculoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -461,4 +468,5 @@ Partial Class frmPrincipal
     Friend WithEvents ExcelToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents WordToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EmpresaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GastosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

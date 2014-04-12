@@ -34,7 +34,9 @@ go
 create table Caja -- 1
 (
 	id_caja smallint identity(1,1) not null primary key,
-	nombre_caja varchar(50) not null
+	nombre_caja varchar(50) not null,
+	--Added 2014.04.11
+	tipo_pago char(1) not null constraint CK_Caja_tipo_caja check (tipo_pago in('E','C'))--Para validar si es de efectivo o crédito
 )
 go
 
@@ -601,39 +603,31 @@ alter table Venta_Producto add constraint FK_Venta_Producto_Producto foreign key
 create table Movimiento -- 4
 (
 	id_movimiento smallint identity(1,1) not null primary key,
-	id_caja smallint not null,
-	id_operacion smallint not null,
-	id_personal smallint not null,
-	id_tipodocumento char(3) not null,
-	numero_documento char(3) null,
-	serie_documento char(7) null,
+	id_caja smallint not null,--FK con Detalle_Caja
+	id_operacion smallint not null,--Equivalente a id_Venta
+	id_almacen smallint not null,--FK con Detalle_Caja
+	id_tipodocumento char(3) not null,--A evaluar si es el mismo tipodocumento de venta
+	numero_documento char(3) null,-- A evaluar si es el mismo numero_documento de venta
+	serie_documento char(7) null,-- A evaluar si es el mismo serie_documento de venta
 	tipo_movimiento char(1) not null constraint CK_Movimiento_tipo_movimiento check (tipo_movimiento in('E','S','C')),
-	monto smallmoney not null constraint DF_Movimiento_monto default 0, 
+	monto smallmoney not null constraint DF_Movimiento_monto default 0.0, -- A evaluar si es el total en venta
 	fecha_movimiento smalldatetime not null constraint DF_Movimiento_fecha_movimiento default getdate(),
-	tipo_cambio smallint null,
+	tipo_cambio smallint null, --A evaluar si es el mismo tipo_cambio de venta	
 	estado bit not null constraint DF_Movimiento_estado default 1
 )
 go
-
-alter table Movimiento add constraint FK_Movimiento_Compra foreign key (id_operacion)
-	references Compra
-
-alter table Movimiento add constraint FK_Movimiento_Venta foreign key (id_operacion)
-	references Venta
-
-alter table Movimiento add constraint FK_Movimiento_Concepto foreign key (id_operacion)
-	references Concepto
-									
-alter table Movimiento add constraint FK_Movimiento_Caja foreign key (id_caja)
-	references Caja
+--Modified 2014.04.11: relación modificada hacia Detalle_Caja
+alter table Movimiento add constraint FK_Movimiento_Detalle_Caja foreign key (id_caja,id_almacen)
+	references Detalle_Caja
 			on delete no action
 				on update no action
-
-alter table Movimiento add constraint FK_Movimiento_Personal foreign key (id_personal)
-	references Personal
+/*
+--Deleted 2014.04.11: no guarda relación con almacén, lo hace mediante Detalle_Caja
+alter table Movimiento add constraint FK_Movimiento_Personal foreign key (id_almacen)
+	references Almacen
 			on delete no action
 				on update no action
-				
+*/				
 alter table Movimiento add constraint FK_Movimiento_TipoDocumento foreign key (id_tipodocumento)
 	references TipoDocumento
 			on delete no action

@@ -610,7 +610,7 @@ Partial Class frmOrden_Compra
         '
         Me.btnSalir.Image = Global.Sistema_Autos.My.Resources.Resources.salir
         Me.btnSalir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSalir.Location = New System.Drawing.Point(587, 12)
+        Me.btnSalir.Location = New System.Drawing.Point(584, 12)
         Me.btnSalir.Name = "btnSalir"
         Me.btnSalir.Size = New System.Drawing.Size(75, 55)
         Me.btnSalir.TabIndex = 33

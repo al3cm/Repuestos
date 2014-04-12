@@ -100,6 +100,7 @@
     <Compile Include="RNOrden_Venta.vb" />
     <Compile Include="RNPersonal.vb" />
     <Compile Include="RNPersonalSubMenu.vb" />
+    <Compile Include="RNPrecio.vb" />
     <Compile Include="RNProducto.vb" />
     <Compile Include="RNProducto_Almacen.vb" />
     <Compile Include="RNProveedor.vb" />

@@ -91,13 +91,15 @@ INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(4,4,'Nota de Débito Cliente')
 
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
-	VALUES(1,5,'Caja y Bancos')
+	VALUES(1,5,'Resumen de Caja')
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(2,5,'Cuentas por Cobrar')
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(3,5,'Cuentas por Pagar')
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(4,5,'Canje de Letras')
+INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
+	VALUES(5,5,'Gastos')
 	
 	
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
@@ -178,13 +180,15 @@ INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,elimina
 	VALUES(4,4,1,1,1,1,1,1)--Nota de Débito Cliente
 
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
-	VALUES(5,1,1,1,1,1,1,1)--Caja y Bancos
+	VALUES(5,1,1,1,1,1,1,1)--Resumen de Caja
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 	VALUES(5,2,1,1,1,1,1,1)--Cuentas por Cobrar
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 	VALUES(5,3,1,1,1,1,1,1)--Cuentas por Pagar
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 	VALUES(5,4,1,1,1,1,1,1)--Canje de Letras
+INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
+	VALUES(5,5,1,1,1,1,1,1)--Gastos
 
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 	VALUES(6,1,1,1,1,1,1,1)--Ingreso al Kardex
@@ -2252,9 +2256,9 @@ INSERT INTO Ubigeo values('250303','CURIMANA')
 INSERT INTO Ubigeo values('250400','PURUS')
 INSERT INTO Ubigeo values('250401','PURUS')
 
-INSERT INTO Caja (nombre_caja) values('CAJA VENTAS')
-INSERT INTO Caja (nombre_caja) values('CAJA CHICA')
-INSERT INTO Caja (nombre_caja) values('VISA')
-INSERT INTO Caja (nombre_caja) values('MASTERCARD')
+INSERT INTO Caja (nombre_caja,tipo_pago) values('CAJA VENTAS','E')
+INSERT INTO Caja (nombre_caja,tipo_pago) values('CAJA CHICA','E')
+INSERT INTO Caja (nombre_caja,tipo_pago) values('VISA','C')
+INSERT INTO Caja (nombre_caja,tipo_pago) values('MASTERCARD','C')
 use master
 go

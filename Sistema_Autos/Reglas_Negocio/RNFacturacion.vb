@@ -1,6 +1,130 @@
 ﻿Imports System.Data.SqlClient
 Imports Entidades
 Public Class RNFacturacion
+    Public Function RegistrarFacturacion(ByVal objFacturacion As Facturacion) As Facturacion
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_RegistrarMovimiento", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .Add("@id_movimiento", SqlDbType.TinyInt).Direction = ParameterDirection.Output
+            .AddWithValue("@id_caja", objFacturacion.id_caja)
+            .AddWithValue("@id_operacion", objFacturacion.Id_Operacion)
+            .AddWithValue("@id_almacen", objFacturacion.id_almacen)
+            .AddWithValue("@id_tipodocumento", objFacturacion.id_tipodocumento)
+            .AddWithValue("@numero_documento", objFacturacion.numero_documento)
+            .AddWithValue("@serie_documento", objFacturacion.serie_documento)
+            .AddWithValue("@tipo_movimiento", objFacturacion.Tipo_movimiento)
+            .AddWithValue("@monto", objFacturacion.monto)
+            .AddWithValue("@fecha_movimiento", objFacturacion.fecha_movimiento)
+        End With
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            objFacturacion.id_movimiento = CInt(cmd.Parameters.Item("@id_movimiento").Value)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+        Return objFacturacion
+    End Function
+    Public Function RegistrarFacturacionConCambion(ByVal objFacturacion As Facturacion) As Facturacion
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_RegistrarMovimientoConCambion", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .Add("@id_movimiento", SqlDbType.TinyInt).Direction = ParameterDirection.Output
+            .AddWithValue("@id_caja", objFacturacion.id_caja)
+            .AddWithValue("@id_operacion", objFacturacion.Id_Operacion)
+            .AddWithValue("@id_almacen", objFacturacion.id_almacen)
+            .AddWithValue("@id_tipodocumento", objFacturacion.id_tipodocumento)
+            .AddWithValue("@numero_documento", objFacturacion.numero_documento)
+            .AddWithValue("@serie_documento", objFacturacion.serie_documento)
+            .AddWithValue("@tipo_movimiento", objFacturacion.Tipo_movimiento)
+            .AddWithValue("@monto", objFacturacion.monto)
+            .AddWithValue("@fecha_movimiento", objFacturacion.fecha_movimiento)
+            .AddWithValue("@tipo_cambio", objFacturacion.tipo_cambio)
+        End With
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            objFacturacion.id_movimiento = CInt(cmd.Parameters.Item("@id_movimiento").Value)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+        Return objFacturacion
+    End Function
+    Sub ModificarFacturacion(ByVal objFacturacion As Facturacion)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ModificarMovimiento", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_movimiento", objFacturacion.id_movimiento)
+            .AddWithValue("@id_caja", objFacturacion.id_caja)
+            .AddWithValue("@id_operacion", objFacturacion.Id_Operacion)
+            .AddWithValue("@id_almacen", objFacturacion.id_almacen)
+            .AddWithValue("@id_tipodocumento", objFacturacion.id_tipodocumento)
+            .AddWithValue("@numero_documento", objFacturacion.numero_documento)
+            .AddWithValue("@serie_documento", objFacturacion.serie_documento)
+            .AddWithValue("@monto", objFacturacion.monto)
+        End With
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+    End Sub
+    Sub EleminarFacturacion(ByVal id_Facturacion As String)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_EliminarMovimiento", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_movimiento", id_Facturacion)
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+    End Sub
     Public Function buscarid(ByVal Serie As String, ByVal Domnento As Integer) As Integer
         Dim id As Integer
         Dim cn As New SqlConnection(My.Settings.conexion)

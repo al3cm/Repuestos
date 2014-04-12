@@ -38,6 +38,11 @@ Partial Class frmFacturacion
         Me.txtOrden_Venta = New System.Windows.Forms.TextBox
         Me.btnBuscar_orden_venta = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.txtMonto_cuota = New System.Windows.Forms.TextBox
+        Me.Label26 = New System.Windows.Forms.Label
+        Me.txtnro_cuotas = New System.Windows.Forms.TextBox
+        Me.Label24 = New System.Windows.Forms.Label
+        Me.TxtTipo_pago = New System.Windows.Forms.TextBox
         Me.TxtIdOrden = New System.Windows.Forms.TextBox
         Me.txtfinanciado = New System.Windows.Forms.TextBox
         Me.txtinicial = New System.Windows.Forms.TextBox
@@ -78,6 +83,7 @@ Partial Class frmFacturacion
         Me.Chprecio_compra = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Chdescuento = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChTotal = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.lblCodigo = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -211,7 +217,7 @@ Partial Class frmFacturacion
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 25)
+        Me.Label2.Location = New System.Drawing.Point(3, 27)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(85, 13)
         Me.Label2.TabIndex = 51
@@ -219,14 +225,14 @@ Partial Class frmFacturacion
         '
         'txtOrden_Venta
         '
-        Me.txtOrden_Venta.Location = New System.Drawing.Point(94, 17)
+        Me.txtOrden_Venta.Location = New System.Drawing.Point(94, 23)
         Me.txtOrden_Venta.Name = "txtOrden_Venta"
         Me.txtOrden_Venta.Size = New System.Drawing.Size(104, 20)
         Me.txtOrden_Venta.TabIndex = 52
         '
         'btnBuscar_orden_venta
         '
-        Me.btnBuscar_orden_venta.Location = New System.Drawing.Point(202, 16)
+        Me.btnBuscar_orden_venta.Location = New System.Drawing.Point(202, 22)
         Me.btnBuscar_orden_venta.Name = "btnBuscar_orden_venta"
         Me.btnBuscar_orden_venta.Size = New System.Drawing.Size(26, 23)
         Me.btnBuscar_orden_venta.TabIndex = 53
@@ -235,6 +241,11 @@ Partial Class frmFacturacion
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.txtMonto_cuota)
+        Me.GroupBox3.Controls.Add(Me.Label26)
+        Me.GroupBox3.Controls.Add(Me.txtnro_cuotas)
+        Me.GroupBox3.Controls.Add(Me.Label24)
+        Me.GroupBox3.Controls.Add(Me.TxtTipo_pago)
         Me.GroupBox3.Controls.Add(Me.TxtIdOrden)
         Me.GroupBox3.Controls.Add(Me.txtfinanciado)
         Me.GroupBox3.Controls.Add(Me.txtinicial)
@@ -266,9 +277,48 @@ Partial Class frmFacturacion
         Me.GroupBox3.TabIndex = 54
         Me.GroupBox3.TabStop = False
         '
+        'txtMonto_cuota
+        '
+        Me.txtMonto_cuota.Location = New System.Drawing.Point(619, 168)
+        Me.txtMonto_cuota.Name = "txtMonto_cuota"
+        Me.txtMonto_cuota.Size = New System.Drawing.Size(44, 20)
+        Me.txtMonto_cuota.TabIndex = 83
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(542, 175)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(71, 13)
+        Me.Label26.TabIndex = 82
+        Me.Label26.Text = "Monto Cuota:"
+        '
+        'txtnro_cuotas
+        '
+        Me.txtnro_cuotas.Location = New System.Drawing.Point(597, 140)
+        Me.txtnro_cuotas.Name = "txtnro_cuotas"
+        Me.txtnro_cuotas.Size = New System.Drawing.Size(66, 20)
+        Me.txtnro_cuotas.TabIndex = 81
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(548, 146)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(43, 13)
+        Me.Label24.TabIndex = 80
+        Me.Label24.Text = "Cuotas:"
+        '
+        'TxtTipo_pago
+        '
+        Me.TxtTipo_pago.Location = New System.Drawing.Point(597, 101)
+        Me.TxtTipo_pago.Name = "TxtTipo_pago"
+        Me.TxtTipo_pago.Size = New System.Drawing.Size(66, 20)
+        Me.TxtTipo_pago.TabIndex = 78
+        '
         'TxtIdOrden
         '
-        Me.TxtIdOrden.Location = New System.Drawing.Point(593, 139)
+        Me.TxtIdOrden.Location = New System.Drawing.Point(597, 75)
         Me.TxtIdOrden.Name = "TxtIdOrden"
         Me.TxtIdOrden.Size = New System.Drawing.Size(66, 20)
         Me.TxtIdOrden.TabIndex = 77
@@ -307,10 +357,11 @@ Partial Class frmFacturacion
         '
         'cboMoneda
         '
+        Me.cboMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboMoneda.FormattingEnabled = True
         Me.cboMoneda.Location = New System.Drawing.Point(440, 79)
         Me.cboMoneda.Name = "cboMoneda"
-        Me.cboMoneda.Size = New System.Drawing.Size(151, 21)
+        Me.cboMoneda.Size = New System.Drawing.Size(116, 21)
         Me.cboMoneda.TabIndex = 70
         '
         'chkigv
@@ -345,7 +396,7 @@ Partial Class frmFacturacion
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(358, 58)
+        Me.Label9.Location = New System.Drawing.Point(358, 53)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(79, 13)
         Me.Label9.TabIndex = 66
@@ -353,16 +404,17 @@ Partial Class frmFacturacion
         '
         'cboCaja
         '
+        Me.cboCaja.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboCaja.FormattingEnabled = True
-        Me.cboCaja.Location = New System.Drawing.Point(417, 16)
+        Me.cboCaja.Location = New System.Drawing.Point(440, 23)
         Me.cboCaja.Name = "cboCaja"
-        Me.cboCaja.Size = New System.Drawing.Size(242, 21)
+        Me.cboCaja.Size = New System.Drawing.Size(223, 21)
         Me.cboCaja.TabIndex = 65
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(380, 24)
+        Me.Label8.Location = New System.Drawing.Point(388, 26)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(31, 13)
         Me.Label8.TabIndex = 64
@@ -370,6 +422,7 @@ Partial Class frmFacturacion
         '
         'cboVendedor
         '
+        Me.cboVendedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboVendedor.FormattingEnabled = True
         Me.cboVendedor.Location = New System.Drawing.Point(94, 169)
         Me.cboVendedor.Name = "cboVendedor"
@@ -379,7 +432,7 @@ Partial Class frmFacturacion
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(35, 178)
+        Me.Label7.Location = New System.Drawing.Point(35, 175)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(56, 13)
         Me.Label7.TabIndex = 62
@@ -435,6 +488,7 @@ Partial Class frmFacturacion
         '
         'cboAlmacen
         '
+        Me.cboAlmacen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboAlmacen.FormattingEnabled = True
         Me.cboAlmacen.Location = New System.Drawing.Point(94, 50)
         Me.cboAlmacen.Name = "cboAlmacen"
@@ -444,7 +498,7 @@ Partial Class frmFacturacion
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(40, 59)
+        Me.Label3.Location = New System.Drawing.Point(37, 53)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(51, 13)
         Me.Label3.TabIndex = 54
@@ -587,12 +641,23 @@ Partial Class frmFacturacion
         Me.ChTotal.Name = "ChTotal"
         Me.ChTotal.ReadOnly = True
         '
+        'lblCodigo
+        '
+        Me.lblCodigo.AutoSize = True
+        Me.lblCodigo.Location = New System.Drawing.Point(586, 12)
+        Me.lblCodigo.Name = "lblCodigo"
+        Me.lblCodigo.Size = New System.Drawing.Size(82, 13)
+        Me.lblCodigo.TabIndex = 80
+        Me.lblCodigo.Text = "Codigo_Compra"
+        Me.lblCodigo.Visible = False
+        '
         'frmFacturacion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.ClientSize = New System.Drawing.Size(720, 537)
+        Me.Controls.Add(Me.lblCodigo)
         Me.Controls.Add(Me.dtvListado_Productos)
         Me.Controls.Add(Me.TxtTotal)
         Me.Controls.Add(Me.txtigv)
@@ -685,4 +750,10 @@ Partial Class frmFacturacion
     Friend WithEvents Chdescuento As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ChTotal As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents TxtIdOrden As System.Windows.Forms.TextBox
+    Friend WithEvents lblCodigo As System.Windows.Forms.Label
+    Friend WithEvents TxtTipo_pago As System.Windows.Forms.TextBox
+    Friend WithEvents txtMonto_cuota As System.Windows.Forms.TextBox
+    Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents txtnro_cuotas As System.Windows.Forms.TextBox
+    Friend WithEvents Label24 As System.Windows.Forms.Label
 End Class

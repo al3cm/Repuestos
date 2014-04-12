@@ -52,6 +52,8 @@ Public Class RNProducto
             .AddWithValue("@codigo_producto", objProducto.codigo_producto)
             .AddWithValue("@modelo_producto", objProducto.modelo_producto)
             .AddWithValue("@numero_comprobante", objProducto.numero_comprobante)
+            .AddWithValue("@precio_compra", objProducto.precio_compra)
+            .AddWithValue("@precio_venta", objProducto.precio_venta)
             ' Added 2014.03.23 ---------------------------
             If objProducto.estado Then
                 .AddWithValue("@estado", "1")

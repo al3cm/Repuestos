@@ -426,7 +426,6 @@ Public Class frmOrden_Compra
                 objOrden_Compra.id_Moneda = Fila.Item("id_moneda")
                 objOrden_Compra.id_proveedor = Fila.Item("id_proveedor")
                 objOrden_Compra.id_almacen = Fila.Item("id_almacen")
-                objOrden_Compra.id_sucursal = Fila.Item("id_sucursal")
                 objOrden_Compra.Tipo_Pago = Fila.Item("tipo_pago")
             Next
             Me.lblCodigo.Text = objOrden_Compra.id_compra
@@ -439,6 +438,10 @@ Public Class frmOrden_Compra
             Me.txtPrecio_neto.Text = objOrden_Compra.subtotal
             Me.txtigv.Text = objOrden_Compra.igv
             Me.TxtTotal.Text = objOrden_Compra.total
+            Tabla = nAlmacen.Listar(objOrden_Compra.id_almacen)
+            For Each Fila As DataRow In Tabla.Rows
+                objOrden_Compra.id_sucursal = Fila.Item("id_sucursal")
+            Next
             Me.cboSucursal.SelectedValue = objOrden_Compra.id_sucursal
             LlenaAlmacen()
             Me.cboAlmacen.SelectedValue = objOrden_Compra.id_almacen

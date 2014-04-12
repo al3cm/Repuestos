@@ -497,6 +497,10 @@ Public Class frmOrden_Venta
             Me.txtigv.Text = objOrden_Venta.igv
             Me.TxtTotal.Text = objOrden_Venta.total
             Me.txtinicial.Text = objOrden_Venta.pago_inicial
+            Tabla = nAlmacen.Listar(objOrden_Venta.id_almacen)
+            For Each Fila As DataRow In Tabla.Rows
+                objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
+            Next
             Me.cboTipo_documento.SelectedValue = objOrden_Venta.id_sucursal
             LlenaAlmacen()
             Me.cboAlmacen.SelectedValue = objOrden_Venta.id_almacen

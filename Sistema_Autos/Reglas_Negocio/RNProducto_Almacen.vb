@@ -56,6 +56,32 @@ Public Class RNProducto_Almacen
             cn = Nothing
         End Try
     End Sub
+    Public Sub ModificarProducto_Almacen(ByVal objProducto_Almacen As Producto_Almacen)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ModificarProducto_Almacen", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_producto", objProducto_Almacen.id_almacen)
+            .AddWithValue("@id_almacen", objProducto_Almacen.id_almacen)
+            .AddWithValue("@descripcion", objProducto_Almacen.descripcion)
+        End With
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+    End Sub
     Public Function Listar(ByVal objProducto_Almacen As Producto_Almacen) As DataTable
         Dim ds As New DataTable
         Dim cn As New SqlConnection(My.Settings.conexion)

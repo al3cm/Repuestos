@@ -233,13 +233,15 @@ BEGIN
 				VALUES(4,4,@id_personal,1,1,1,1,1)--Nota de Débito Cliente
 								
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
-				VALUES(5,1,@id_personal,1,1,1,1,1)--Caja y Bancos
+				VALUES(5,1,@id_personal,1,1,1,1,1)--Resumen de Caja
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 				VALUES(5,2,@id_personal,1,1,1,1,1)--Cuentas por Cobrar
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 				VALUES(5,3,@id_personal,1,1,1,1,1)--Cuentas por Pagar
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
-				VALUES(5,4,@id_personal,1,1,1,1,1)--Canje de Letras						
+				VALUES(5,4,@id_personal,1,1,1,1,1)--Canje de Letras	
+			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
+				VALUES(5,5,@id_personal,1,1,1,1,1)--Gastos				
 
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 				VALUES(6,1,@id_personal,1,1,1,1,1)--Ingreso al Kardex
@@ -2371,6 +2373,8 @@ CREATE PROCEDURE sp_ModificarProducto
 	@modelo_producto varchar(50),
 	@numero_comprobante char(10),
 	@estado bit,
+	@precio_venta smallmoney,
+	@precio_compra smallmoney,
 	@descripcion varchar(150)
 )
 AS
@@ -2392,6 +2396,8 @@ BEGIN
 								modelo_producto=@modelo_producto,
 								numero_comprobante=@numero_comprobante,
 								estado=@estado,
+								precio_compra = @precio_compra,
+								precio_venta = @precio_venta,
 								descripcion=@descripcion			
 			WHERE
 				id_producto=@id_producto
@@ -2597,6 +2603,73 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarDetalle_Caja')
+	DROP PROCEDURE sp_ModificarDetalle_Caja
+GO
+CREATE PROCEDURE sp_ModificarDetalle_Caja
+(
+	@id_Caja smallint,
+	@id_almacen smallint,
+	@descripcion varchar(100)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		UPDATE Detalle_Caja
+			SET 
+						descripcion=@descripcion			
+			WHERE
+				id_caja = @id_Caja AND id_almacen = @id_almacen
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarDetalle_CajaXAlmacen')
+	DROP PROCEDURE sp_ListarDetalle_CajaXAlmacen
+GO
+CREATE PROCEDURE sp_ListarDetalle_CajaXAlmacen
+	(
+	@id_almacen smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select * from Detalle_Caja
+				WHERE  id_almacen = @id_almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+--Added 2014.04.12
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarDetalle_CajaXAlmacenTipoPago')
+	DROP PROCEDURE sp_ListarDetalle_CajaXAlmacenTipoPago
+GO
+CREATE PROCEDURE sp_ListarDetalle_CajaXAlmacenTipoPago
+	(
+	@id_almacen smallint,
+	@tipo_pago char(1)
+)
+AS
+BEGIN
+	BEGIN TRY
+			SELECT 
+				DC.*
+			FROM Detalle_Caja DC
+			INNER JOIN Caja C ON DC.id_caja = C.id_caja
+			WHERE  DC.id_almacen = @id_almacen AND C.tipo_pago = @tipo_pago
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 
 /*
 *************************************************************
@@ -2627,6 +2700,31 @@ BEGIN
 										@id_almacen,
 										@descripcion
 )	
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarProducto_Almacen')
+	DROP PROCEDURE sp_ModificarProducto_Almacen
+GO
+CREATE PROCEDURE sp_ModificarProducto_Almacen
+(
+	@id_producto smallint,
+	@id_almacen smallint,
+	@descripcion varchar(100)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		UPDATE Producto_Almacen
+			SET 
+						descripcion=@descripcion			
+			WHERE
+				id_producto = @id_producto AND id_almacen = @id_almacen
 
 	END TRY
 	BEGIN CATCH
@@ -2674,6 +2772,7 @@ BEGIN
 	END CATCH
 END
 GO
+
 IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_AutorizaStock')
 	DROP PROCEDURE sp_AutorizaStock
 GO
@@ -2690,6 +2789,266 @@ BEGIN
 				SET
 				stock = @stock
 				WHERE id_producto = @id_producto and id_almacen = @id_almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+/*
+*************************************************************
+*															*
+*						TABLA PRECIO						*
+*															*
+*************************************************************
+*/
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarPrecio')
+	DROP PROCEDURE sp_RegistrarPrecio
+GO
+CREATE PROCEDURE sp_RegistrarPrecio
+	(
+	@id_producto smallint,
+	@id_almacen smallint,
+	@precio_compra smallmoney,
+	@precio_venta smallmoney,
+	@precio_trajecta smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO Precio( 
+										id_producto,
+										id_almacen,
+										precio_compra,
+										precio_venta,
+										precio_trajecta
+										)
+					VALUES(
+										@id_producto,
+										@id_almacen,
+										@precio_compra,
+										@precio_venta,
+										@precio_trajecta
+											)	
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarPrecio')
+	DROP PROCEDURE sp_ModificarPrecio
+GO
+CREATE PROCEDURE sp_ModificarPrecio
+(
+	@id_producto smallint,
+	@id_almacen smallint,
+	@precio_compra smallmoney,
+	@precio_venta smallmoney,
+	@precio_trajecta smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		UPDATE Precio
+			SET 
+						precio_compra = @precio_compra,
+						precio_venta = @precio_venta,
+						precio_trajecta = @precio_trajecta
+			WHERE
+				id_producto = @id_producto AND id_almacen = @id_almacen
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+/*
+*************************************************************
+*															*
+*					TABLA MOVIMIENTO						*
+*															*
+*************************************************************
+*/
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarMovimiento')
+	DROP PROCEDURE sp_RegistrarMovimiento
+GO
+CREATE PROCEDURE sp_RegistrarMovimiento
+	(
+	@id_movimiento smallint output,
+	@id_caja smallint,
+	@id_operacion smallint,
+	@id_almacen smallint,
+	@id_tipodocumento char(3),
+	@numero_documento char(3),
+	@serie_documento char(7),
+	@tipo_movimiento char(1),
+	@monto smallmoney,
+	@fecha_movimiento smalldatetime
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO Movimiento(
+							id_caja,
+							id_operacion,
+							id_almacen,
+							id_tipodocumento,
+							numero_documento,
+							serie_documento,
+							tipo_movimiento,
+							monto, 
+							fecha_movimiento
+							)
+					VALUES(
+								@id_caja,
+								@id_operacion,
+								@id_almacen,
+								@id_tipodocumento,
+								@numero_documento,
+								@serie_documento,
+								@tipo_movimiento,
+								@monto, 
+								@fecha_movimiento		
+							)
+		SELECT @id_movimiento=IDENT_CURRENT('Movimiento')
+		SELECT @id_movimiento
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarMovimientoConCambion')
+	DROP PROCEDURE sp_RegistrarMovimientoConCambion
+GO
+CREATE PROCEDURE sp_RegistrarMovimientoConCambion
+	(
+	@id_movimiento smallint output,
+	@id_caja smallint,
+	@id_operacion smallint,
+	@id_almacen smallint,
+	@id_tipodocumento char(3),
+	@numero_documento char(3),
+	@serie_documento char(7),
+	@tipo_movimiento char(1),
+	@monto smallmoney, 
+	@fecha_movimiento smalldatetime,
+	@tipo_cambio smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO Movimiento(
+							id_caja,
+							id_operacion,
+							id_almacen,
+							id_tipodocumento,
+							numero_documento,
+							serie_documento,
+							tipo_movimiento,
+							monto, 
+							fecha_movimiento,
+							tipo_cambio
+							)
+					VALUES(
+								@id_caja,
+								@id_operacion,
+								@id_almacen,
+								@id_tipodocumento,
+								@numero_documento,
+								@serie_documento,
+								@tipo_movimiento,
+								@monto, 
+								@fecha_movimiento,
+								@tipo_cambio	
+							)
+		SELECT @id_movimiento=IDENT_CURRENT('Movimiento')
+		SELECT @id_movimiento
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarMovimiento')
+	DROP PROCEDURE sp_ModificarMovimiento
+GO
+CREATE PROCEDURE sp_ModificarMovimiento
+	(
+	@id_movimiento smallint output,
+	@id_caja smallint,
+	@id_operacion smallint,
+	@id_almacen smallint,
+	@id_tipodocumento char(3),
+	@numero_documento char(3),
+	@serie_documento char(7),
+	@monto smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+			UPDATE Movimiento
+				SET
+				id_caja = @id_caja,
+				id_operacion = @id_operacion,
+				id_almacen = @id_almacen,
+				id_tipodocumento = @id_tipodocumento,
+				numero_documento = @numero_documento,
+				serie_documento = @serie_documento,
+				monto = @monto
+				WHERE id_movimiento = @id_movimiento
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarMovimiento')
+	DROP PROCEDURE sp_EliminarMovimiento
+GO
+CREATE PROCEDURE sp_EliminarMovimiento
+(
+	@id_movimiento smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION
+			UPDATE Movimiento SET estado = 0 WHERE id_movimiento = @id_movimiento
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_BuscarIdMovimiento')
+	DROP PROCEDURE sp_BuscarIdMovimiento
+GO
+CREATE PROCEDURE sp_BuscarIdMovimiento
+(
+	@id_Movimiento	smallint out,
+	@id_tipodocumento tinyint,
+	@numero_documento char(3)
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT @id_Movimiento =max(id_movimiento) FROM Movimiento where id_tipodocumento = @id_tipodocumento AND numero_documento = @numero_documento
+		IF @id_Movimiento is null
+SET @id_Movimiento = 1
+ELSE
+SELECT @id_Movimiento = @id_Movimiento + 1
+return @id_Movimiento
 	END TRY
 	BEGIN CATCH
 		EXEC sp_retornarError
@@ -4240,37 +4599,6 @@ BEGIN
 END
 GO
 
-/*
-*************************************************************
-*															*
-*					TABLA MOVIMIENTO						*
-*															*
-*************************************************************
-*/
-IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_BuscarIdMovimiento')
-	DROP PROCEDURE sp_BuscarIdMovimiento
-GO
-CREATE PROCEDURE sp_BuscarIdMovimiento
-(
-	@id_Movimiento	smallint out,
-	@id_tipodocumento tinyint,
-	@numero_documento char(3)
-	)
-AS
-BEGIN
-	BEGIN TRY
-		SELECT @id_Movimiento =max(id_movimiento) FROM Movimiento where id_tipodocumento = @id_tipodocumento AND numero_documento = @numero_documento
-		IF @id_Movimiento is null
-SET @id_Movimiento = 1
-ELSE
-SELECT @id_Movimiento = @id_Movimiento + 1
-return @id_Movimiento
-	END TRY
-	BEGIN CATCH
-		EXEC sp_retornarError
-	END CATCH
-END
-GO
 /*
 *************************************************************
 *															*

@@ -99,6 +99,7 @@
     <Compile Include="Orden_Venta.vb" />
     <Compile Include="Personal.vb" />
     <Compile Include="Personal_SubMenu.vb" />
+    <Compile Include="Precio.vb" />
     <Compile Include="Producto.vb" />
     <Compile Include="Producto_Almacen.vb" />
     <Compile Include="Proveedor.vb" />

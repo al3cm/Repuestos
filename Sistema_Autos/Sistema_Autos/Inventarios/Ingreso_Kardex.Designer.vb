@@ -48,6 +48,7 @@ Partial Class frmIngreso_Kardex
         Me.txtProducto = New System.Windows.Forms.TextBox
         Me.Label9 = New System.Windows.Forms.Label
         Me.gpbDatos = New System.Windows.Forms.GroupBox
+        Me.TxtIdAlmance = New System.Windows.Forms.TextBox
         Me.cboTipoPago = New System.Windows.Forms.ComboBox
         Me.Label3 = New System.Windows.Forms.Label
         Me.TxtIdOrden = New System.Windows.Forms.TextBox
@@ -88,7 +89,6 @@ Partial Class frmIngreso_Kardex
         Me.LblProcetaje = New System.Windows.Forms.Label
         Me.lblCodigo = New System.Windows.Forms.Label
         Me.txtCantidad = New System.Windows.Forms.TextBox
-        Me.TxtIdAlmance = New System.Windows.Forms.TextBox
         Me.gpbDatos.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -357,6 +357,13 @@ Partial Class frmIngreso_Kardex
         Me.gpbDatos.TabIndex = 92
         Me.gpbDatos.TabStop = False
         Me.gpbDatos.Text = "Datos"
+        '
+        'TxtIdAlmance
+        '
+        Me.TxtIdAlmance.Location = New System.Drawing.Point(20, 100)
+        Me.TxtIdAlmance.Name = "TxtIdAlmance"
+        Me.TxtIdAlmance.Size = New System.Drawing.Size(66, 20)
+        Me.TxtIdAlmance.TabIndex = 104
         '
         'cboTipoPago
         '
@@ -681,13 +688,6 @@ Partial Class frmIngreso_Kardex
         Me.txtCantidad.Name = "txtCantidad"
         Me.txtCantidad.Size = New System.Drawing.Size(61, 20)
         Me.txtCantidad.TabIndex = 103
-        '
-        'TxtIdAlmance
-        '
-        Me.TxtIdAlmance.Location = New System.Drawing.Point(20, 100)
-        Me.TxtIdAlmance.Name = "TxtIdAlmance"
-        Me.TxtIdAlmance.Size = New System.Drawing.Size(66, 20)
-        Me.TxtIdAlmance.TabIndex = 104
         '
         'frmIngreso_Kardex
         '

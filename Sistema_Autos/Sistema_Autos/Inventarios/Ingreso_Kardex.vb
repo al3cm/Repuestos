@@ -13,6 +13,10 @@ Public Class frmIngreso_Kardex
     Dim objProveedor As New Proveedor
     Dim objProducto_Almacen As New Producto_Almacen
     Dim objProducto As New Producto
+    Dim Todos As Boolean = True
+    Dim Tabla As DataTable
+    Dim Tabla1 As DataTable
+    Dim J As Integer = 0
     Private Sub frmIngreso_Kardex_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             ' LÓGICA PERMISOS -------------------------------------------------
@@ -179,6 +183,9 @@ Public Class frmIngreso_Kardex
                 objKardex.id_tipodocumento = Me.cbotipo_comprobante.SelectedValue
                 objKardex.pago_inicial = Me.txtinicial.Text
                 objKardex.id_almacen = Me.TxtIdAlmance.Text
+                objOrden_Compra.id_compra = Me.TxtIdOrden.Text.Trim
+                Dim Id_Producto As Integer
+                Dim Cantidad As Double
                 If Me.txtmonto_financiado.Text.Trim <> "" Then
                     objKardex.monto_financiado = Me.txtmonto_financiado.Text.Trim
                 Else
@@ -206,7 +213,6 @@ Public Class frmIngreso_Kardex
                             objKardex.Descuentro = CDbl(Dgv.Item(5, i).Value)
                             objKardex.Sub_Total = CDbl(Dgv.Item(6, i).Value)
                             If objKardex.id_producto <> 0 Then
-                                Dim Tabla As DataTable
                                 objProducto_Almacen.id_almacen = Me.TxtIdAlmance.Text
                                 objProducto_Almacen.id_producto = objKardex.id_producto
                                 Tabla = nProducto_Almacen.Listar(objProducto_Almacen)
@@ -220,8 +226,73 @@ Public Class frmIngreso_Kardex
                                 objKardex = nKardex.RegistrarKardex(objKardex)
                                 objProducto_Almacen.stock = objKardex.stock + objKardex.cantidad
                                 nProducto_Almacen.AutorizaStock(objProducto_Almacen)
+                                Tabla = nOrden_Compra.ListarDetalle(objOrden_Compra.id_compra)
+                                For Each Fila As DataRow In Tabla.Rows
+                                    Id_Producto = Fila.Item("id_producto")
+                                    Cantidad = Fila.Item("cantidad")
+                                    If Id_Producto = objProducto_Almacen.id_producto And Cantidad <> objKardex.cantidad Then
+                                        Todos = False
+                                    End If
+                                Next
                             End If
+                            J = J + 1
                         Next
+                        If Todos Then
+                            objOrden_Compra.Estado = "2"
+                            nOrden_Compra.AtenderCompra(objOrden_Compra)
+                        Else
+                            Tabla = nOrden_Compra.Listar(objOrden_Compra.id_compra)
+                            For Each Fila As DataRow In Tabla.Rows
+                                Dim total As Double = 0.0
+                                Dim id_productos(J) As Integer
+                                Dim cantidads(J) As Integer
+                                Dim precios(J) As Double
+                                Dim Descuentros(J) As Double
+                                Dim Sub_Totas(J) As Double
+                                objOrden_Compra.fecha_compra = Fila.Item("fecha_compra")
+                                objOrden_Compra.id_compra = Fila.Item("id_compra")
+                                objOrden_Compra.numero_documento = Fila.Item("numero_documento")
+                                objOrden_Compra.serie_documento = Fila.Item("serie_documento")
+                                objOrden_Compra.id_proveedor = Fila.Item("id_proveedor")
+                                objOrden_Compra.Tipo_Pago = Fila.Item("tipo_pago")
+                                objOrden_Compra.id_Moneda = Fila.Item("id_moneda")
+                                objOrden_Compra.id_almacen = Fila.Item("id_almacen")
+                                Tabla1 = nOrden_Compra.ListarDetalle(objOrden_Compra.id_compra)
+                                For Each Fila1 As DataRow In Tabla1.Rows
+                                    For i As Integer = 0 To Dgv.RowCount - 1
+                                        If CInt(Dgv.Item(0, i).Value) = Fila1.Item("id_producto") Then
+                                            id_productos(i) = Fila1.Item("id_producto")
+                                            cantidads(i) = Fila1.Item("cantidad") - CInt(Dgv.Item(2, i).Value)
+                                            precios(i) = Fila1.Item("precio_compra")
+                                            Descuentros(i) = CDbl(Dgv.Item(5, i).Value)
+                                            Sub_Totas(i) = cantidads(i) * precios(i) - Descuentros(i)
+                                            total = total + Sub_Totas(i)
+                                        End If
+                                    Next
+                                Next
+                                If Me.chkigv.Checked Then
+                                    objOrden_Compra.total = total
+                                    objOrden_Compra.subtotal = total * 100 / 118
+                                    objOrden_Compra.igv = total * 18 / 118
+                                Else
+                                    objOrden_Compra.total = total * 82 / 100
+                                    objOrden_Compra.subtotal = total
+                                    objOrden_Compra.igv = total * 18 / 100
+                                End If
+                                nOrden_Compra.ModificarCompra(objOrden_Compra)
+                                nOrden_Compra.EleminarProducto_Almacen(objOrden_Compra.id_compra)
+                                For i As Integer = 0 To Dgv.RowCount - 1
+                                    If CInt(Dgv.Item(0, i).Value) <> 0 And cantidads(i) <> 0 Then
+                                        objOrden_Compra.id_producto = id_productos(i)
+                                        objOrden_Compra.cantidad = cantidads(i)
+                                        objOrden_Compra.precio_compra = precios(i)
+                                        objOrden_Compra.descuento = Descuentros(i)
+                                        objOrden_Compra.Sub_Total = Sub_Totas(i)
+                                        nOrden_Compra.RegistrarCompra_Producto(objOrden_Compra)
+                                    End If
+                                Next
+                            Next
+                        End If
                     Catch ex As Exception
                         MsgBox(ex.Message.ToString)
                     End Try
@@ -241,7 +312,6 @@ Public Class frmIngreso_Kardex
     End Sub
     Sub CargarCompra()
         Try
-            Dim Tabla As DataTable
             Dim Id_Producto As Integer
             Dim Producto As String
             Dim Cantidad As Integer

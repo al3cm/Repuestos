@@ -332,8 +332,8 @@ Public Class frmPrincipal
     '==================MENU CAJA=================
     '============================================
 
-    Private Sub CajayBancosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CajayBancosToolStripMenuItem.Click
-        frmCaja_Bancos.ShowDialog()
+    Private Sub CajayBancosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ResumenDeCajaToolStripMenuItem.Click
+        frmResumen_Caja.ShowDialog()
     End Sub
 
     Private Sub CuentasPorCobrarToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CuentasPorCobrarToolStripMenuItem.Click
@@ -384,5 +384,9 @@ Public Class frmPrincipal
         frmEmpresa.Tag = CType(sender, ToolStripMenuItem).Tag
         ' -----------------------------------------------------------------
         frmEmpresa.ShowDialog()
+    End Sub
+
+    Private Sub GastosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GastosToolStripMenuItem.Click
+        frmGastos.ShowDialog()
     End Sub
 End Class

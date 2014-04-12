@@ -23,6 +23,7 @@
     Private mprecio_venta As Double
     Private mdescuento As Double
     Private mSub_Total As Double
+    Private mEstado As String
     Public Property id_venta() As Integer
         Get
             Return mid_venta
@@ -213,6 +214,14 @@
         End Get
         Set(ByVal value As Double)
             mSub_Total = value
+        End Set
+    End Property
+    Public Property Estado() As String
+        Get
+            Return mEstado
+        End Get
+        Set(ByVal value As String)
+            mEstado = value
         End Set
     End Property
     Public Sub New()

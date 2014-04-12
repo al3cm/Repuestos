@@ -409,14 +409,11 @@ Public Class frmNota_Debito_Clientes
                 objOrden_Venta.id_venta = Fila.Item("id_venta")
                 objOrden_Venta.numero_documento = Fila.Item("numero_documento")
                 objOrden_Venta.serie_documento = Fila.Item("serie_documento")
+                objOrden_Venta.id_almacen = Fila.Item("id_almacen")
             Next
             Me.txttipo_documento.Text = "OV/ " & objOrden_Venta.numero_documento
             Me.txt_documento.Text = objOrden_Venta.serie_documento
             Me.cboMoneda.SelectedValue = objOrden_Venta.id_Moneda
-            Tabla = npersonal.Listar(objOrden_Venta.id_personal)
-            For Each Fila As DataRow In Tabla.Rows
-                objOrden_Venta.id_almacen = Fila.Item("id_almacen")
-            Next
             Me.cboAlmacen.SelectedValue = objOrden_Venta.id_almacen
             Tabla = nCliente.Listar(objOrden_Venta.id_cliente)
             For Each Fila As DataRow In Tabla.Rows

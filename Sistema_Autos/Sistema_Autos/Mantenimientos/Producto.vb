@@ -3,8 +3,14 @@ Imports Reglas_Negocio
 Imports System.Drawing.Imaging
 Imports System.IO
 Public Class frmProducto
+    Dim objPrecio As New Precio
+    Dim objProducto_Almacen As New Producto_Almacen
     Dim objProducto As New Producto
     Dim nProducto As New RNProducto
+    Dim nProducto_Almacen As New RNProducto_Almacen
+    Dim nAlmacen As New RNAlmacen
+    Dim nPrecio As New RNPrecio
+    Dim Tabla As DataTable
     'imagen
     'Public RUTA As String
     'Public x As String
@@ -221,6 +227,19 @@ Public Class frmProducto
                 'Imagen
                 If MessageBox.Show("¿Desea registrar los datos de este producto?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                     objProducto = nProducto.Registrar(objProducto)
+                    Tabla = nAlmacen.Listar
+                    For Each Fila As DataRow In Tabla.Rows
+                        objProducto_Almacen.id_almacen = Fila.Item("id_almacen")
+                        objProducto_Almacen.id_producto = objProducto.id_producto
+                        objProducto_Almacen.descripcion = "El producto " & objProducto.nombre_producto & " esta en Almacen " & Fila.Item("descripcion")
+                        nProducto_Almacen.RegistrarProducto_Almacen(objProducto_Almacen)
+                        objPrecio.id_producto = objProducto.id_producto
+                        objPrecio.id_almacen = Fila.Item("id_almacen")
+                        objPrecio.precio_compra = objProducto.precio_compra
+                        objPrecio.precio_venta = objProducto.precio_venta
+                        objPrecio.precio_trajecta = objPrecio.precio_venta * Cambio_Trajecta
+                        nPrecio.RegistrarPrecio(objPrecio)
+                    Next
                     MessageBox.Show("Los datos se guardaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Me.lblCodigo.Text = objProducto.id_producto
                     Me.lblCodigo.Visible = True
@@ -253,6 +272,8 @@ Public Class frmProducto
             objTemporal.numero_comprobante = Me.txtComprobante.Text.Trim
             objTemporal.descripcion = Me.txtdescripcion.Text.Trim
             objTemporal.estado = Me.chkestado_producto.Checked
+            objTemporal.precio_compra = Me.txtPrecio_compra.Text
+            objTemporal.precio_venta = Me.txtPrecio_venta.Text
             'If rbFoto.Checked Then
             '    objTemporal.foto = x
             '    System.IO.File.Delete(BorraFoto)
@@ -274,6 +295,12 @@ Public Class frmProducto
             'End If
 
             nProducto.Modificar(objTemporal)
+            For Each Fila As DataRow In Tabla.Rows
+                objProducto_Almacen.id_almacen = Fila.Item("id_almacen")
+                objProducto_Almacen.id_producto = objProducto.id_producto
+                objProducto_Almacen.descripcion = "El producto " & objProducto.nombre_producto & " esta en Almacen " & Fila.Item("descripcion")
+                nProducto_Almacen.ModificarProducto_Almacen(objProducto_Almacen)
+            Next
             MessageBox.Show("Los datos se actualizaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
             'Si la modificación fue exitosa se actualiza al objeto temporal
@@ -288,7 +315,8 @@ Public Class frmProducto
             objProducto.numero_comprobante = Me.txtComprobante.Text.Trim
             objProducto.descripcion = Me.txtdescripcion.Text.Trim
             objProducto.estado = Me.chkestado_producto.Checked
-
+            objProducto.precio_compra = Me.txtPrecio_compra.Text
+            objProducto.precio_venta = Me.txtPrecio_venta.Text
         Catch ex As Exception
             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try

@@ -427,16 +427,13 @@ Public Class frmNota_Credito_Cliente
                 objOrden_Venta.id_cliente = Fila.Item("id_cliente")
                 objOrden_Venta.numero_documento = Fila.Item("numero_documento")
                 objOrden_Venta.serie_documento = Fila.Item("serie_documento")
+                objOrden_Venta.id_almacen = Fila.Item("id_almacen")
             Next
             Me.txttipo_documento.Text = "OV/ " & objOrden_Venta.numero_documento
             Me.txt_documento.Text = objOrden_Venta.serie_documento
             Me.dtpfecha_comprobante.Value = objOrden_Venta.fecha_emision
             LlenarMoneda()
             Me.cboMoneda.SelectedValue = objOrden_Venta.id_Moneda
-            Tabla = npersonal.Listar(objOrden_Venta.id_personal)
-            For Each Fila As DataRow In Tabla.Rows
-                objOrden_Venta.id_almacen = Fila.Item("id_almacen")
-            Next
             Me.cboAlmacen.SelectedValue = objOrden_Venta.id_almacen
             Tabla = nCliente.Listar(objOrden_Venta.id_cliente)
             For Each Fila As DataRow In Tabla.Rows

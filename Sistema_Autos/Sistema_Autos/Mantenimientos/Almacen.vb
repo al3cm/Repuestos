@@ -1,11 +1,16 @@
 ﻿Imports Entidades
 Imports Reglas_Negocio
 Public Class frmAlmacen
+    Dim objPrecio As New Precio
+    Dim objProducto_Almacen As New Producto_Almacen
     Dim objDetalle_Caja As New Detalle_Caja
     Dim objAlmacen As New Almacen
     Dim nAlmacen As New RNAlmacen
     Dim nDetalle_Caja As New RNDetalle_Caja
-    
+    Dim nProducto_Almacen As New RNProducto_Almacen
+    Dim nPrecio As New RNPrecio
+    Dim nProducto As New RNProducto
+    Dim Tabla As DataTable
     '---------------------------------------------
     '-----------------EVENTOS
     '---------------------------------------------
@@ -162,7 +167,6 @@ Public Class frmAlmacen
         Try
 
             If Valida() Then
-                Dim Tabla As DataTable
                 objAlmacen.id_sucursal = Me.cboSucursal.SelectedValue
                 objAlmacen.descripcion = Me.txtdescripcion.Text.Trim
                 If MessageBox.Show("¿Desea registrar los datos de este almacen?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
@@ -174,6 +178,19 @@ Public Class frmAlmacen
                         objDetalle_Caja.id_almacen = objAlmacen.id_almacen
                         objDetalle_Caja.descripcion = objDetalle_Caja.caja & " " & objAlmacen.descripcion
                         nDetalle_Caja.RegistrarDetalle_Caja(objDetalle_Caja)
+                    Next
+                    Tabla = nProducto.Listar
+                    For Each Fila As DataRow In Tabla.Rows
+                        objProducto_Almacen.id_almacen = objAlmacen.id_almacen
+                        objProducto_Almacen.id_producto = Fila.Item("id_producto")
+                        objProducto_Almacen.descripcion = "El producto " & Fila.Item("nombre_producto") & " esta en Almacen " & objAlmacen.descripcion
+                        nProducto_Almacen.RegistrarProducto_Almacen(objProducto_Almacen)
+                        objPrecio.id_producto = Fila.Item("id_producto")
+                        objPrecio.id_almacen = objAlmacen.id_almacen
+                        objPrecio.precio_compra = Fila.Item("precio_compra")
+                        objPrecio.precio_venta = Fila.Item("precio_venta")
+                        objPrecio.precio_trajecta = objPrecio.precio_venta * Cambio_Trajecta
+                        nPrecio.RegistrarPrecio(objPrecio)
                     Next
                     MessageBox.Show("Los datos se guardaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Me.lblCodigo.Text = objAlmacen.id_almacen
@@ -195,8 +212,22 @@ Public Class frmAlmacen
     Sub Modificar()
         Try
             'Modified 2014.03.24
-
             nAlmacen.Modificar(New Almacen(CInt(Me.lblCodigo.Text), CInt(Me.cboSucursal.SelectedValue), Me.txtdescripcion.Text.Trim))
+            Tabla = nDetalle_Caja.ListarCaja
+            For Each Fila As DataRow In Tabla.Rows
+                objDetalle_Caja.id_caja = Fila.Item("id_caja")
+                objDetalle_Caja.caja = Fila.Item("nombre_caja")
+                objDetalle_Caja.id_almacen = Me.lblCodigo.Text
+                objDetalle_Caja.descripcion = objDetalle_Caja.caja & " " & Me.txtdescripcion.Text.Trim
+                nDetalle_Caja.ModificarDetalle_Caja(objDetalle_Caja)
+            Next
+            Tabla = nProducto.Listar
+            For Each Fila As DataRow In Tabla.Rows
+                objProducto_Almacen.id_almacen = Me.lblCodigo.Text
+                objProducto_Almacen.id_producto = Fila.Item("id_producto")
+                objProducto_Almacen.descripcion = "El producto " & Fila.Item("nombre_producto") & " esta en Almacen " & Me.txtdescripcion.Text.Trim
+                nProducto_Almacen.ModificarProducto_Almacen(objProducto_Almacen)
+            Next
             MessageBox.Show("Los datos se actualizaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             'Si la modificación fue exitosa se actualiza al objeto temporal
 
