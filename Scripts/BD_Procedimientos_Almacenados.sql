@@ -1663,10 +1663,10 @@ AS
 BEGIN
 	BEGIN TRY
 
-		IF (@ruc IS NOT NULL) AND EXISTS(SELECT * FROM Cliente WHERE ruc=@ruc)
+		IF (@ruc IS NOT NULL) AND EXISTS(SELECT * FROM Cliente WHERE ruc=@ruc) AND @ruc<>''--Modified 2014.04.12
 			RAISERROR('El ruc ingresado ya se encuentra registrado, verificar datos',16,1)
 		
-		IF (@dni IS NOT NULL) AND EXISTS(SELECT * FROM Cliente WHERE dni=@dni)
+		IF (@dni IS NOT NULL) AND EXISTS(SELECT * FROM Cliente WHERE dni=@dni) AND @dni<>''--Modified 2014.04.12
 			RAISERROR('El dni ingresado ya se encuentra registrado, verificar datos',16,1)
 			
 		INSERT INTO Cliente(
@@ -1953,6 +1953,23 @@ BEGIN
 END
 GO
 
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarPersonalAlmacen')
+	DROP PROCEDURE sp_ListarPersonalAlmacen
+GO
+CREATE PROCEDURE sp_ListarPersonalAlmacen
+(
+	@id_personal tinyint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT id_almacen FROM Almacen_Personal where id_personal = @id_personal
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 
 /*
 *************************************************************
@@ -3049,6 +3066,45 @@ SET @id_Movimiento = 1
 ELSE
 SELECT @id_Movimiento = @id_Movimiento + 1
 return @id_Movimiento
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ResumenCaja')
+	DROP PROCEDURE sp_ResumenCaja
+GO
+CREATE PROCEDURE sp_ResumenCaja
+(
+	@fechaIni smalldatetime,
+	@fechaFin smalldatetime,
+	@id_caja smallint,
+	@id_almacen smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT
+			DC.descripcion AS 'detalleCaja',
+			C.razon_social AS 'cliente',
+			M.numero_documento AS 'documento',
+			MD.descripcion AS 'moneda',
+			M.monto AS 'monto',
+			S.descripcion AS 'sucursal',
+			M.fecha_movimiento
+		FROM Movimiento M 
+		INNER JOIN Detalle_Caja DC ON (M.id_almacen = DC.id_almacen AND M.id_caja=DC.id_caja) 
+		INNER JOIN Venta V ON M.id_operacion = V.id_venta
+		INNER JOIN Cliente C ON V.id_cliente = C.id_cliente
+		INNER JOIN Moneda MD ON V.id_moneda = MD.id_moneda
+		INNER JOIN Almacen A ON V.id_almacen = A.id_almacen
+		INNER JOIN Sucursal S ON A.id_sucursal = S.id_sucursal
+		WHERE (M.fecha_movimiento >=@fechaIni AND M.fecha_movimiento<@fechaFin+1) 
+			AND (M.id_caja=M.id_caja-@id_caja OR M.id_caja=@id_caja)--para números, cuando se le envía 0 lista todo
+			AND (M.id_almacen=M.id_almacen-@id_almacen OR M.id_almacen=@id_almacen)--para números, cuando se le envía 0 lista todo
+			AND M.tipo_movimiento = 'E'
+
 	END TRY
 	BEGIN CATCH
 		EXEC sp_retornarError

@@ -411,7 +411,7 @@ Partial Class frmOrden_Venta
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(399, 59)
+        Me.Label5.Location = New System.Drawing.Point(396, 54)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(64, 13)
         Me.Label5.TabIndex = 9

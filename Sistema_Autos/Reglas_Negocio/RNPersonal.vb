@@ -170,4 +170,30 @@ Public Class RNPersonal
         End Try
         Return ds
     End Function
+
+    'ADD: 2014.04.12
+
+    Shared Function ListarPersonalAlmacen(ByVal id_personal As Integer) As Integer
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim da As New SqlDataAdapter("sp_ListarPersonalAlmacen", cn)
+
+        Try
+            da.SelectCommand.Parameters.Add("id_personal", SqlDbType.SmallInt)
+            da.SelectCommand.Parameters("id_personal").Value = id_personal
+
+            da.SelectCommand.CommandType = CommandType.StoredProcedure
+            da.Fill(ds)
+
+            If ds.Rows.Count > 0 Then
+                Return CInt(ds.Rows(0).Item("id_almacen"))
+            Else
+                Return 0
+            End If
+
+        Catch ex As Exception
+            Throw
+        End Try
+        Return 0
+    End Function
 End Class

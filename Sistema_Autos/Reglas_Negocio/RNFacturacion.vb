@@ -144,4 +144,28 @@ Public Class RNFacturacion
         End Try
         Return id
     End Function
+
+    Shared Function resumenCaja(ByVal fechaIni As Date, ByVal fechaFin As Date, ByVal id_Caja As Integer, ByVal id_Almacen As Integer) As DataTable
+
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim da As New SqlDataAdapter("sp_ResumenCaja", cn)
+
+        Try
+            da.SelectCommand.Parameters.Add("fechaIni", SqlDbType.SmallDateTime)
+            da.SelectCommand.Parameters("fechaIni").Value = fechaIni
+            da.SelectCommand.Parameters.Add("fechaFin", SqlDbType.SmallDateTime)
+            da.SelectCommand.Parameters("fechaFin").Value = fechaFin
+            da.SelectCommand.Parameters.Add("id_caja", SqlDbType.SmallInt)
+            da.SelectCommand.Parameters("id_caja").Value = id_Caja
+            da.SelectCommand.Parameters.Add("id_almacen", SqlDbType.SmallInt)
+            da.SelectCommand.Parameters("id_almacen").Value = id_Almacen
+
+            da.SelectCommand.CommandType = CommandType.StoredProcedure
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw
+        End Try
+        Return ds
+    End Function
 End Class

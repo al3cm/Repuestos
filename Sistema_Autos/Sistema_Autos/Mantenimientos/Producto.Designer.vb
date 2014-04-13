@@ -91,7 +91,7 @@ Partial Class frmProducto
         Me.txtNombre_producto.Location = New System.Drawing.Point(124, 54)
         Me.txtNombre_producto.Name = "txtNombre_producto"
         Me.txtNombre_producto.Size = New System.Drawing.Size(198, 20)
-        Me.txtNombre_producto.TabIndex = 3
+        Me.txtNombre_producto.TabIndex = 1
         '
         'Label3
         '
@@ -107,7 +107,7 @@ Partial Class frmProducto
         Me.txtCodigo_producto.Location = New System.Drawing.Point(426, 53)
         Me.txtCodigo_producto.Name = "txtCodigo_producto"
         Me.txtCodigo_producto.Size = New System.Drawing.Size(204, 20)
-        Me.txtCodigo_producto.TabIndex = 5
+        Me.txtCodigo_producto.TabIndex = 2
         '
         'Label4
         '
@@ -123,7 +123,7 @@ Partial Class frmProducto
         Me.txtmodelo_producto.Location = New System.Drawing.Point(124, 89)
         Me.txtmodelo_producto.Name = "txtmodelo_producto"
         Me.txtmodelo_producto.Size = New System.Drawing.Size(198, 20)
-        Me.txtmodelo_producto.TabIndex = 7
+        Me.txtmodelo_producto.TabIndex = 3
         '
         'Label5
         '
@@ -139,7 +139,7 @@ Partial Class frmProducto
         Me.txtComprobante.Location = New System.Drawing.Point(426, 88)
         Me.txtComprobante.Name = "txtComprobante"
         Me.txtComprobante.Size = New System.Drawing.Size(204, 20)
-        Me.txtComprobante.TabIndex = 9
+        Me.txtComprobante.TabIndex = 4
         '
         'Label6
         '
@@ -157,7 +157,7 @@ Partial Class frmProducto
         Me.cboMarca.Location = New System.Drawing.Point(123, 128)
         Me.cboMarca.Name = "cboMarca"
         Me.cboMarca.Size = New System.Drawing.Size(145, 21)
-        Me.cboMarca.TabIndex = 11
+        Me.cboMarca.TabIndex = 5
         '
         'Label7
         '
@@ -175,7 +175,7 @@ Partial Class frmProducto
         Me.cboLinea.Location = New System.Drawing.Point(334, 128)
         Me.cboLinea.Name = "cboLinea"
         Me.cboLinea.Size = New System.Drawing.Size(145, 21)
-        Me.cboLinea.TabIndex = 13
+        Me.cboLinea.TabIndex = 6
         '
         'Label8
         '
@@ -193,7 +193,7 @@ Partial Class frmProducto
         Me.cboUnidad.Location = New System.Drawing.Point(555, 127)
         Me.cboUnidad.Name = "cboUnidad"
         Me.cboUnidad.Size = New System.Drawing.Size(76, 21)
-        Me.cboUnidad.TabIndex = 15
+        Me.cboUnidad.TabIndex = 7
         '
         'Label12
         '
@@ -210,7 +210,7 @@ Partial Class frmProducto
         Me.txtdescripcion.Multiline = True
         Me.txtdescripcion.Name = "txtdescripcion"
         Me.txtdescripcion.Size = New System.Drawing.Size(507, 70)
-        Me.txtdescripcion.TabIndex = 25
+        Me.txtdescripcion.TabIndex = 11
         '
         'Label13
         '
@@ -228,7 +228,7 @@ Partial Class frmProducto
         Me.btnSalir.Location = New System.Drawing.Point(490, 309)
         Me.btnSalir.Name = "btnSalir"
         Me.btnSalir.Size = New System.Drawing.Size(75, 51)
-        Me.btnSalir.TabIndex = 31
+        Me.btnSalir.TabIndex = 18
         Me.btnSalir.Text = "&Salir"
         Me.btnSalir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSalir.UseVisualStyleBackColor = True
@@ -240,7 +240,7 @@ Partial Class frmProducto
         Me.btnBuscar.Location = New System.Drawing.Point(409, 309)
         Me.btnBuscar.Name = "btnBuscar"
         Me.btnBuscar.Size = New System.Drawing.Size(75, 51)
-        Me.btnBuscar.TabIndex = 30
+        Me.btnBuscar.TabIndex = 17
         Me.btnBuscar.Text = "&Buscar"
         Me.btnBuscar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnBuscar.UseVisualStyleBackColor = True
@@ -252,7 +252,7 @@ Partial Class frmProducto
         Me.btnEliminar.Location = New System.Drawing.Point(328, 309)
         Me.btnEliminar.Name = "btnEliminar"
         Me.btnEliminar.Size = New System.Drawing.Size(75, 51)
-        Me.btnEliminar.TabIndex = 29
+        Me.btnEliminar.TabIndex = 16
         Me.btnEliminar.Text = "&Eliminar"
         Me.btnEliminar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnEliminar.UseVisualStyleBackColor = True
@@ -264,7 +264,7 @@ Partial Class frmProducto
         Me.btnModificar.Location = New System.Drawing.Point(247, 309)
         Me.btnModificar.Name = "btnModificar"
         Me.btnModificar.Size = New System.Drawing.Size(75, 51)
-        Me.btnModificar.TabIndex = 28
+        Me.btnModificar.TabIndex = 15
         Me.btnModificar.Text = "&Modificar"
         Me.btnModificar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnModificar.UseVisualStyleBackColor = True
@@ -276,7 +276,7 @@ Partial Class frmProducto
         Me.btnGrabar.Location = New System.Drawing.Point(166, 309)
         Me.btnGrabar.Name = "btnGrabar"
         Me.btnGrabar.Size = New System.Drawing.Size(75, 51)
-        Me.btnGrabar.TabIndex = 27
+        Me.btnGrabar.TabIndex = 13
         Me.btnGrabar.Text = "&Grabar"
         Me.btnGrabar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnGrabar.UseVisualStyleBackColor = True
@@ -288,7 +288,7 @@ Partial Class frmProducto
         Me.btnNuevo.Location = New System.Drawing.Point(85, 309)
         Me.btnNuevo.Name = "btnNuevo"
         Me.btnNuevo.Size = New System.Drawing.Size(75, 51)
-        Me.btnNuevo.TabIndex = 26
+        Me.btnNuevo.TabIndex = 14
         Me.btnNuevo.Text = "&Nuevo"
         Me.btnNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnNuevo.UseVisualStyleBackColor = True
@@ -301,7 +301,7 @@ Partial Class frmProducto
         Me.chkestado_producto.Location = New System.Drawing.Point(123, 155)
         Me.chkestado_producto.Name = "chkestado_producto"
         Me.chkestado_producto.Size = New System.Drawing.Size(73, 17)
-        Me.chkestado_producto.TabIndex = 23
+        Me.chkestado_producto.TabIndex = 8
         Me.chkestado_producto.Text = "Habilitado"
         Me.chkestado_producto.UseVisualStyleBackColor = True
         '
@@ -310,6 +310,7 @@ Partial Class frmProducto
         Me.pbProducto.Location = New System.Drawing.Point(648, 53)
         Me.pbProducto.Name = "pbProducto"
         Me.pbProducto.Size = New System.Drawing.Size(229, 221)
+        Me.pbProducto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbProducto.TabIndex = 32
         Me.pbProducto.TabStop = False
         '
@@ -318,7 +319,7 @@ Partial Class frmProducto
         Me.btnExaminar.Location = New System.Drawing.Point(648, 304)
         Me.btnExaminar.Name = "btnExaminar"
         Me.btnExaminar.Size = New System.Drawing.Size(93, 36)
-        Me.btnExaminar.TabIndex = 33
+        Me.btnExaminar.TabIndex = 12
         Me.btnExaminar.Text = "&Examinar"
         Me.btnExaminar.UseVisualStyleBackColor = True
         '
@@ -340,14 +341,14 @@ Partial Class frmProducto
         Me.txtPrecio_venta.Location = New System.Drawing.Point(361, 188)
         Me.txtPrecio_venta.Name = "txtPrecio_venta"
         Me.txtPrecio_venta.Size = New System.Drawing.Size(123, 20)
-        Me.txtPrecio_venta.TabIndex = 40
+        Me.txtPrecio_venta.TabIndex = 10
         '
         'txtPrecio_compra
         '
         Me.txtPrecio_compra.Location = New System.Drawing.Point(141, 184)
         Me.txtPrecio_compra.Name = "txtPrecio_compra"
         Me.txtPrecio_compra.Size = New System.Drawing.Size(100, 20)
-        Me.txtPrecio_compra.TabIndex = 38
+        Me.txtPrecio_compra.TabIndex = 9
         '
         'Label11
         '

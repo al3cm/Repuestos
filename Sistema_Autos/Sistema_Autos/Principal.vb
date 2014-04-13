@@ -333,6 +333,9 @@ Public Class frmPrincipal
     '============================================
 
     Private Sub CajayBancosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ResumenDeCajaToolStripMenuItem.Click
+        ' LÓGICA PERMISOS -------------------------------------------------
+        frmResumen_Caja.Tag = CType(sender, ToolStripMenuItem).Tag
+        ' -----------------------------------------------------------------
         frmResumen_Caja.ShowDialog()
     End Sub
 

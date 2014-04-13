@@ -93,14 +93,16 @@ Public Class frmOrden_Venta
             If Tipo = "N" Then
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_documento.SelectedValue = "002"
+                    Me.cboTipo_documento.SelectedValue = "001" 'Modified 2014.04.12
                 End If
+                ' Me.cboTipo_documento.Enabled = False 'Added 2014.04.12 por revisar
             Else
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_documento.SelectedValue = "001"
+                    Me.cboTipo_documento.SelectedValue = "002" 'Modified 2014.04.12
                 End If
                 Me.txtdocumento.Text = objClientes.ruc
+                'Me.cboTipo_documento.Enabled = True 'Added 2014.04.12 por revisar
             End If
             LenarPersonal()
             Me.cboVendedor.SelectedValue = id_Vededor
@@ -501,7 +503,7 @@ Public Class frmOrden_Venta
             For Each Fila As DataRow In Tabla.Rows
                 objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
             Next
-            Me.cboTipo_documento.SelectedValue = objOrden_Venta.id_sucursal
+            Me.cboSucursal.SelectedValue = objOrden_Venta.id_sucursal ' Modified 2014.04.12
             LlenaAlmacen()
             Me.cboAlmacen.SelectedValue = objOrden_Venta.id_almacen
             If objOrden_Venta.monto_financiado <> 0.0 Then
@@ -526,14 +528,16 @@ Public Class frmOrden_Venta
             If objClientes.tipo_cliente = "N" Then
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_documento.SelectedValue = "002"
+                    Me.cboTipo_documento.SelectedValue = "001" 'Modified 2014.04.12
                 End If
+                ' Me.cboTipo_documento.Enabled = False 'Added 2014.04.12 por revisar
             Else
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_documento.SelectedValue = "001"
+                    Me.cboTipo_documento.SelectedValue = "002" 'Modified 2014.04.12
                 End If
                 Me.txtdocumento.Text = objClientes.ruc
+                ' Me.cboTipo_documento.Enabled = True 'Added 2014.04.12 ' por revisar
             End If
             LenarPersonal()
             Me.cboVendedor.SelectedValue = objOrden_Venta.id_personal
