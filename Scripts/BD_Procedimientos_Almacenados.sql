@@ -3090,6 +3090,7 @@ BEGIN
 			C.razon_social AS 'cliente',
 			M.numero_documento AS 'documento',
 			M.serie_documento AS 'serie',
+			V.id_tipodocumento AS 'tipoDocumento',
 			MD.descripcion AS 'moneda',
 			M.monto AS 'monto',
 			S.descripcion AS 'sucursal',
