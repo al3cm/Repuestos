@@ -46,11 +46,8 @@ Public Class frmResumen_Caja
             Item.Text = CStr(Fila.Item("detalleCaja"))
 
             Item.SubItems.Add(CStr(Fila.Item("cliente")))
-            If CStr(Fila.Item("tipoDocumento")) = "001" Then
-                Item.SubItems.Add("B/" & CStr(Fila.Item("documento")) & "-" & CStr(Fila.Item("serie")))
-            ElseIf CStr(Fila.Item("tipoDocumento")) = "002" Then
-                Item.SubItems.Add("F/" & CStr(Fila.Item("documento")) & "-" & CStr(Fila.Item("serie")))
-            End If
+            Item.SubItems.Add(CStr(Fila.Item("tipoDocumento")) & "/" & CStr(Fila.Item("documento")) & "-" & CStr(Fila.Item("serie")))
+           
 
             Item.SubItems.Add(CStr(Fila.Item("moneda")))
             Item.SubItems.Add(Format(Fila.Item("monto"), "## ##0.00"))

@@ -3090,7 +3090,7 @@ BEGIN
 			C.razon_social AS 'cliente',
 			M.numero_documento AS 'documento',
 			M.serie_documento AS 'serie',
-			V.id_tipodocumento AS 'tipoDocumento',
+			T.abreviatura 'tipoDocumento',
 			MD.descripcion AS 'moneda',
 			M.monto AS 'monto',
 			S.descripcion AS 'sucursal',
@@ -3102,6 +3102,7 @@ BEGIN
 		INNER JOIN Moneda MD ON V.id_moneda = MD.id_moneda
 		INNER JOIN Almacen A ON V.id_almacen = A.id_almacen
 		INNER JOIN Sucursal S ON A.id_sucursal = S.id_sucursal
+		INNER JOIN TipoDocumento T ON V.id_tipodocumento = T.id_tipodocumento
 		WHERE (M.fecha_movimiento >=@fechaIni AND M.fecha_movimiento<@fechaFin+1) 
 			AND (M.id_caja=M.id_caja-@id_caja OR M.id_caja=@id_caja)--para números, cuando se le envía 0 lista todo
 			AND (M.id_almacen=M.id_almacen-@id_almacen OR M.id_almacen=@id_almacen)--para números, cuando se le envía 0 lista todo
