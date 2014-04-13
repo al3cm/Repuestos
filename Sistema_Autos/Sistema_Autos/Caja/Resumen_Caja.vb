@@ -46,7 +46,7 @@ Public Class frmResumen_Caja
             Item.Text = CStr(Fila.Item("detalleCaja"))
 
             Item.SubItems.Add(CStr(Fila.Item("cliente")))
-            Item.SubItems.Add(CStr(Fila.Item("documento")))
+            Item.SubItems.Add(CStr(Fila.Item("documento")) & "-" & CStr(Fila.Item("serie")))
             Item.SubItems.Add(CStr(Fila.Item("moneda")))
             Item.SubItems.Add(Format(Fila.Item("monto"), "## ##0.00"))
             Item.SubItems.Add(CStr(Fila.Item("sucursal")))

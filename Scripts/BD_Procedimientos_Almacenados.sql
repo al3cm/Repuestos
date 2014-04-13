@@ -3089,6 +3089,7 @@ BEGIN
 			DC.descripcion AS 'detalleCaja',
 			C.razon_social AS 'cliente',
 			M.numero_documento AS 'documento',
+			M.serie_documento AS 'serie',
 			MD.descripcion AS 'moneda',
 			M.monto AS 'monto',
 			S.descripcion AS 'sucursal',
