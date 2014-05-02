@@ -208,7 +208,7 @@ Public Class frmProducto
                 objProducto.nombre_producto = Me.txtNombre_producto.Text.Trim
                 objProducto.codigo_producto = Me.txtCodigo_producto.Text.Trim
                 objProducto.modelo_producto = Me.txtmodelo_producto.Text.Trim
-                objProducto.numero_comprobante = Me.txtComprobante.Text.Trim
+                objProducto.procedencia = Me.txtprocedencia.Text.Trim
                 objProducto.precio_compra = Me.txtPrecio_compra.Text.Trim
                 objProducto.precio_venta = Me.txtPrecio_venta.Text.Trim
                 objProducto.descripcion = Me.txtdescripcion.Text.Trim
@@ -269,7 +269,7 @@ Public Class frmProducto
             objTemporal.nombre_producto = Me.txtNombre_producto.Text.Trim
             objTemporal.codigo_producto = Me.txtCodigo_producto.Text.Trim
             objTemporal.modelo_producto = Me.txtmodelo_producto.Text.Trim
-            objTemporal.numero_comprobante = Me.txtComprobante.Text.Trim
+            objTemporal.procedencia = Me.txtprocedencia.Text.Trim
             objTemporal.descripcion = Me.txtdescripcion.Text.Trim
             objTemporal.estado = Me.chkestado_producto.Checked
             objTemporal.precio_compra = Me.txtPrecio_compra.Text
@@ -312,7 +312,7 @@ Public Class frmProducto
             objProducto.nombre_producto = Me.txtNombre_producto.Text.Trim
             objProducto.codigo_producto = Me.txtCodigo_producto.Text.Trim
             objProducto.modelo_producto = Me.txtmodelo_producto.Text.Trim
-            objProducto.numero_comprobante = Me.txtComprobante.Text.Trim
+            objProducto.procedencia = Me.txtprocedencia.Text.Trim
             objProducto.descripcion = Me.txtdescripcion.Text.Trim
             objProducto.estado = Me.chkestado_producto.Checked
             objProducto.precio_compra = Me.txtPrecio_compra.Text
@@ -332,7 +332,7 @@ Public Class frmProducto
             Me.txtNombre_producto.Text = objProducto.nombre_producto
             Me.txtCodigo_producto.Text = objProducto.codigo_producto
             Me.txtmodelo_producto.Text = objProducto.modelo_producto
-            Me.txtComprobante.Text = objProducto.numero_comprobante
+            Me.txtprocedencia.Text = objProducto.procedencia
             Me.txtdescripcion.Text = objProducto.descripcion
             Me.chkestado_producto.Checked = objProducto.estado
             Me.txtPrecio_compra.Text = objProducto.precio_compra
@@ -357,7 +357,7 @@ Public Class frmProducto
         Me.txtNombre_producto.Enabled = Estado
         Me.txtCodigo_producto.Enabled = Estado
         Me.txtmodelo_producto.Enabled = Estado
-        Me.txtComprobante.Enabled = Estado
+        Me.txtprocedencia.Enabled = Estado
         Me.txtPrecio_venta.Enabled = Estado
         Me.txtPrecio_compra.Enabled = Estado
         Me.txtdescripcion.Enabled = Estado
@@ -389,7 +389,7 @@ Public Class frmProducto
         Me.txtPrecio_compra.Text = ""
         Me.txtPrecio_venta.Text = ""
         Me.txtmodelo_producto.Text = ""
-        Me.txtComprobante.Text = ""
+        Me.txtprocedencia.Text = ""
         Me.txtdescripcion.Text = ""
         Me.pbProducto.Image = Nothing
         Me.lblRutaImagen.Text = ""
@@ -436,6 +436,9 @@ Public Class frmProducto
         End If
         If Me.txtmodelo_producto.Text.Trim = "" Then
             TextoError = TextoError & "- Debe ingresar un modelo de producto." & vbCrLf
+        End If
+        If Me.txtprocedencia.Text.Trim = "" Then
+            TextoError = TextoError & "- Debe ingresar una procedencia de producto." & vbCrLf
         End If
         If Me.txtPrecio_compra.Text.Trim = "" Then
             TextoError = TextoError & "- Debe ingresar el precio de compra del producto." & vbCrLf
@@ -487,7 +490,6 @@ Public Class frmProducto
 
         If fd.ShowDialog = Windows.Forms.DialogResult.OK Then
             lblRutaImagen.Text = fd.FileName
-
             objProducto.RutaImagen = fd.FileName
             Dim fsImage As FileStream
             fsImage = New FileStream(objProducto.RutaImagen, FileMode.Open)

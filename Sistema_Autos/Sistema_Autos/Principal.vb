@@ -250,7 +250,7 @@ Public Class frmPrincipal
 
     'VACIO_____________________________________________________
 
-    Private Sub PrecioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PrecioToolStripMenuItem.Click
+    Private Sub PrecioToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
     End Sub
     '__________________________________________________________
@@ -391,5 +391,10 @@ Public Class frmPrincipal
 
     Private Sub GastosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GastosToolStripMenuItem.Click
         frmGastos.ShowDialog()
+    End Sub
+
+    Private Sub PagoDeLetrasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PagoDeLetrasToolStripMenuItem.Click
+        frmPago_Letras.ShowDialog()
+
     End Sub
 End Class

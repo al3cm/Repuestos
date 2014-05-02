@@ -79,6 +79,7 @@ Public Class frmNota_Credito_Proveedor
         Sumar()
     End Sub
     Private Sub btnbuscar_registro_ventas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnbuscar_registro_ventas.Click
+        frmListar_Orden_Compra.accion = 2
         If frmListar_Orden_Compra.ShowDialog = Windows.Forms.DialogResult.OK Then
             Me.objOrden_Compra = frmListar_Orden_Compra.objOrden_Compra
             CargarCompra()
@@ -265,6 +266,8 @@ Public Class frmNota_Credito_Proveedor
                 objKardex.numero_documento = Me.txtnro_documento.Text
                 objKardex.serie_documento = Me.txtserie_documento.Text
                 objKardex.id_tipodocumento = Me.cbotipo_comprobante.SelectedValue
+                objKardex.ruc_dni = Me.TxtRuc.Text()
+                objKardex.Nombre = Me.txtproveedor.Text
                 objKardex.tipo = "E"
                 If MessageBox.Show("¿Desea registrar los datos de este Nota de Credito?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                     objNota_Credito_Proveedor = nNota_Credito_Proveedor.RegistrarNota_Credito_Proveedor(objNota_Credito_Proveedor)
@@ -298,7 +301,7 @@ Public Class frmNota_Credito_Proveedor
                                     Next
                                     objKardex.stock = objProducto_Almacen.stock
                                     objKardex = nKardex.RegistrarKardex(objKardex)
-                                    objProducto_Almacen.stock = objKardex.stock + objKardex.cantidad
+                                    objProducto_Almacen.stock = objKardex.stock - objKardex.cantidad
                                     nProducto_Almacen.AutorizaStock(objProducto_Almacen)
                                 End If
                             End If
@@ -439,6 +442,7 @@ Public Class frmNota_Credito_Proveedor
                 objOrden_Compra.fecha_compra = Fila.Item("fecha_compra")
                 objOrden_Compra.numero_documento = Fila.Item("numero_documento")
                 objOrden_Compra.serie_documento = Fila.Item("serie_documento")
+                objOrden_Compra.id_Moneda = Fila.Item("id_Moneda")
             Next
             Me.txt_documento.Text = "OC/ " & objOrden_Compra.numero_documento & objOrden_Compra.serie_documento
             LlenarMoneda()
@@ -447,8 +451,10 @@ Public Class frmNota_Credito_Proveedor
             Me.dtpfecha_comprobante.Value = objOrden_Compra.fecha_compra
             Tabla = nProveedor.Listar(objOrden_Compra.id_proveedor)
             For Each Fila As DataRow In Tabla.Rows
+                objProveedor.ruc = Fila.Item("ruc")
                 objProveedor.razon_social = Fila.Item("razon_social")
             Next
+            Me.TxtRuc.Text = objProveedor.ruc
             Me.txtproveedor.Text = objProveedor.razon_social
             btnModificar.Enabled = True
             btnImprimir.Enabled = True
@@ -476,6 +482,7 @@ Public Class frmNota_Credito_Proveedor
                 objOrden_Compra.id_proveedor = Fila.Item("id_proveedor")
                 objOrden_Compra.id_compra = Fila.Item("id_compra")
                 objOrden_Compra.total = Fila.Item("Total")
+                objOrden_Compra.id_Moneda = Fila.Item("id_Moneda")
             Next
             Me.TxtIdOrden.Text = objOrden_Compra.id_compra
             Me.txt_documento.Text = "OV/ " & objOrden_Compra.numero_documento & " - " & objOrden_Compra.serie_documento
@@ -486,9 +493,10 @@ Public Class frmNota_Credito_Proveedor
                 objProveedor.ruc = Fila.Item("ruc")
                 objProveedor.razon_social = Fila.Item("razon_social")
             Next
+            Me.TxtRuc.Text = objProveedor.ruc
             Me.txtproveedor.Text = objProveedor.razon_social
             LlenarMoneda()
-            Me.cboMoneda.SelectedValue = objOrden_Compra.id_compra
+            Me.cboMoneda.SelectedValue = objOrden_Compra.id_Moneda
             Me.txtPrecio_neto.Text = objOrden_Compra.subtotal
             Me.txtigv.Text = objOrden_Compra.igv
             Me.TxtTotal.Text = objOrden_Compra.total
@@ -601,6 +609,8 @@ Public Class frmNota_Credito_Proveedor
         Me.txtPrecio_neto.Text = ""
         Me.txtigv.Text = ""
         Me.TxtTotal.Text = ""
+        Me.TxtRuc.Text = ""
+        Me.TxtRuc.Visible = False
         Me.dtpfecha_emision.Value = DateTime.Now()
         Me.dtpfecha_comprobante.Value = DateTime.Now
         Me.dtvListado_Productos.Rows.Clear()

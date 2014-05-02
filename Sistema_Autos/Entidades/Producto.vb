@@ -3,7 +3,7 @@
     Private mnombre_producto As String
     Private mcodigo_producto As String
     Private mmodelo_producto As String
-    Private mnumero_comprobante As String
+    Private mprocedencia As String
     Private mstock As Integer
     Private mestado As Boolean
     Private mdescripcion As String
@@ -77,12 +77,12 @@
             mmodelo_producto = value
         End Set
     End Property
-    Public Property numero_comprobante() As String
+    Public Property procedencia() As String
         Get
-            Return mnumero_comprobante
+            Return mprocedencia
         End Get
         Set(ByVal value As String)
-            mnumero_comprobante = value
+            mprocedencia = value
         End Set
     End Property
     Public Property stock() As String
@@ -154,7 +154,7 @@
 
     End Sub
 
-    Sub New(ByVal wid_producto As Integer, ByVal wnombre_producto As String, ByVal wcodigo_producto As String, ByVal wmodelo_producto As String, ByVal wnumero_comprobante As String, ByVal wstock As Integer, ByVal westado As Boolean, ByVal wprecio_compra As Double, ByVal wprecio_venta As Double, ByVal wdescripcion As String, ByVal wid_marca As Integer, ByVal wid_linea As Integer, ByVal wid_unidad As Integer, ByVal wimagen As Byte)
+    Sub New(ByVal wid_producto As Integer, ByVal wnombre_producto As String, ByVal wcodigo_producto As String, ByVal wmodelo_producto As String, ByVal wprocedencia As String, ByVal wstock As Integer, ByVal westado As Boolean, ByVal wprecio_compra As Double, ByVal wprecio_venta As Double, ByVal wdescripcion As String, ByVal wid_marca As Integer, ByVal wid_linea As Integer, ByVal wid_unidad As Integer, ByVal wimagen As Byte)
         Me.id_producto = wid_producto
         Me.id_linea = wid_linea
         Me.id_marca = wid_marca
@@ -162,7 +162,7 @@
         Me.codigo_producto = wcodigo_producto
         Me.nombre_producto = wnombre_producto
         Me.modelo_producto = wmodelo_producto
-        Me.numero_comprobante = wnumero_comprobante
+        Me.procedencia = wprocedencia
         Me.stock = wstock
         Me.estado = westado
         Me.descripcion = wdescripcion
@@ -172,14 +172,14 @@
         '    Me.foto = wfoto
     End Sub
 
-    Sub New(ByVal wnombre_producto As String, ByVal wcodigo_producto As String, ByVal wmodelo_producto As String, ByVal wnumero_comprobante As String, ByVal wstock As Integer, ByVal westado As Boolean, ByVal wprecio_compra As Double, ByVal wprecio_venta As Double, ByVal wdescripcion As String, ByVal wid_marca As Integer, ByVal wid_linea As Integer, ByVal wid_unidad As Integer, ByVal wimagen As Byte)
+    Sub New(ByVal wnombre_producto As String, ByVal wcodigo_producto As String, ByVal wmodelo_producto As String, ByVal wprocedencia As String, ByVal wstock As Integer, ByVal westado As Boolean, ByVal wprecio_compra As Double, ByVal wprecio_venta As Double, ByVal wdescripcion As String, ByVal wid_marca As Integer, ByVal wid_linea As Integer, ByVal wid_unidad As Integer, ByVal wimagen As Byte)
         Me.id_linea = wid_linea
         Me.id_marca = wid_marca
         Me.id_unidad = wid_unidad
         Me.codigo_producto = wcodigo_producto
         Me.nombre_producto = wnombre_producto
         Me.modelo_producto = wmodelo_producto
-        Me.numero_comprobante = wnumero_comprobante
+        Me.procedencia = wprocedencia
         Me.stock = wstock
         Me.estado = westado
         Me.descripcion = wdescripcion

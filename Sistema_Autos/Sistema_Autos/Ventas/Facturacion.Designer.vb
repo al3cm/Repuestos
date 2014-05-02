@@ -84,6 +84,7 @@ Partial Class frmFacturacion
         Me.Chdescuento = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChTotal = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.lblCodigo = New System.Windows.Forms.Label
+        Me.btnBuscar = New System.Windows.Forms.Button
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -93,7 +94,7 @@ Partial Class frmFacturacion
         '
         Me.btnAnular.Image = Global.Sistema_Autos.My.Resources.Resources.anular
         Me.btnAnular.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnAnular.Location = New System.Drawing.Point(224, 12)
+        Me.btnAnular.Location = New System.Drawing.Point(175, 12)
         Me.btnAnular.Name = "btnAnular"
         Me.btnAnular.Size = New System.Drawing.Size(75, 55)
         Me.btnAnular.TabIndex = 47
@@ -105,7 +106,7 @@ Partial Class frmFacturacion
         '
         Me.btnImprimir.Image = Global.Sistema_Autos.My.Resources.Resources.imprimir
         Me.btnImprimir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnImprimir.Location = New System.Drawing.Point(392, 12)
+        Me.btnImprimir.Location = New System.Drawing.Point(418, 12)
         Me.btnImprimir.Name = "btnImprimir"
         Me.btnImprimir.Size = New System.Drawing.Size(75, 55)
         Me.btnImprimir.TabIndex = 46
@@ -117,7 +118,7 @@ Partial Class frmFacturacion
         '
         Me.btnSalir.Image = Global.Sistema_Autos.My.Resources.Resources.salir
         Me.btnSalir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSalir.Location = New System.Drawing.Point(473, 12)
+        Me.btnSalir.Location = New System.Drawing.Point(499, 12)
         Me.btnSalir.Name = "btnSalir"
         Me.btnSalir.Size = New System.Drawing.Size(75, 55)
         Me.btnSalir.TabIndex = 40
@@ -129,7 +130,7 @@ Partial Class frmFacturacion
         '
         Me.btnEliminar.Image = Global.Sistema_Autos.My.Resources.Resources.eliminar
         Me.btnEliminar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnEliminar.Location = New System.Drawing.Point(305, 12)
+        Me.btnEliminar.Location = New System.Drawing.Point(256, 12)
         Me.btnEliminar.Name = "btnEliminar"
         Me.btnEliminar.Size = New System.Drawing.Size(75, 55)
         Me.btnEliminar.TabIndex = 44
@@ -141,7 +142,7 @@ Partial Class frmFacturacion
         '
         Me.btnGrabar.Image = Global.Sistema_Autos.My.Resources.Resources.guardar
         Me.btnGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnGrabar.Location = New System.Drawing.Point(143, 12)
+        Me.btnGrabar.Location = New System.Drawing.Point(94, 12)
         Me.btnGrabar.Name = "btnGrabar"
         Me.btnGrabar.Size = New System.Drawing.Size(75, 55)
         Me.btnGrabar.TabIndex = 42
@@ -153,7 +154,7 @@ Partial Class frmFacturacion
         '
         Me.btnNuevo.Image = Global.Sistema_Autos.My.Resources.Resources.nuevo
         Me.btnNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnNuevo.Location = New System.Drawing.Point(62, 12)
+        Me.btnNuevo.Location = New System.Drawing.Point(13, 12)
         Me.btnNuevo.Name = "btnNuevo"
         Me.btnNuevo.Size = New System.Drawing.Size(75, 55)
         Me.btnNuevo.TabIndex = 41
@@ -369,7 +370,7 @@ Partial Class frmFacturacion
         Me.chkigv.AutoSize = True
         Me.chkigv.Checked = True
         Me.chkigv.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkigv.Location = New System.Drawing.Point(578, 52)
+        Me.chkigv.Location = New System.Drawing.Point(582, 54)
         Me.chkigv.Name = "chkigv"
         Me.chkigv.Size = New System.Drawing.Size(81, 17)
         Me.chkigv.TabIndex = 69
@@ -644,12 +645,24 @@ Partial Class frmFacturacion
         'lblCodigo
         '
         Me.lblCodigo.AutoSize = True
-        Me.lblCodigo.Location = New System.Drawing.Point(586, 12)
+        Me.lblCodigo.Location = New System.Drawing.Point(577, 12)
         Me.lblCodigo.Name = "lblCodigo"
         Me.lblCodigo.Size = New System.Drawing.Size(82, 13)
         Me.lblCodigo.TabIndex = 80
         Me.lblCodigo.Text = "Codigo_Compra"
         Me.lblCodigo.Visible = False
+        '
+        'btnBuscar
+        '
+        Me.btnBuscar.Image = Global.Sistema_Autos.My.Resources.Resources.buscar
+        Me.btnBuscar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnBuscar.Location = New System.Drawing.Point(337, 12)
+        Me.btnBuscar.Name = "btnBuscar"
+        Me.btnBuscar.Size = New System.Drawing.Size(75, 55)
+        Me.btnBuscar.TabIndex = 81
+        Me.btnBuscar.Text = "Buscar"
+        Me.btnBuscar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnBuscar.UseVisualStyleBackColor = True
         '
         'frmFacturacion
         '
@@ -657,6 +670,7 @@ Partial Class frmFacturacion
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.ClientSize = New System.Drawing.Size(720, 537)
+        Me.Controls.Add(Me.btnBuscar)
         Me.Controls.Add(Me.lblCodigo)
         Me.Controls.Add(Me.dtvListado_Productos)
         Me.Controls.Add(Me.TxtTotal)
@@ -756,4 +770,5 @@ Partial Class frmFacturacion
     Friend WithEvents Label26 As System.Windows.Forms.Label
     Friend WithEvents txtnro_cuotas As System.Windows.Forms.TextBox
     Friend WithEvents Label24 As System.Windows.Forms.Label
+    Friend WithEvents btnBuscar As System.Windows.Forms.Button
 End Class

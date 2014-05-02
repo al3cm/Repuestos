@@ -35,6 +35,11 @@ Partial Class frmNota_Debito_Clientes
         Me.btnGrabar = New System.Windows.Forms.Button
         Me.btnNuevo = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.cboMotivo = New System.Windows.Forms.ComboBox
+        Me.chkigv = New System.Windows.Forms.CheckBox
+        Me.Label20 = New System.Windows.Forms.Label
+        Me.cboAlmacen = New System.Windows.Forms.ComboBox
+        Me.Label19 = New System.Windows.Forms.Label
         Me.TxtIdOrden = New System.Windows.Forms.TextBox
         Me.rbtKardex = New System.Windows.Forms.RadioButton
         Me.rbtDevolucion = New System.Windows.Forms.RadioButton
@@ -85,11 +90,7 @@ Partial Class frmNota_Debito_Clientes
         Me.Chdescuento = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChTotal = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.btnModificar = New System.Windows.Forms.Button
-        Me.cboAlmacen = New System.Windows.Forms.ComboBox
-        Me.Label19 = New System.Windows.Forms.Label
-        Me.chkigv = New System.Windows.Forms.CheckBox
-        Me.cboMotivo = New System.Windows.Forms.ComboBox
-        Me.Label20 = New System.Windows.Forms.Label
+        Me.TxtDni = New System.Windows.Forms.TextBox
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -223,6 +224,7 @@ Partial Class frmNota_Debito_Clientes
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TxtDni)
         Me.GroupBox2.Controls.Add(Me.cboMotivo)
         Me.GroupBox2.Controls.Add(Me.chkigv)
         Me.GroupBox2.Controls.Add(Me.Label20)
@@ -250,6 +252,53 @@ Partial Class frmNota_Debito_Clientes
         Me.GroupBox2.Size = New System.Drawing.Size(617, 172)
         Me.GroupBox2.TabIndex = 1
         Me.GroupBox2.TabStop = False
+        '
+        'cboMotivo
+        '
+        Me.cboMotivo.FormattingEnabled = True
+        Me.cboMotivo.Location = New System.Drawing.Point(66, 87)
+        Me.cboMotivo.Name = "cboMotivo"
+        Me.cboMotivo.Size = New System.Drawing.Size(121, 21)
+        Me.cboMotivo.TabIndex = 92
+        '
+        'chkigv
+        '
+        Me.chkigv.AutoSize = True
+        Me.chkigv.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.chkigv.Checked = True
+        Me.chkigv.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkigv.Location = New System.Drawing.Point(216, 90)
+        Me.chkigv.Name = "chkigv"
+        Me.chkigv.Size = New System.Drawing.Size(84, 17)
+        Me.chkigv.TabIndex = 85
+        Me.chkigv.Text = "Incluye IGV:"
+        Me.chkigv.UseVisualStyleBackColor = True
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(18, 95)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(42, 13)
+        Me.Label20.TabIndex = 91
+        Me.Label20.Text = "Motivo:"
+        '
+        'cboAlmacen
+        '
+        Me.cboAlmacen.FormattingEnabled = True
+        Me.cboAlmacen.Location = New System.Drawing.Point(373, 83)
+        Me.cboAlmacen.Name = "cboAlmacen"
+        Me.cboAlmacen.Size = New System.Drawing.Size(121, 21)
+        Me.cboAlmacen.TabIndex = 84
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(308, 89)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(66, 13)
+        Me.Label19.TabIndex = 83
+        Me.Label19.Text = "Almacén de:"
         '
         'TxtIdOrden
         '
@@ -664,52 +713,12 @@ Partial Class frmNota_Debito_Clientes
         Me.btnModificar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnModificar.UseVisualStyleBackColor = True
         '
-        'cboAlmacen
+        'TxtDni
         '
-        Me.cboAlmacen.FormattingEnabled = True
-        Me.cboAlmacen.Location = New System.Drawing.Point(373, 83)
-        Me.cboAlmacen.Name = "cboAlmacen"
-        Me.cboAlmacen.Size = New System.Drawing.Size(121, 21)
-        Me.cboAlmacen.TabIndex = 84
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(308, 89)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(66, 13)
-        Me.Label19.TabIndex = 83
-        Me.Label19.Text = "Almacén de:"
-        '
-        'chkigv
-        '
-        Me.chkigv.AutoSize = True
-        Me.chkigv.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.chkigv.Checked = True
-        Me.chkigv.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkigv.Location = New System.Drawing.Point(216, 90)
-        Me.chkigv.Name = "chkigv"
-        Me.chkigv.Size = New System.Drawing.Size(84, 17)
-        Me.chkigv.TabIndex = 85
-        Me.chkigv.Text = "Incluye IGV:"
-        Me.chkigv.UseVisualStyleBackColor = True
-        '
-        'cboMotivo
-        '
-        Me.cboMotivo.FormattingEnabled = True
-        Me.cboMotivo.Location = New System.Drawing.Point(66, 87)
-        Me.cboMotivo.Name = "cboMotivo"
-        Me.cboMotivo.Size = New System.Drawing.Size(121, 21)
-        Me.cboMotivo.TabIndex = 92
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(18, 95)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(42, 13)
-        Me.Label20.TabIndex = 91
-        Me.Label20.Text = "Motivo:"
+        Me.TxtDni.Location = New System.Drawing.Point(196, 151)
+        Me.TxtDni.Name = "TxtDni"
+        Me.TxtDni.Size = New System.Drawing.Size(66, 20)
+        Me.TxtDni.TabIndex = 93
         '
         'frmNota_Debito_Clientes
         '
@@ -836,4 +845,5 @@ Partial Class frmNota_Debito_Clientes
     Friend WithEvents chkigv As System.Windows.Forms.CheckBox
     Friend WithEvents cboMotivo As System.Windows.Forms.ComboBox
     Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents TxtDni As System.Windows.Forms.TextBox
 End Class

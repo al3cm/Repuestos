@@ -1,6 +1,8 @@
 ﻿Imports Entidades
 Imports Reglas_Negocio
 Public Class frmAlmacen
+    Dim objPersonal As New Personal
+    Dim objCodigo_Facturacion As New Codigo_Facturacion
     Dim objPrecio As New Precio
     Dim objProducto_Almacen As New Producto_Almacen
     Dim objDetalle_Caja As New Detalle_Caja
@@ -9,6 +11,8 @@ Public Class frmAlmacen
     Dim nDetalle_Caja As New RNDetalle_Caja
     Dim nProducto_Almacen As New RNProducto_Almacen
     Dim nPrecio As New RNPrecio
+    Dim nCodigo_Facturacion As New RNCodigo_Facturacion
+    Dim nPersonal As New RNPersonal
     Dim nProducto As New RNProducto
     Dim Tabla As DataTable
     '---------------------------------------------
@@ -167,41 +171,57 @@ Public Class frmAlmacen
         Try
 
             If Valida() Then
-                objAlmacen.id_sucursal = Me.cboSucursal.SelectedValue
-                objAlmacen.descripcion = Me.txtdescripcion.Text.Trim
-                If MessageBox.Show("¿Desea registrar los datos de este almacen?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-                    objAlmacen = nAlmacen.Registrar(objAlmacen)
-                    Tabla = nDetalle_Caja.ListarCaja
-                    For Each Fila As DataRow In Tabla.Rows
-                        objDetalle_Caja.id_caja = Fila.Item("id_caja")
-                        objDetalle_Caja.caja = Fila.Item("nombre_caja")
-                        objDetalle_Caja.id_almacen = objAlmacen.id_almacen
-                        objDetalle_Caja.descripcion = objDetalle_Caja.caja & " " & objAlmacen.descripcion
-                        nDetalle_Caja.RegistrarDetalle_Caja(objDetalle_Caja)
-                    Next
-                    Tabla = nProducto.Listar
-                    For Each Fila As DataRow In Tabla.Rows
-                        objProducto_Almacen.id_almacen = objAlmacen.id_almacen
-                        objProducto_Almacen.id_producto = Fila.Item("id_producto")
-                        objProducto_Almacen.descripcion = "El producto " & Fila.Item("nombre_producto") & " esta en Almacen " & objAlmacen.descripcion
-                        nProducto_Almacen.RegistrarProducto_Almacen(objProducto_Almacen)
-                        objPrecio.id_producto = Fila.Item("id_producto")
-                        objPrecio.id_almacen = objAlmacen.id_almacen
-                        objPrecio.precio_compra = Fila.Item("precio_compra")
-                        objPrecio.precio_venta = Fila.Item("precio_venta")
-                        objPrecio.precio_trajecta = objPrecio.precio_venta * Cambio_Trajecta
-                        nPrecio.RegistrarPrecio(objPrecio)
-                    Next
-                    MessageBox.Show("Los datos se guardaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    Me.lblCodigo.Text = objAlmacen.id_almacen
-                    Me.lblCodigo.Visible = True
-                    Me.btnGrabar.Enabled = False
-                    Me.btnNuevo.Enabled = True
-                    Me.btnModificar.Enabled = True
-                    Me.btnEliminar.Enabled = True
-                    Me.btnModificar.Tag = "Modificar"
-                    Habilitar(False)
+                If nCodigo_Facturacion.Contra(Me.TxtCodigo.Text.ToString) = 0 Then
+                    objAlmacen.id_sucursal = Me.cboSucursal.SelectedValue
+                    objAlmacen.descripcion = Me.txtdescripcion.Text.Trim
+                    If MessageBox.Show("¿Desea registrar los datos de este almacen?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                        objAlmacen = nAlmacen.Registrar(objAlmacen)
+                        Tabla = nDetalle_Caja.ListarCaja
+                        For Each Fila As DataRow In Tabla.Rows
+                            objDetalle_Caja.id_caja = Fila.Item("id_caja")
+                            objDetalle_Caja.caja = Fila.Item("nombre_caja")
+                            objDetalle_Caja.id_almacen = objAlmacen.id_almacen
+                            objDetalle_Caja.descripcion = objDetalle_Caja.caja & " " & objAlmacen.descripcion
+                            nDetalle_Caja.RegistrarDetalle_Caja(objDetalle_Caja)
+                        Next
+                        Tabla = nProducto.Listar
+                        For Each Fila As DataRow In Tabla.Rows
+                            objProducto_Almacen.id_almacen = objAlmacen.id_almacen
+                            objProducto_Almacen.id_producto = Fila.Item("id_producto")
+                            objProducto_Almacen.descripcion = "El producto " & Fila.Item("nombre_producto") & " esta en Almacen " & objAlmacen.descripcion
+                            nProducto_Almacen.RegistrarProducto_Almacen(objProducto_Almacen)
+                            objPrecio.id_producto = Fila.Item("id_producto")
+                            objPrecio.id_almacen = objAlmacen.id_almacen
+                            objPrecio.precio_compra = Fila.Item("precio_compra")
+                            objPrecio.precio_venta = Fila.Item("precio_venta")
+                            objPrecio.precio_trajecta = objPrecio.precio_venta * Cambio_Trajecta
+                            nPrecio.RegistrarPrecio(objPrecio)
+                        Next
+                        objCodigo_Facturacion.id_Codigo = Me.TxtCodigo.Text.ToString
+                        objCodigo_Facturacion.id_almacen = objAlmacen.id_almacen
+                        nCodigo_Facturacion.Registrar(objCodigo_Facturacion)
+                        MessageBox.Show("Los datos se guardaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        Me.lblCodigo.Text = objAlmacen.id_almacen
+                        Me.lblCodigo.Visible = True
+                        Me.btnGrabar.Enabled = False
+                        Me.btnNuevo.Enabled = True
+                        Me.btnModificar.Enabled = True
+                        Me.btnEliminar.Enabled = True
+                        Me.btnModificar.Tag = "Modificar"
+                        Habilitar(False)
+                    End If
+                Else
+                    MessageBox.Show("El Codigo de Facturacion Ya esta Reguitada.")
                 End If
+                Tabla = nPersonal.Listar()
+                For Each Fila As DataRow In Tabla.Rows
+                    objPersonal.cargo = Fila.Item("cargo")
+                    If objPersonal.cargo = "A" Then
+                        objPersonal.id_personal = Fila.Item("id_personal")
+                        objPersonal.id_almacen = objAlmacen.id_almacen
+                        nPersonal.RegistrarAlmacen_Personal(objPersonal)
+                    End If
+                Next
             End If
 
         Catch ex As Exception
@@ -228,6 +248,11 @@ Public Class frmAlmacen
                 objProducto_Almacen.descripcion = "El producto " & Fila.Item("nombre_producto") & " esta en Almacen " & Me.txtdescripcion.Text.Trim
                 nProducto_Almacen.ModificarProducto_Almacen(objProducto_Almacen)
             Next
+            If nCodigo_Facturacion.Contra(Me.TxtCodigo.Text.ToString) = 0 Then
+                objCodigo_Facturacion.id_Codigo = Me.TxtCodigo.Text.ToString
+                objCodigo_Facturacion.id_almacen = Me.lblCodigo.Text
+                nCodigo_Facturacion.Registrar(objCodigo_Facturacion)
+            End If
             MessageBox.Show("Los datos se actualizaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             'Si la modificación fue exitosa se actualiza al objeto temporal
 
@@ -243,6 +268,9 @@ Public Class frmAlmacen
         Try
 
             If MessageBox.Show("¿Desea eliminar los datos de este almacen?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                nDetalle_Caja.Eliminar(lblCodigo.Text)
+                nProducto_Almacen.Eliminar(lblCodigo.Text)
+                nPrecio.Eliminar(lblCodigo.Text)
                 nAlmacen.Eliminar(lblCodigo.Text)
                 MessageBox.Show("Los datos se eliminaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Limpiar()
@@ -254,7 +282,7 @@ Public Class frmAlmacen
     End Sub
     Sub Cargar()
         Try
-
+            Dim Tabla As DataTable
             Me.lblCodigo.Text = objAlmacen.id_almacen
             Me.cboSucursal.SelectedValue = objAlmacen.id_sucursal
             Me.txtdescripcion.Text = objAlmacen.descripcion
@@ -262,6 +290,11 @@ Public Class frmAlmacen
             btnModificar.Enabled = True
             btnEliminar.Enabled = True
             btnGrabar.Enabled = False
+            Tabla = nCodigo_Facturacion.Listar(objAlmacen.id_almacen)
+            For Each Fila As DataRow In Tabla.Rows
+                Me.TxtCodigo.Text = Fila.Item("id_Codigo")
+                TxtCodigo.Enabled = False
+            Next
         Catch ex As Exception
             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -271,6 +304,7 @@ Public Class frmAlmacen
         Me.lblCodigo.Enabled = Estado
         Me.txtdescripcion.Enabled = Estado
         Me.cboSucursal.Enabled = Estado
+        Me.TxtCodigo.Enabled = Estado
     End Sub
 
     '---------------------------------------------
@@ -281,6 +315,7 @@ Public Class frmAlmacen
         Me.lblCodigo.Visible = False
         Me.lblCodigo.Text = ""
         Me.txtdescripcion.Text = ""
+        Me.TxtCodigo.Text = ""
         'Me.cboSucursal.SelectedValue = ""
         Me.btnNuevo.Enabled = True
         Me.btnGrabar.Tag = "Grabar"
@@ -312,6 +347,17 @@ Public Class frmAlmacen
             e.Handled = True
         End If
     End Sub
+    Private Sub validaNumero_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TxtCodigo.KeyPress
+        If Char.IsNumber(e.KeyChar) Then
+            e.Handled = False
+        ElseIf Char.IsControl(e.KeyChar) Then
+            e.Handled = False
+        ElseIf e.KeyChar = "#" Or e.KeyChar = "*" Then
+            e.Handled = False
+        Else
+            e.Handled = True
+        End If
+    End Sub
 
     Function Valida() As Boolean
         Dim TextoError As String = ""
@@ -320,6 +366,9 @@ Public Class frmAlmacen
         End If
         If Me.cboSucursal.SelectedValue = "0" Then
             TextoError = TextoError & "- Debe seleccionar una sucursal." & vbCrLf
+        End If
+        If Me.TxtCodigo.Text.Trim = "" Then
+            TextoError = TextoError & "- Debe ingresar un Codigo de Facturacion." & vbCrLf
         End If
         If TextoError <> "" Then
             MessageBox.Show("Faltan completar datos: " & vbCrLf & TextoError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)

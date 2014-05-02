@@ -38,30 +38,32 @@ Partial Class frmCanje_Letras
         Me.chComprobante = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chFecha_Emision = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chSaldo_Pendiente = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChId_Moneda = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chMoneda = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Chid_venta = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.dgvDoc_canjeados = New System.Windows.Forms.DataGridView
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chImporte = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.btnAceptar = New System.Windows.Forms.Button
         Me.DataGridView1 = New System.Windows.Forms.DataGridView
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.dudias_inicial = New System.Windows.Forms.DomainUpDown
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.dddias_final = New System.Windows.Forms.DomainUpDown
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.txtcuotas = New System.Windows.Forms.TextBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.txtMonto = New System.Windows.Forms.TextBox
-        Me.btnProcesar = New System.Windows.Forms.Button
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chdias = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chFecha_vencimiento = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chMonto = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.chLetra = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnProcesar = New System.Windows.Forms.Button
+        Me.txtMonto = New System.Windows.Forms.TextBox
+        Me.Label13 = New System.Windows.Forms.Label
+        Me.txtcuotas = New System.Windows.Forms.TextBox
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.Label11 = New System.Windows.Forms.Label
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.Label9 = New System.Windows.Forms.Label
+        Me.Label8 = New System.Windows.Forms.Label
         Me.Label14 = New System.Windows.Forms.Label
         Me.cboMoneda = New System.Windows.Forms.ComboBox
         Me.btnNuevo = New System.Windows.Forms.Button
@@ -71,10 +73,18 @@ Partial Class frmCanje_Letras
         Me.btnGrabar = New System.Windows.Forms.Button
         Me.btnDerecha = New System.Windows.Forms.Button
         Me.btnIzquierda = New System.Windows.Forms.Button
+        Me.Label15 = New System.Windows.Forms.Label
+        Me.TxtTasa = New System.Windows.Forms.TextBox
+        Me.Label16 = New System.Windows.Forms.Label
+        Me.lblCodigo = New System.Windows.Forms.Label
+        Me.dudias_inicial = New System.Windows.Forms.NumericUpDown
+        Me.dddias_final = New System.Windows.Forms.NumericUpDown
         CType(Me.dtvCuentasxcobrar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvDoc_canjeados, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.dudias_inicial, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dddias_final, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -183,7 +193,7 @@ Partial Class frmCanje_Letras
         'dtvCuentasxcobrar
         '
         Me.dtvCuentasxcobrar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dtvCuentasxcobrar.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.chComprobante, Me.chFecha_Emision, Me.chSaldo_Pendiente, Me.chMoneda})
+        Me.dtvCuentasxcobrar.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.chComprobante, Me.chFecha_Emision, Me.chSaldo_Pendiente, Me.ChId_Moneda, Me.chMoneda, Me.Chid_venta})
         Me.dtvCuentasxcobrar.Location = New System.Drawing.Point(15, 172)
         Me.dtvCuentasxcobrar.Name = "dtvCuentasxcobrar"
         Me.dtvCuentasxcobrar.Size = New System.Drawing.Size(393, 163)
@@ -206,16 +216,28 @@ Partial Class frmCanje_Letras
         Me.chSaldo_Pendiente.Name = "chSaldo_Pendiente"
         Me.chSaldo_Pendiente.Width = 80
         '
+        'ChId_Moneda
+        '
+        Me.ChId_Moneda.HeaderText = "Id Moneda"
+        Me.ChId_Moneda.Name = "ChId_Moneda"
+        Me.ChId_Moneda.Visible = False
+        '
         'chMoneda
         '
         Me.chMoneda.HeaderText = "Moneda"
         Me.chMoneda.Name = "chMoneda"
         Me.chMoneda.Width = 80
         '
+        'Chid_venta
+        '
+        Me.Chid_venta.HeaderText = "id_venta"
+        Me.Chid_venta.Name = "Chid_venta"
+        Me.Chid_venta.Visible = False
+        '
         'dgvDoc_canjeados
         '
         Me.dgvDoc_canjeados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvDoc_canjeados.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.chImporte})
+        Me.dgvDoc_canjeados.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.chImporte, Me.Column1})
         Me.dgvDoc_canjeados.Location = New System.Drawing.Point(470, 172)
         Me.dgvDoc_canjeados.Name = "dgvDoc_canjeados"
         Me.dgvDoc_canjeados.Size = New System.Drawing.Size(393, 163)
@@ -229,7 +251,7 @@ Partial Class frmCanje_Letras
         '
         'DataGridViewTextBoxColumn3
         '
-        Me.DataGridViewTextBoxColumn3.HeaderText = "Saldo Pend."
+        Me.DataGridViewTextBoxColumn3.HeaderText = "Fch Emisión."
         Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
         Me.DataGridViewTextBoxColumn3.Width = 80
         '
@@ -244,6 +266,12 @@ Partial Class frmCanje_Letras
         Me.chImporte.HeaderText = "Importe"
         Me.chImporte.Name = "chImporte"
         '
+        'Column1
+        '
+        Me.Column1.HeaderText = "id_venta"
+        Me.Column1.Name = "Column1"
+        Me.Column1.Visible = False
+        '
         'btnAceptar
         '
         Me.btnAceptar.Location = New System.Drawing.Point(788, 341)
@@ -256,121 +284,17 @@ Partial Class frmCanje_Letras
         'DataGridView1
         '
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.chdias, Me.chFecha_vencimiento, Me.chMonto, Me.chLetra})
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column2, Me.chdias, Me.chFecha_vencimiento, Me.chMonto, Me.chLetra})
         Me.DataGridView1.Location = New System.Drawing.Point(215, 434)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.Size = New System.Drawing.Size(453, 121)
         Me.DataGridView1.TabIndex = 78
         '
-        'GroupBox1
+        'Column2
         '
-        Me.GroupBox1.Controls.Add(Me.btnProcesar)
-        Me.GroupBox1.Controls.Add(Me.txtMonto)
-        Me.GroupBox1.Controls.Add(Me.Label13)
-        Me.GroupBox1.Controls.Add(Me.txtcuotas)
-        Me.GroupBox1.Controls.Add(Me.Label12)
-        Me.GroupBox1.Controls.Add(Me.dddias_final)
-        Me.GroupBox1.Controls.Add(Me.Label11)
-        Me.GroupBox1.Controls.Add(Me.Label10)
-        Me.GroupBox1.Controls.Add(Me.dudias_inicial)
-        Me.GroupBox1.Controls.Add(Me.Label9)
-        Me.GroupBox1.Controls.Add(Me.Label8)
-        Me.GroupBox1.Location = New System.Drawing.Point(215, 343)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(453, 85)
-        Me.GroupBox1.TabIndex = 79
-        Me.GroupBox1.TabStop = False
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(17, 20)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(37, 13)
-        Me.Label8.TabIndex = 0
-        Me.Label8.Text = "Inicial:"
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(70, 20)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(33, 13)
-        Me.Label9.TabIndex = 1
-        Me.Label9.Text = "Días:"
-        '
-        'dudias_inicial
-        '
-        Me.dudias_inicial.Location = New System.Drawing.Point(110, 20)
-        Me.dudias_inicial.Name = "dudias_inicial"
-        Me.dudias_inicial.Size = New System.Drawing.Size(66, 20)
-        Me.dudias_inicial.TabIndex = 2
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(15, 55)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(39, 13)
-        Me.Label10.TabIndex = 3
-        Me.Label10.Text = "Letras:"
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(70, 55)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(33, 13)
-        Me.Label11.TabIndex = 4
-        Me.Label11.Text = "Días:"
-        '
-        'dddias_final
-        '
-        Me.dddias_final.Location = New System.Drawing.Point(110, 48)
-        Me.dddias_final.Name = "dddias_final"
-        Me.dddias_final.Size = New System.Drawing.Size(66, 20)
-        Me.dddias_final.TabIndex = 5
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(202, 26)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(43, 13)
-        Me.Label12.TabIndex = 6
-        Me.Label12.Text = "Cuotas:"
-        '
-        'txtcuotas
-        '
-        Me.txtcuotas.Location = New System.Drawing.Point(251, 20)
-        Me.txtcuotas.Name = "txtcuotas"
-        Me.txtcuotas.Size = New System.Drawing.Size(67, 20)
-        Me.txtcuotas.TabIndex = 7
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(205, 55)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(40, 13)
-        Me.Label13.TabIndex = 8
-        Me.Label13.Text = "Monto:"
-        '
-        'txtMonto
-        '
-        Me.txtMonto.Location = New System.Drawing.Point(250, 52)
-        Me.txtMonto.Name = "txtMonto"
-        Me.txtMonto.Size = New System.Drawing.Size(68, 20)
-        Me.txtMonto.TabIndex = 9
-        '
-        'btnProcesar
-        '
-        Me.btnProcesar.Location = New System.Drawing.Point(351, 36)
-        Me.btnProcesar.Name = "btnProcesar"
-        Me.btnProcesar.Size = New System.Drawing.Size(75, 23)
-        Me.btnProcesar.TabIndex = 80
-        Me.btnProcesar.Text = "PROCESAR"
-        Me.btnProcesar.UseVisualStyleBackColor = True
+        Me.Column2.HeaderText = "Num Letra"
+        Me.Column2.Name = "Column2"
+        Me.Column2.Visible = False
         '
         'chdias
         '
@@ -391,6 +315,102 @@ Partial Class frmCanje_Letras
         '
         Me.chLetra.HeaderText = "Letra"
         Me.chLetra.Name = "chLetra"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.dddias_final)
+        Me.GroupBox1.Controls.Add(Me.dudias_inicial)
+        Me.GroupBox1.Controls.Add(Me.btnProcesar)
+        Me.GroupBox1.Controls.Add(Me.txtMonto)
+        Me.GroupBox1.Controls.Add(Me.Label13)
+        Me.GroupBox1.Controls.Add(Me.txtcuotas)
+        Me.GroupBox1.Controls.Add(Me.Label12)
+        Me.GroupBox1.Controls.Add(Me.Label11)
+        Me.GroupBox1.Controls.Add(Me.Label10)
+        Me.GroupBox1.Controls.Add(Me.Label9)
+        Me.GroupBox1.Controls.Add(Me.Label8)
+        Me.GroupBox1.Location = New System.Drawing.Point(215, 343)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(453, 85)
+        Me.GroupBox1.TabIndex = 79
+        Me.GroupBox1.TabStop = False
+        '
+        'btnProcesar
+        '
+        Me.btnProcesar.Location = New System.Drawing.Point(351, 36)
+        Me.btnProcesar.Name = "btnProcesar"
+        Me.btnProcesar.Size = New System.Drawing.Size(75, 23)
+        Me.btnProcesar.TabIndex = 80
+        Me.btnProcesar.Text = "PROCESAR"
+        Me.btnProcesar.UseVisualStyleBackColor = True
+        '
+        'txtMonto
+        '
+        Me.txtMonto.Location = New System.Drawing.Point(250, 52)
+        Me.txtMonto.Name = "txtMonto"
+        Me.txtMonto.Size = New System.Drawing.Size(68, 20)
+        Me.txtMonto.TabIndex = 9
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(205, 55)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(40, 13)
+        Me.Label13.TabIndex = 8
+        Me.Label13.Text = "Monto:"
+        '
+        'txtcuotas
+        '
+        Me.txtcuotas.Location = New System.Drawing.Point(251, 20)
+        Me.txtcuotas.Name = "txtcuotas"
+        Me.txtcuotas.Size = New System.Drawing.Size(67, 20)
+        Me.txtcuotas.TabIndex = 7
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(202, 26)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(43, 13)
+        Me.Label12.TabIndex = 6
+        Me.Label12.Text = "Cuotas:"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(70, 55)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(33, 13)
+        Me.Label11.TabIndex = 4
+        Me.Label11.Text = "Días:"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(15, 55)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(39, 13)
+        Me.Label10.TabIndex = 3
+        Me.Label10.Text = "Letras:"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(70, 20)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(33, 13)
+        Me.Label9.TabIndex = 1
+        Me.Label9.Text = "Días:"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(17, 20)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(37, 13)
+        Me.Label8.TabIndex = 0
+        Me.Label8.Text = "Inicial:"
         '
         'Label14
         '
@@ -491,12 +511,66 @@ Partial Class frmCanje_Letras
         Me.btnIzquierda.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnIzquierda.UseVisualStyleBackColor = True
         '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(677, 79)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(66, 13)
+        Me.Label15.TabIndex = 87
+        Me.Label15.Text = "Tasa Interes"
+        '
+        'TxtTasa
+        '
+        Me.TxtTasa.Location = New System.Drawing.Point(749, 79)
+        Me.TxtTasa.Name = "TxtTasa"
+        Me.TxtTasa.Size = New System.Drawing.Size(87, 20)
+        Me.TxtTasa.TabIndex = 88
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(842, 83)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(15, 13)
+        Me.Label16.TabIndex = 89
+        Me.Label16.Text = "%"
+        '
+        'lblCodigo
+        '
+        Me.lblCodigo.AutoSize = True
+        Me.lblCodigo.Location = New System.Drawing.Point(698, 116)
+        Me.lblCodigo.Name = "lblCodigo"
+        Me.lblCodigo.Size = New System.Drawing.Size(74, 13)
+        Me.lblCodigo.TabIndex = 90
+        Me.lblCodigo.Text = "lblCodigo.Text"
+        '
+        'dudias_inicial
+        '
+        Me.dudias_inicial.Location = New System.Drawing.Point(110, 19)
+        Me.dudias_inicial.Maximum = New Decimal(New Integer() {30, 0, 0, 0})
+        Me.dudias_inicial.Name = "dudias_inicial"
+        Me.dudias_inicial.Size = New System.Drawing.Size(66, 20)
+        Me.dudias_inicial.TabIndex = 91
+        '
+        'dddias_final
+        '
+        Me.dddias_final.Location = New System.Drawing.Point(110, 52)
+        Me.dddias_final.Maximum = New Decimal(New Integer() {365, 0, 0, 0})
+        Me.dddias_final.Name = "dddias_final"
+        Me.dddias_final.Size = New System.Drawing.Size(66, 20)
+        Me.dddias_final.TabIndex = 92
+        '
         'frmCanje_Letras
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.ClientSize = New System.Drawing.Size(880, 578)
+        Me.Controls.Add(Me.lblCodigo)
+        Me.Controls.Add(Me.Label16)
+        Me.Controls.Add(Me.TxtTasa)
+        Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.btnNuevo)
         Me.Controls.Add(Me.btnSalir)
         Me.Controls.Add(Me.btnBuscar)
@@ -532,6 +606,8 @@ Partial Class frmCanje_Letras
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.dudias_inicial, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dddias_final, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -551,33 +627,17 @@ Partial Class frmCanje_Letras
     Friend WithEvents btnDerecha As System.Windows.Forms.Button
     Friend WithEvents btnIzquierda As System.Windows.Forms.Button
     Friend WithEvents dtvCuentasxcobrar As System.Windows.Forms.DataGridView
-    Friend WithEvents chComprobante As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents chFecha_Emision As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents chSaldo_Pendiente As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents chMoneda As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents dgvDoc_canjeados As System.Windows.Forms.DataGridView
-    Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn3 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn4 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents chImporte As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents btnAceptar As System.Windows.Forms.Button
     Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents dudias_inicial As System.Windows.Forms.DomainUpDown
-    Friend WithEvents dddias_final As System.Windows.Forms.DomainUpDown
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents txtcuotas As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents txtMonto As System.Windows.Forms.TextBox
     Friend WithEvents btnProcesar As System.Windows.Forms.Button
-    Friend WithEvents chdias As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents chFecha_vencimiento As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents chMonto As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents chLetra As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents cboMoneda As System.Windows.Forms.ComboBox
     Friend WithEvents btnGrabar As System.Windows.Forms.Button
@@ -585,4 +645,28 @@ Partial Class frmCanje_Letras
     Friend WithEvents btnBuscar As System.Windows.Forms.Button
     Friend WithEvents btnEliminarOrden As System.Windows.Forms.Button
     Friend WithEvents btnNuevo As System.Windows.Forms.Button
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents TxtTasa As System.Windows.Forms.TextBox
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents lblCodigo As System.Windows.Forms.Label
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents chComprobante As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chFecha_Emision As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chSaldo_Pendiente As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChId_Moneda As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chMoneda As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Chid_venta As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn3 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn4 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chImporte As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chdias As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chFecha_vencimiento As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chMonto As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chLetra As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents dudias_inicial As System.Windows.Forms.NumericUpDown
+    Friend WithEvents dddias_final As System.Windows.Forms.NumericUpDown
 End Class

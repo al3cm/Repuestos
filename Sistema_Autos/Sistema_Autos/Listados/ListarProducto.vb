@@ -80,6 +80,7 @@ Public Class frmListarProducto
             Item.SubItems.Add(CStr(Fila.Item("nombre_producto")))
             Item.SubItems.Add(CStr(Fila.Item("codigo_producto")))
             Item.SubItems.Add(CStr(Fila.Item("modelo_producto")))
+            Item.SubItems.Add(CStr(Fila.Item("procedencia")))
             ' Item.SubItems.Add(CStr(Fila.Item("numero_comprobante")))
             'Item.SubItems.Add(Fila.Item("stock"))
             Item.SubItems.Add(Fila.Item("precio_compra"))
@@ -92,7 +93,7 @@ Public Class frmListarProducto
             objPROD.nombre_producto = Fila.Item("nombre_producto")
             objPROD.codigo_producto = Fila.Item("codigo_producto")
             objPROD.modelo_producto = Fila.Item("modelo_producto")
-            objPROD.numero_comprobante = Fila.Item("numero_comprobante")
+            objPROD.procedencia = Fila.Item("procedencia")
             objPROD.estado = Fila.Item("estado")
             objPROD.precio_venta = Fila.Item("precio_venta")
             objPROD.precio_compra = Fila.Item("precio_compra")
@@ -116,6 +117,7 @@ Public Class frmListarProducto
                 Item.SubItems.Add(CStr(Fila.Item("nombre_producto")))
                 Item.SubItems.Add(CStr(Fila.Item("codigo_producto")))
                 Item.SubItems.Add(CStr(Fila.Item("modelo_producto")))
+                Item.SubItems.Add(CStr(Fila.Item("procedencia")))
                 ' Item.SubItems.Add(CStr(Fila.Item("numero_comprobante")))
                 'Item.SubItems.Add(Fila.Item("stock"))
                 Item.SubItems.Add(Fila.Item("precio_compra"))
@@ -128,7 +130,7 @@ Public Class frmListarProducto
                 objPROD.nombre_producto = Fila.Item("nombre_producto")
                 objPROD.codigo_producto = Fila.Item("codigo_producto")
                 objPROD.modelo_producto = Fila.Item("modelo_producto")
-                objPROD.numero_comprobante = Fila.Item("numero_comprobante")
+                objPROD.procedencia = Fila.Item("procedencia")
                 objPROD.estado = Fila.Item("estado")
                 objPROD.precio_venta = Fila.Item("precio_venta")
                 objPROD.precio_compra = Fila.Item("precio_compra")
@@ -141,9 +143,9 @@ Public Class frmListarProducto
         End Try
     End Sub
 
-    Private Sub Filtrar() Handles txtbuscar_nombre.TextChanged, txtbuscar_codigo.TextAlignChanged
+    Private Sub Filtrar() Handles txtbuscar_nombre.TextChanged, txtbuscar_codigo.TextAlignChanged, txtbuscar_procedencia.TextAlignChanged
         Vista = Tabla.DefaultView
-        Vista.RowFilter = String.Format("nombre_producto LIKE '%{0}%' AND codigo_producto LIKE '%{1}%'", Me.txtbuscar_nombre.Text, Me.txtbuscar_codigo.Text)
+        Vista.RowFilter = String.Format("nombre_producto LIKE '%{0}%' AND codigo_producto LIKE '%{1}%'  AND procedencia LIKE '%{2}%'", Me.txtbuscar_nombre.Text, Me.txtbuscar_codigo.Text, Me.txtbuscar_procedencia.Text)
         LlenaLista(Vista)
         Me.btnAceptar.Enabled = False   'Added 2014.03.22
     End Sub

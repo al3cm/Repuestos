@@ -68,11 +68,14 @@
   <ItemGroup>
     <Compile Include="Almacen.vb" />
     <Compile Include="Cliente.vb" />
+    <Compile Include="Codigo_Facturacion.vb" />
     <Compile Include="Concepto.vb" />
+    <Compile Include="Cuenta.vb" />
     <Compile Include="Detalle_Caja.vb" />
     <Compile Include="Empresa.vb" />
     <Compile Include="Facturacion.vb" />
     <Compile Include="Kardex.vb" />
+    <Compile Include="Letras.vb" />
     <Compile Include="Linea.vb" />
     <Compile Include="Marca.vb" />
     <Compile Include="Moneda.vb" />

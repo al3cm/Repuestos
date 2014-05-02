@@ -41,6 +41,7 @@ Partial Class frmStock
         Me.btnExportar = New System.Windows.Forms.Button
         Me.btnSalir = New System.Windows.Forms.Button
         Me.btnImprimir = New System.Windows.Forms.Button
+        Me.ChCodigo_Producto = New System.Windows.Forms.ColumnHeader
         Me.SuspendLayout()
         '
         'Label1
@@ -106,7 +107,7 @@ Partial Class frmStock
         '
         'lstListadoStock
         '
-        Me.lstListadoStock.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chProducto, Me.chUnidad, Me.chMarca, Me.chStock, Me.chPrecioCosto, Me.chPrecioVenta})
+        Me.lstListadoStock.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chProducto, Me.ChCodigo_Producto, Me.chUnidad, Me.chMarca, Me.chStock, Me.chPrecioCosto, Me.chPrecioVenta})
         Me.lstListadoStock.FullRowSelect = True
         Me.lstListadoStock.GridLines = True
         Me.lstListadoStock.HideSelection = False
@@ -198,6 +199,10 @@ Partial Class frmStock
         Me.btnImprimir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnImprimir.UseVisualStyleBackColor = True
         '
+        'ChCodigo_Producto
+        '
+        Me.ChCodigo_Producto.Text = "Codigo Producto"
+        '
         'frmStock
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -247,4 +252,5 @@ Partial Class frmStock
     Friend WithEvents btnExportar As System.Windows.Forms.Button
     Friend WithEvents btnSalir As System.Windows.Forms.Button
     Friend WithEvents btnImprimir As System.Windows.Forms.Button
+    Friend WithEvents ChCodigo_Producto As System.Windows.Forms.ColumnHeader
 End Class

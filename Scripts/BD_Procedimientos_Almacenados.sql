@@ -209,12 +209,12 @@ BEGIN
 				VALUES(2,12,@id_personal,1,1,1,1,1)--Sucursal
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 				VALUES(2,13,@id_personal,1,1,1,1,1)--Almacén
+			--INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
+			--	VALUES(2,14,@id_personal,1,1,1,1,1)--Precio
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
-				VALUES(2,14,@id_personal,1,1,1,1,1)--Precio
+				VALUES(2,14,@id_personal,1,1,1,1,1)--Conceptos
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
-				VALUES(2,15,@id_personal,1,1,1,1,1)--Conceptos
-			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
-				VALUES(2,16,@id_personal,1,1,1,1,1)--Tipo de Documento
+				VALUES(2,15,@id_personal,1,1,1,1,1)--Tipo de Documento
 
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 				VALUES(3,1,@id_personal,1,1,1,1,1)--Orden de Compra
@@ -241,7 +241,9 @@ BEGIN
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 				VALUES(5,4,@id_personal,1,1,1,1,1)--Canje de Letras	
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
-				VALUES(5,5,@id_personal,1,1,1,1,1)--Gastos				
+				VALUES(5,5,@id_personal,1,1,1,1,1)--Gastos	
+			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
+				VALUES(5,6,@id_personal,1,1,1,1,1)--Pago de Letras			
 
 			INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 				VALUES(6,1,@id_personal,1,1,1,1,1)--Ingreso al Kardex
@@ -537,6 +539,189 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarPersonalSinTelefono')
+	DROP PROCEDURE sp_RegistrarPersonalSinTelefono
+GO
+CREATE PROCEDURE sp_RegistrarPersonalSinTelefono
+(
+	@id_personal	tinyint output,
+	@nombres		varchar(50),
+	@ap_paterno		varchar(50),
+	@ap_materno		varchar(50),
+	@dni 			char(8),
+	@direccion 		varchar(100),
+	@celular 		char(10),
+	@estado 		char(1),
+	@cargo 			char(1),
+	@usuario 		varchar(30),
+	@clave			varchar(20)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		IF (@usuario IS NOT NULL) AND EXISTS(SELECT * FROM Personal WHERE usuario=@usuario)
+			RAISERROR('El usuario ingresado ya se encuentra registrado, verificar datos',16,1)
+		IF (@dni IS NOT NULL) AND EXISTS(SELECT * FROM Personal WHERE dni=@dni)
+			RAISERROR('El dni ingresado ya se encuentra registrado, verificar datos',16,1)
+		BEGIN TRANSACTION --Modified 2014.03.13
+			INSERT INTO Personal(
+								nombres,
+								ap_paterno,
+								ap_materno,
+								dni,
+								direccion,
+								celular,
+								estado,
+								cargo,
+								usuario,
+								clave
+							)
+					VALUES(
+								@nombres,
+								@ap_paterno,
+								@ap_materno,
+								@dni,
+								@direccion,
+								@celular,
+								@estado,
+								@cargo,
+								@usuario,
+								@clave
+							)
+			SELECT @id_personal=IDENT_CURRENT('Personal')
+			EXEC sp_RegistrarPermisos @id_personal,@cargo
+			SELECT @id_personal
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarPersonalSinCelular')
+	DROP PROCEDURE sp_RegistrarPersonalSinCelular
+GO
+CREATE PROCEDURE sp_RegistrarPersonalSinCelular
+(
+	@id_personal	tinyint output,
+	@nombres		varchar(50),
+	@ap_paterno		varchar(50),
+	@ap_materno		varchar(50),
+	@dni 			char(8),
+	@direccion 		varchar(100),
+	@telefono 		char(9),
+	@estado 		char(1),
+	@cargo 			char(1),
+	@usuario 		varchar(30),
+	@clave			varchar(20)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		IF (@usuario IS NOT NULL) AND EXISTS(SELECT * FROM Personal WHERE usuario=@usuario)
+			RAISERROR('El usuario ingresado ya se encuentra registrado, verificar datos',16,1)
+		IF (@dni IS NOT NULL) AND EXISTS(SELECT * FROM Personal WHERE dni=@dni)
+			RAISERROR('El dni ingresado ya se encuentra registrado, verificar datos',16,1)
+		BEGIN TRANSACTION --Modified 2014.03.13
+			INSERT INTO Personal(
+								nombres,
+								ap_paterno,
+								ap_materno,
+								dni,
+								direccion,
+								telefono,
+								estado,
+								cargo,
+								usuario,
+								clave
+							)
+					VALUES(
+								@nombres,
+								@ap_paterno,
+								@ap_materno,
+								@dni,
+								@direccion,
+								@telefono,
+								@estado,
+								@cargo,
+								@usuario,
+								@clave
+							)
+			SELECT @id_personal=IDENT_CURRENT('Personal')
+			EXEC sp_RegistrarPermisos @id_personal,@cargo
+			SELECT @id_personal
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarPersonalSinTelefonoYCelular')
+	DROP PROCEDURE sp_RegistrarPersonalSinTelefonoYCelular
+GO
+CREATE PROCEDURE sp_RegistrarPersonalSinTelefonoYCelular
+(
+	@id_personal	tinyint output,
+	@nombres		varchar(50),
+	@ap_paterno		varchar(50),
+	@ap_materno		varchar(50),
+	@dni 			char(8),
+	@direccion 		varchar(100),
+	@estado 		char(1),
+	@cargo 			char(1),
+	@usuario 		varchar(30),
+	@clave			varchar(20)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		IF (@usuario IS NOT NULL) AND EXISTS(SELECT * FROM Personal WHERE usuario=@usuario)
+			RAISERROR('El usuario ingresado ya se encuentra registrado, verificar datos',16,1)
+		IF (@dni IS NOT NULL) AND EXISTS(SELECT * FROM Personal WHERE dni=@dni)
+			RAISERROR('El dni ingresado ya se encuentra registrado, verificar datos',16,1)
+		BEGIN TRANSACTION --Modified 2014.03.13
+			INSERT INTO Personal(
+								nombres,
+								ap_paterno,
+								ap_materno,
+								dni,
+								direccion,
+								estado,
+								cargo,
+								usuario,
+								clave
+							)
+					VALUES(
+								@nombres,
+								@ap_paterno,
+								@ap_materno,
+								@dni,
+								@direccion,
+								@estado,
+								@cargo,
+								@usuario,
+								@clave
+							)
+			SELECT @id_personal=IDENT_CURRENT('Personal')
+			EXEC sp_RegistrarPermisos @id_personal,@cargo
+			SELECT @id_personal
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 
 IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarPersonal')
 	DROP PROCEDURE sp_ModificarPersonal
@@ -587,6 +772,145 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarPersonalSinTelefono')
+	DROP PROCEDURE sp_ModificarPersonalSinTelefono
+GO
+CREATE PROCEDURE sp_ModificarPersonalSinTelefono
+(
+	@id_personal	tinyint,
+	@nombres		varchar(50),
+	@ap_paterno		varchar(50),
+	@ap_materno		varchar(50),
+	@dni 			char(8),
+	@direccion 		varchar(100),
+	@celular 		char(10),
+	@estado 		char(1),
+	@cargo 			char(1),
+	@usuario 		varchar(30),
+	@clave			varchar(20)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		IF EXISTS(SELECT * FROM Personal WHERE usuario=@usuario AND id_personal<>@id_personal)
+			RAISERROR('El usuario ingresado ya se encuentra registrado, verificar datos',16,1)
+		IF EXISTS(SELECT * FROM Personal WHERE dni=@dni AND id_personal<>@id_personal)
+			RAISERROR('El dni ingresado ya se encuentra registrado, verificar datos',16,1)
+
+		UPDATE Personal 
+			SET 
+				nombres=@nombres,
+				ap_paterno=@ap_paterno,
+				ap_materno=@ap_materno,
+				dni=@dni,
+				direccion=@direccion,
+				celular=@celular,
+				estado=@estado,
+				cargo=@cargo,
+				usuario=@usuario,
+				clave=@clave
+			WHERE
+				id_personal=@id_personal
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarPersonalSinCelular')
+	DROP PROCEDURE sp_ModificarPersonalSinCelular
+GO
+CREATE PROCEDURE sp_ModificarPersonalSinCelular
+(
+	@id_personal	tinyint,
+	@nombres		varchar(50),
+	@ap_paterno		varchar(50),
+	@ap_materno		varchar(50),
+	@dni 			char(8),
+	@direccion 		varchar(100),
+	@telefono 		char(9),
+	@estado 		char(1),
+	@cargo 			char(1),
+	@usuario 		varchar(30),
+	@clave			varchar(20)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		IF EXISTS(SELECT * FROM Personal WHERE usuario=@usuario AND id_personal<>@id_personal)
+			RAISERROR('El usuario ingresado ya se encuentra registrado, verificar datos',16,1)
+		IF EXISTS(SELECT * FROM Personal WHERE dni=@dni AND id_personal<>@id_personal)
+			RAISERROR('El dni ingresado ya se encuentra registrado, verificar datos',16,1)
+
+		UPDATE Personal 
+			SET 
+				nombres=@nombres,
+				ap_paterno=@ap_paterno,
+				ap_materno=@ap_materno,
+				dni=@dni,
+				direccion=@direccion,
+				telefono=@telefono,
+				estado=@estado,
+				cargo=@cargo,
+				usuario=@usuario,
+				clave=@clave
+			WHERE
+				id_personal=@id_personal
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarPersonalSinTelefonoYCelular')
+	DROP PROCEDURE sp_ModificarPersonalSinTelefonoYCelular
+GO
+CREATE PROCEDURE sp_ModificarPersonalSinTelefonoYCelular
+(
+	@id_personal	tinyint,
+	@nombres		varchar(50),
+	@ap_paterno		varchar(50),
+	@ap_materno		varchar(50),
+	@dni 			char(8),
+	@direccion 		varchar(100),
+	@estado 		char(1),
+	@cargo 			char(1),
+	@usuario 		varchar(30),
+	@clave			varchar(20)
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		IF EXISTS(SELECT * FROM Personal WHERE usuario=@usuario AND id_personal<>@id_personal)
+			RAISERROR('El usuario ingresado ya se encuentra registrado, verificar datos',16,1)
+		IF EXISTS(SELECT * FROM Personal WHERE dni=@dni AND id_personal<>@id_personal)
+			RAISERROR('El dni ingresado ya se encuentra registrado, verificar datos',16,1)
+
+		UPDATE Personal 
+			SET 
+				nombres=@nombres,
+				ap_paterno=@ap_paterno,
+				ap_materno=@ap_materno,
+				dni=@dni,
+				direccion=@direccion,
+				estado=@estado,
+				cargo=@cargo,
+				usuario=@usuario,
+				clave=@clave
+			WHERE
+				id_personal=@id_personal
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 
 IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarPersonal')
 	DROP PROCEDURE sp_ListarPersonal
@@ -595,7 +919,7 @@ CREATE PROCEDURE sp_ListarPersonal
 AS
 BEGIN
 	BEGIN TRY
-		SELECT * FROM Personal
+		SELECT *, nombres + ' ' +  ap_paterno + ' ' + ap_materno AS 'NombreCompleto' FROM Personal
 	END TRY
 	BEGIN CATCH
 		EXEC sp_retornarError
@@ -1293,7 +1617,24 @@ BEGIN
 END
 GO
 
-
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarTipoDocumentoXID')
+	DROP PROCEDURE sp_ListarTipoDocumentoXID
+GO
+CREATE PROCEDURE sp_ListarTipoDocumentoXID
+(
+	@id_tipodocumento	char(3)
+)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT * FROM TipoDocumento
+		WHERE id_tipodocumento=@id_tipodocumento
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 
 IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarTipoDocumento')
 	DROP PROCEDURE sp_EliminarTipoDocumento
@@ -1935,6 +2276,24 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarAlmacenXID')
+	DROP PROCEDURE sp_ListarAlmacenXID
+GO
+CREATE PROCEDURE sp_ListarAlmacenXID
+(
+	@id_almacen tinyint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT * FROM Almacen where id_almacen = @id_almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
 IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarAlmacenXSucursal')
 	DROP PROCEDURE sp_ListarAlmacenXSucursal
 GO
@@ -2321,7 +2680,7 @@ CREATE PROCEDURE sp_RegistrarProducto
 	@nombre_producto varchar(50),
 	@codigo_producto char(15),
 	@modelo_producto varchar(50),
-	@numero_comprobante char(10),
+	@procedencia varchar(10),
 	@estado bit,
 	@precio_venta smallmoney,
 	@precio_compra smallmoney,
@@ -2345,7 +2704,7 @@ BEGIN
 								nombre_producto ,
 								codigo_producto,
 								modelo_producto,
-								numero_comprobante,
+								procedencia,
 								estado,
 								precio_venta ,
 								precio_compra,
@@ -2360,7 +2719,7 @@ BEGIN
 								@nombre_producto ,
 								@codigo_producto,
 								@modelo_producto,
-								@numero_comprobante,
+								@procedencia,
 								@estado,
 								@precio_venta ,
 								@precio_compra,
@@ -2388,7 +2747,7 @@ CREATE PROCEDURE sp_ModificarProducto
 	@nombre_producto varchar(50),
 	@codigo_producto char(15),
 	@modelo_producto varchar(50),
-	@numero_comprobante char(10),
+	@procedencia varchar(10),
 	@estado bit,
 	@precio_venta smallmoney,
 	@precio_compra smallmoney,
@@ -2411,7 +2770,7 @@ BEGIN
 								nombre_producto=@nombre_producto ,
 								codigo_producto=@codigo_producto,
 								modelo_producto=@modelo_producto,
-								numero_comprobante=@numero_comprobante,
+								procedencia=@procedencia,
 								estado=@estado,
 								precio_compra = @precio_compra,
 								precio_venta = @precio_venta,
@@ -2645,6 +3004,26 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarDetalle_Caja')
+	DROP PROCEDURE sp_EliminarDetalle_Caja
+GO
+CREATE PROCEDURE sp_EliminarDetalle_Caja
+(
+	@id_almacen smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		Delete from Detalle_Caja
+			WHERE id_almacen = @id_almacen
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarDetalle_CajaXAlmacen')
 	DROP PROCEDURE sp_ListarDetalle_CajaXAlmacen
 GO
@@ -2681,6 +3060,96 @@ BEGIN
 			FROM Detalle_Caja DC
 			INNER JOIN Caja C ON DC.id_caja = C.id_caja
 			WHERE  DC.id_almacen = @id_almacen AND C.tipo_pago = @tipo_pago
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+/*
+*************************************************************
+*															*
+*					TABLA ALMACEN_PERSONAL					*
+*															*
+*************************************************************
+*/
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarAlmacen_Personal')
+	DROP PROCEDURE sp_RegistrarAlmacen_Personal
+GO
+CREATE PROCEDURE sp_RegistrarAlmacen_Personal
+	(
+	@id_almacen smallint,
+	@id_personal smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO  Almacen_Personal ( 
+										id_almacen,
+										id_personal
+										)
+					VALUES(
+										@id_almacen,
+										@id_personal
+)	
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarAlmacen_Personal')
+	DROP PROCEDURE sp_EliminarAlmacen_Personal
+GO
+CREATE PROCEDURE sp_EliminarAlmacen_Personal
+(
+	@id_personal smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+        DELETE FROM Almacen_Personal
+			WHERE   id_personal = @id_personal
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarAlmacen_Personal')
+	DROP PROCEDURE sp_ListarAlmacen_Personal
+GO
+CREATE PROCEDURE sp_ListarAlmacen_Personal
+	(
+	@id_personal smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select * from Almacen_Personal
+				WHERE id_personal = @id_personal
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ContraAlmacen_Personal')
+	DROP PROCEDURE sp_ContraAlmacen_Personal
+GO
+CREATE PROCEDURE sp_ContraAlmacen_Personal
+	(
+	@Cantidad int out,
+	@id_personal smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+SELECT 	@Cantidad = COUNT(*) from Almacen_Personal where id_personal = @id_personal
+return @Cantidad
 	END TRY
 	BEGIN CATCH
 		EXEC sp_retornarError
@@ -2749,7 +3218,25 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarProducto_Almacen')
+	DROP PROCEDURE sp_EliminarProducto_Almacen
+GO
+CREATE PROCEDURE sp_EliminarProducto_Almacen
+(
+	@id_almacen smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+        DELETE FROM Producto_Almacen
+			WHERE   id_almacen = @id_almacen
 
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ContraProducto_Almacen')
 	DROP PROCEDURE sp_ContraProducto_Almacen
 GO
@@ -2789,6 +3276,168 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarProducto_AlmacenXAlmacen')
+	DROP PROCEDURE sp_ListarProducto_AlmacenXAlmacen
+GO
+CREATE PROCEDURE sp_ListarProducto_AlmacenXAlmacen
+	(
+	
+	@id_almacen smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select P.id_producto, P.nombre_producto, PA.id_almacen, A.descripcion AS 'Almacen', P.id_linea, L.descripcion AS 'Linea',
+			P.id_marca, M.descripcion AS 'Marca',PA.stock, PR.precio_compra, PR.precio_venta, PR.precio_trajecta
+			from Producto_Almacen PA
+			INNER JOIN Producto P ON (P.id_producto = PA.id_producto)
+			INNER JOIN Almacen A ON (A.id_almacen = PA.id_almacen)
+			INNER JOIN Linea L ON (L.id_linea = P.id_linea)
+			INNER JOIN Marca M ON (M.id_marca = P.id_marca)
+			INNER JOIN Precio PR ON ((PR.id_almacen = PA.id_almacen) AND (PR.id_producto = PA.id_producto))
+			WHERE  PA.id_almacen = @id_almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarProducto_AlmacenXAlmacenYLinea')
+	DROP PROCEDURE sp_ListarProducto_AlmacenXAlmacenYLinea
+GO
+CREATE PROCEDURE sp_ListarProducto_AlmacenXAlmacenYLinea
+	(
+	
+	@id_almacen smallint,
+	@id_linea smallint,
+	@id_Marca smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select P.id_producto, P.nombre_producto, PA.id_almacen, A.descripcion AS 'Almacen', P.id_linea, L.descripcion AS 'Linea',
+			P.id_marca, M.descripcion AS 'Marca',PA.stock, PR.precio_compra, PR.precio_venta, PR.precio_trajecta
+			from Producto_Almacen PA
+			INNER JOIN Producto P ON (P.id_producto = PA.id_producto)
+			INNER JOIN Almacen A ON (A.id_almacen = PA.id_almacen)
+			INNER JOIN Linea L ON (L.id_linea = P.id_linea)
+			INNER JOIN Marca M ON (M.id_marca = P.id_marca)
+			INNER JOIN Precio PR ON ((PR.id_almacen = PA.id_almacen) AND (PR.id_producto = PA.id_producto))
+			WHERE  PA.id_almacen = @id_almacen AND P.id_linea = @id_linea AND P.id_marca = @id_Marca
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarProducto_AlmacenXLineaYAlmacen')
+	DROP PROCEDURE sp_ListarProducto_AlmacenXLineaYAlmacen
+GO
+CREATE PROCEDURE sp_ListarProducto_AlmacenXLineaYAlmacen
+	(
+	
+	@id_almacen smallint,
+	@id_linea smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select P.id_producto, P.nombre_producto, PA.id_almacen, A.descripcion AS 'Almacen', P.id_linea, L.descripcion AS 'Linea',
+			P.id_marca, M.descripcion AS 'Marca',PA.stock, PR.precio_compra, PR.precio_venta, PR.precio_trajecta
+			from Producto_Almacen PA
+			INNER JOIN Producto P ON (P.id_producto = PA.id_producto)
+			INNER JOIN Almacen A ON (A.id_almacen = PA.id_almacen)
+			INNER JOIN Linea L ON (L.id_linea = P.id_linea)
+			INNER JOIN Marca M ON (M.id_marca = P.id_marca)
+			INNER JOIN Precio PR ON ((PR.id_almacen = PA.id_almacen) AND (PR.id_producto = PA.id_producto))
+			WHERE  PA.id_almacen = @id_almacen AND P.id_linea = @id_linea
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarProducto_AlmacenXAlmacenYMarca')
+	DROP PROCEDURE sp_ListarProducto_AlmacenXAlmacenYMarca
+GO
+CREATE PROCEDURE sp_ListarProducto_AlmacenXAlmacenYMarca
+	(
+	
+	@id_almacen smallint,
+	@id_Marca smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select P.id_producto, P.nombre_producto, PA.id_almacen, A.descripcion AS 'Almacen', P.id_linea, L.descripcion AS 'Linea',
+			P.id_marca, M.descripcion AS 'Marca',PA.stock, PR.precio_compra, PR.precio_venta, PR.precio_trajecta
+			from Producto_Almacen PA
+			INNER JOIN Producto P ON (P.id_producto = PA.id_producto)
+			INNER JOIN Almacen A ON (A.id_almacen = PA.id_almacen)
+			INNER JOIN Linea L ON (L.id_linea = P.id_linea)
+			INNER JOIN Marca M ON (M.id_marca = P.id_marca)
+			INNER JOIN Precio PR ON ((PR.id_almacen = PA.id_almacen) AND (PR.id_producto = PA.id_producto))
+			WHERE  PA.id_almacen = @id_almacen AND P.id_marca = @id_Marca
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarProducto_AlmacenXAlmacenConLinea')
+	DROP PROCEDURE sp_ListarProducto_AlmacenXAlmacenConLinea
+GO
+CREATE PROCEDURE sp_ListarProducto_AlmacenXAlmacenConLinea
+	(
+	
+	@id_almacen smallint,
+	@id_linea smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select P.id_producto, P.nombre_producto, P.codigo_producto, P.id_unidad, U.abreviatura AS 'Unidad', P.id_linea, L.descripcion AS 'Linea',
+			P.id_marca, M.descripcion AS 'Marca',PA.stock, PR.precio_compra, PR.precio_venta, PR.precio_trajecta
+			from Producto_Almacen PA
+			INNER JOIN Producto P ON (P.id_producto = PA.id_producto)
+			INNER JOIN Unidad U ON (U.id_unidad = P.id_unidad)
+			INNER JOIN Linea L ON (L.id_linea = P.id_linea)
+			INNER JOIN Marca M ON (M.id_marca = P.id_marca)
+			INNER JOIN Precio PR ON ((PR.id_almacen = PA.id_almacen) AND (PR.id_producto = PA.id_producto))
+			WHERE  PA.id_almacen = @id_almacen AND P.id_linea = @id_linea 
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarProducto_AlmacenXAlmacenSinLinea')
+	DROP PROCEDURE sp_ListarProducto_AlmacenXAlmacenSinLinea
+GO
+CREATE PROCEDURE sp_ListarProducto_AlmacenXAlmacenSinLinea
+	(
+	
+	@id_almacen smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+			Select P.id_producto, P.nombre_producto, P.codigo_producto, P.id_unidad, U.abreviatura AS 'Unidad', P.id_linea, L.descripcion AS 'Linea',
+			P.id_marca, M.descripcion AS 'Marca',PA.stock, PR.precio_compra, PR.precio_venta, PR.precio_trajecta
+			from Producto_Almacen PA
+			INNER JOIN Producto P ON (P.id_producto = PA.id_producto)
+			INNER JOIN Unidad U ON (U.id_unidad = P.id_unidad)
+			INNER JOIN Linea L ON (L.id_linea = P.id_linea)
+			INNER JOIN Marca M ON (M.id_marca = P.id_marca)
+			INNER JOIN Precio PR ON ((PR.id_almacen = PA.id_almacen) AND (PR.id_producto = PA.id_producto))
+			WHERE  PA.id_almacen = @id_almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
 
 IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_AutorizaStock')
 	DROP PROCEDURE sp_AutorizaStock
@@ -2812,6 +3461,97 @@ BEGIN
 	END CATCH
 END
 GO
+/*
+*************************************************************
+*															*
+*				TABLA CODIGO_FACTURACION					*
+*															*
+*************************************************************
+*/
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarCodigo_Facturacion')
+	DROP PROCEDURE sp_RegistrarCodigo_Facturacion
+GO
+CREATE PROCEDURE sp_RegistrarCodigo_Facturacion
+	(
+	@id_Codigo char(3),
+	@id_almacen smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO Codigo_Facturacion( 
+										id_Codigo,
+										id_almacen
+										)
+					VALUES(
+										@id_Codigo,
+										@id_almacen
+											)	
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarCodigo_Facturacion')
+	DROP PROCEDURE sp_EliminarCodigo_Facturacion
+GO
+CREATE PROCEDURE sp_EliminarCodigo_Facturacion
+(
+	@id_Codigo char(3)
+)
+AS
+BEGIN
+	BEGIN TRY
+        UPDATE Codigo_Facturacion
+			SET estado = 0
+			WHERE  id_Codigo = @id_Codigo
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ContraCodigo_Facturacion')
+	DROP PROCEDURE sp_ContraCodigo_Facturacion
+GO
+CREATE PROCEDURE sp_ContraCodigo_Facturacion
+	(
+	@Cantidad int out,
+	@id_Codigo char(3)
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select @Cantidad = COUNT(*)  from Codigo_Facturacion WHERE id_Codigo = @id_Codigo
+			return @Cantidad
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarCodigo_Facturacion')
+	DROP PROCEDURE sp_ListarCodigo_Facturacion
+GO
+CREATE PROCEDURE sp_ListarCodigo_Facturacion
+	(
+	@id_almacen smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			Select * from Codigo_Facturacion
+				WHERE id_almacen = @id_almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
 /*
 *************************************************************
 *															*
@@ -2883,6 +3623,84 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarPrecio')
+	DROP PROCEDURE sp_ModificarPrecio
+GO
+CREATE PROCEDURE sp_ModificarPrecio
+(
+	@id_producto smallint,
+	@id_almacen smallint,
+	@precio_compra smallmoney,
+	@precio_venta smallmoney,
+	@precio_trajecta smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		UPDATE Precio
+			SET 
+						precio_compra = @precio_compra,
+						precio_venta = @precio_venta,
+						precio_trajecta = @precio_trajecta
+			WHERE
+				id_producto = @id_producto AND id_almacen = @id_almacen
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ModificarPrecio')
+	DROP PROCEDURE sp_ModificarPrecio
+GO
+CREATE PROCEDURE sp_ModificarPrecio
+(
+	@id_producto smallint,
+	@id_almacen smallint,
+	@precio_compra smallmoney,
+	@precio_venta smallmoney,
+	@precio_trajecta smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+
+		UPDATE Precio
+			SET 
+						precio_compra = @precio_compra,
+						precio_venta = @precio_venta,
+						precio_trajecta = @precio_trajecta
+			WHERE
+				id_producto = @id_producto AND id_almacen = @id_almacen
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarPrecio')
+	DROP PROCEDURE sp_EliminarPrecio
+GO
+CREATE PROCEDURE sp_EliminarPrecio
+(
+	@id_almacen smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+        DELETE FROM Precio
+			WHERE   id_almacen = @id_almacen
+
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
 /*
 *************************************************************
 *															*
@@ -3048,30 +3866,269 @@ BEGIN
 END
 GO
 
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarMovimientoTotal')
+	DROP PROCEDURE sp_EliminarMovimientoTotal
+GO
+CREATE PROCEDURE sp_EliminarMovimientoTotal
+(
+	@id_movimiento smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION
+			DELETE FROM Movimiento WHERE id_movimiento = @id_movimiento
+		COMMIT TRANSACTION
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
 IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_BuscarIdMovimiento')
 	DROP PROCEDURE sp_BuscarIdMovimiento
 GO
 CREATE PROCEDURE sp_BuscarIdMovimiento
 (
-	@id_Movimiento	smallint out,
 	@id_tipodocumento tinyint,
 	@numero_documento char(3)
 	)
 AS
 BEGIN
 	BEGIN TRY
-		SELECT @id_Movimiento =max(id_movimiento) FROM Movimiento where id_tipodocumento = @id_tipodocumento AND numero_documento = @numero_documento
-		IF @id_Movimiento is null
-SET @id_Movimiento = 1
-ELSE
-SELECT @id_Movimiento = @id_Movimiento + 1
-return @id_Movimiento
+		SELECT CONVERT(smallint, serie_documento) AS 'serie' FROM Movimiento 
+		where id_tipodocumento = @id_tipodocumento AND numero_documento = @numero_documento 
+		AND tipo_movimiento = 'E' ORDER BY serie_documento ASC
 	END TRY
 	BEGIN CATCH
 		EXEC sp_retornarError
 	END CATCH
 END
 GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarFacturacion')
+	DROP PROCEDURE sp_ListarFacturacion
+GO
+CREATE PROCEDURE sp_ListarFacturacion
+AS
+BEGIN
+	BEGIN TRY
+		SELECT
+			M.id_movimiento,
+			M.numero_documento AS 'documento',
+			M.serie_documento AS 'serie',
+			V.id_venta,
+			V.numero_documento AS 'documentoventa',
+			V.serie_documento AS 'serieventa',
+			C.id_cliente,
+			C.tipo_cliente,
+			C.dni,
+			C.ruc,
+			C.razon_social AS 'cliente',
+			C.direccion,
+			P.id_personal,
+			P.nombres,
+			P.ap_paterno,
+			P.ap_materno,
+			DC.id_caja,
+			DC.descripcion AS 'detalleCaja',
+			M.fecha_movimiento,
+			MD.id_moneda,
+			MD.descripcion AS 'moneda',
+			V.pago_inicial,
+			T.abreviatura 'tipoDocumento',
+			M.estado
+		FROM Movimiento M
+		INNER JOIN Venta V ON M.id_operacion = V.id_venta
+		INNER JOIN Cliente C ON V.id_cliente = C.id_cliente
+		INNER JOIN Personal P ON V.id_personal = P.id_personal
+		INNER JOIN Detalle_Caja DC ON (M.id_almacen = DC.id_almacen AND M.id_caja=DC.id_caja) 
+		INNER JOIN Moneda MD ON V.id_moneda = MD.id_moneda
+		INNER JOIN TipoDocumento T ON V.id_tipodocumento = T.id_tipodocumento
+		WHERE M.tipo_movimiento = 'E' AND M.numero_documento BETWEEN '001' AND '999'
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarFacturacionXID')
+	DROP PROCEDURE sp_ListarFacturacionXID
+GO
+CREATE PROCEDURE sp_ListarFacturacionXID
+(
+	@id_movimiento smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT * FROM Movimiento
+		WHERE tipo_movimiento = 'E' and id_movimiento = @id_movimiento
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarFacturacionXAlmacen')
+	DROP PROCEDURE sp_ListarFacturacionXAlmacen
+GO
+CREATE PROCEDURE sp_ListarFacturacionXAlmacen
+(
+	@id_almacen smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT
+			M.id_movimiento,
+			M.numero_documento AS 'documento',
+			M.serie_documento AS 'serie',
+			V.id_venta,
+			V.numero_documento AS 'documentoventa',
+			V.serie_documento AS 'serieventa',
+			C.id_cliente,
+			C.tipo_cliente,
+			C.dni,
+			C.ruc,
+			C.razon_social AS 'cliente',
+			C.direccion,
+			P.id_personal,
+			P.nombres,
+			P.ap_paterno,
+			P.ap_materno,
+			DC.id_caja,
+			DC.descripcion AS 'detalleCaja',
+			M.fecha_movimiento,
+			MD.id_moneda,
+			MD.descripcion AS 'moneda',
+			V.pago_inicial,
+			T.abreviatura 'tipoDocumento',
+			M.estado
+		FROM Movimiento M
+		INNER JOIN Venta V ON M.id_operacion = V.id_venta
+		INNER JOIN Cliente C ON V.id_cliente = C.id_cliente
+		INNER JOIN Personal P ON V.id_personal = P.id_personal
+		INNER JOIN Detalle_Caja DC ON (M.id_almacen = DC.id_almacen AND M.id_caja=DC.id_caja) 
+		INNER JOIN Moneda MD ON V.id_moneda = MD.id_moneda
+		INNER JOIN TipoDocumento T ON V.id_tipodocumento = T.id_tipodocumento
+		WHERE M.tipo_movimiento = 'E' AND M.id_almacen=@id_almacen
+		AND M.numero_documento BETWEEN '001' AND '999'
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarFacturacionXFecha')
+	DROP PROCEDURE sp_ListarFacturacionXFecha
+GO
+CREATE PROCEDURE sp_ListarFacturacionXFecha
+(
+	@fechaIni smalldatetime,
+	@fechaFin smalldatetime
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT
+			M.id_movimiento,
+			M.numero_documento AS 'documento',
+			M.serie_documento AS 'serie',
+			V.id_venta,
+			V.numero_documento AS 'documentoventa',
+			V.serie_documento AS 'serieventa',
+			C.id_cliente,
+			C.tipo_cliente,
+			C.dni,
+			C.ruc,
+			C.razon_social AS 'cliente',
+			C.direccion,
+			P.id_personal,
+			P.nombres,
+			P.ap_paterno,
+			P.ap_materno,
+			DC.id_caja,
+			DC.descripcion AS 'detalleCaja',
+			M.fecha_movimiento,
+			MD.id_moneda,
+			MD.descripcion AS 'moneda',
+			V.pago_inicial,
+			T.abreviatura 'tipoDocumento',
+			M.estado
+		FROM Movimiento M
+		INNER JOIN Venta V ON M.id_operacion = V.id_venta
+		INNER JOIN Cliente C ON V.id_cliente = C.id_cliente
+		INNER JOIN Personal P ON V.id_personal = P.id_personal
+		INNER JOIN Detalle_Caja DC ON (M.id_almacen = DC.id_almacen AND M.id_caja=DC.id_caja) 
+		INNER JOIN Moneda MD ON V.id_moneda = MD.id_moneda
+		INNER JOIN TipoDocumento T ON V.id_tipodocumento = T.id_tipodocumento
+		WHERE (M.fecha_movimiento >=@fechaIni AND M.fecha_movimiento<@fechaFin+1) 
+			AND M.tipo_movimiento = 'E'
+			AND M.numero_documento BETWEEN '001' AND '999'
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarFacturacionXAlmacenYFecha')
+	DROP PROCEDURE sp_ListarFacturacionXAlmacenYFecha
+GO
+CREATE PROCEDURE sp_ListarFacturacionXAlmacenYFecha
+(
+	@fechaIni smalldatetime,
+	@fechaFin smalldatetime,
+	@id_almacen smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT
+			M.id_movimiento,
+			M.numero_documento AS 'documento',
+			M.serie_documento AS 'serie',
+			V.id_venta,
+			V.numero_documento AS 'documentoventa',
+			V.serie_documento AS 'serieventa',
+			C.id_cliente,
+			C.tipo_cliente,
+			C.dni,
+			C.ruc,
+			C.razon_social AS 'cliente',
+			C.direccion,
+			P.id_personal,
+			P.nombres,
+			P.ap_paterno,
+			P.ap_materno,
+			DC.id_caja,
+			DC.descripcion AS 'detalleCaja',
+			M.fecha_movimiento,
+			MD.id_moneda,
+			MD.descripcion AS 'moneda',
+			V.pago_inicial,
+			T.abreviatura 'tipoDocumento',
+			M.estado
+		FROM Movimiento M
+		INNER JOIN Venta V ON M.id_operacion = V.id_venta
+		INNER JOIN Cliente C ON V.id_cliente = C.id_cliente
+		INNER JOIN Personal P ON V.id_personal = P.id_personal
+		INNER JOIN Detalle_Caja DC ON (M.id_almacen = DC.id_almacen AND M.id_caja=DC.id_caja) 
+		INNER JOIN Moneda MD ON V.id_moneda = MD.id_moneda
+		INNER JOIN TipoDocumento T ON V.id_tipodocumento = T.id_tipodocumento
+		WHERE (M.fecha_movimiento >=@fechaIni AND M.fecha_movimiento<@fechaFin+1) 
+			AND M.tipo_movimiento = 'E' AND M.id_almacen=@id_almacen
+			AND M.numero_documento BETWEEN '001' AND '999'
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
 IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ResumenCaja')
 	DROP PROCEDURE sp_ResumenCaja
 GO
@@ -3106,7 +4163,7 @@ BEGIN
 		WHERE (M.fecha_movimiento >=@fechaIni AND M.fecha_movimiento<@fechaFin+1) 
 			AND (M.id_caja=M.id_caja-@id_caja OR M.id_caja=@id_caja)--para números, cuando se le envía 0 lista todo
 			AND (M.id_almacen=M.id_almacen-@id_almacen OR M.id_almacen=@id_almacen)--para números, cuando se le envía 0 lista todo
-			AND M.tipo_movimiento = 'E'
+			AND M.tipo_movimiento = 'E' AND M.estado = 1
 
 	END TRY
 	BEGIN CATCH
@@ -3114,6 +4171,200 @@ BEGIN
 	END CATCH
 END
 GO
+/*
+*************************************************************
+*															*
+*						TABLA CUENTA						*
+*															*
+*************************************************************
+*/
+
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarCuenta')
+	DROP PROCEDURE sp_RegistrarCuenta
+GO
+CREATE PROCEDURE sp_RegistrarCuenta
+	(
+	@id_cuenta smallint output,
+	@id_compra smallint,
+	@pago_inicial smallmoney,
+	@monto_financiado smallmoney,
+	@nro_cuotas int,
+	@deudad smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+			INSERT INTO Cuenta(
+							id_compra,
+							pago_inicial,
+							monto_financiado,
+							nro_cuotas,
+							deudad
+							)
+					VALUES(
+								@id_compra,
+								@pago_inicial,
+								@monto_financiado,
+								@nro_cuotas,
+								@deudad
+							)
+	SELECT @id_cuenta=IDENT_CURRENT('Cuenta')
+		SELECT @id_cuenta
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_PagarDeuda')
+	DROP PROCEDURE sp_PagarDeuda
+GO
+CREATE PROCEDURE sp_PagarDeuda
+	(
+	@id_cuenta smallint,
+	@deudad smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+			UPDATE Cuenta
+				SET
+				deudad = @deudad
+				WHERE id_cuenta = @id_cuenta
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarCuenta')
+	DROP PROCEDURE sp_EliminarCuenta
+GO
+CREATE PROCEDURE sp_EliminarCuenta
+	(
+	@id_cuenta smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			UPDATE Cuenta
+				SET deudad = 0.0, estado = 0
+				WHERE id_cuenta = @id_cuenta
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarDeuda')
+	DROP PROCEDURE sp_ListarDeuda
+GO
+CREATE PROCEDURE sp_ListarDeuda
+(
+	@id_almacen smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT P.razon_social, C.serie_documento, C.numero_documento, C.fecha_compra,
+		U.deudad, M.descripcion AS 'Moneda', A.descripcion AS 'Almacen'
+		FROM Cuenta U
+		INNER JOIN Compra C ON (U.id_compra = C.id_compra)
+		INNER JOIN Proveedor P ON (C.id_proveedor = P.id_proveedor)
+		INNER JOIN Moneda M ON (C.id_moneda = M.id_moneda)
+		INNER JOIN Almacen A ON (C.id_almacen = A.id_almacen)
+		where U.estado = 1 AND C.id_almacen = @id_almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'ListarDeudaXFecha')
+	DROP PROCEDURE ListarDeudaXFecha
+GO
+CREATE PROCEDURE ListarDeudaXFecha
+(
+	@id_almacen smallint,
+	@fecha_Ini Date,
+	@fecha_Fin Date
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT P.razon_social, C.serie_documento, C.numero_documento, C.fecha_compra,
+		U.deudad, M.descripcion AS 'Moneda', A.descripcion AS 'Almacen'
+		FROM Cuenta U
+		INNER JOIN Compra C ON (U.id_compra = C.id_compra)
+		INNER JOIN Proveedor P ON (C.id_proveedor = P.id_proveedor)
+		INNER JOIN Moneda M ON (C.id_moneda = M.id_moneda)
+		INNER JOIN Almacen A ON (C.id_almacen = A.id_almacen)
+		Where U.estado = 1 AND C.id_almacen = @id_almacen
+		AND (C.fecha_compra >=@fecha_Ini AND C.fecha_compra<=@fecha_Fin)
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'ListarDeudaXNombre')
+	DROP PROCEDURE ListarDeudaXNombre
+GO
+CREATE PROCEDURE ListarDeudaXNombre
+(
+	@id_almacen smallint,
+	@nombre varchar(50)
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT P.razon_social, C.serie_documento, C.numero_documento, C.fecha_compra,
+		U.deudad, M.descripcion AS 'Moneda', A.descripcion AS 'Almacen'
+		FROM Cuenta U
+		INNER JOIN Compra C ON (U.id_compra = C.id_compra)
+		INNER JOIN Proveedor P ON (C.id_proveedor = P.id_proveedor)
+		INNER JOIN Moneda M ON (C.id_moneda = M.id_moneda)
+		INNER JOIN Almacen A ON (C.id_almacen = A.id_almacen)
+		where U.estado = 1 AND C.id_almacen = @id_almacen
+		AND P.razon_social LIKE '%' + @nombre + '%'
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarDeudaXFechaYNombre')
+	DROP PROCEDURE sp_ListarDeudaXFechaYNombre
+GO
+CREATE PROCEDURE sp_ListarDeudaXFechaYNombre
+(
+	@id_almacen smallint,
+	@fecha_Ini Date,
+	@fecha_Fin Date,
+	@nombre varchar(50)
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT P.razon_social, C.serie_documento, C.numero_documento, C.fecha_compra,
+		U.deudad, M.descripcion AS 'Moneda', A.descripcion AS 'Almacen'
+		FROM Cuenta U
+		INNER JOIN Compra C ON (U.id_compra = C.id_compra)
+		INNER JOIN Proveedor P ON (C.id_proveedor = P.id_proveedor)
+		INNER JOIN Moneda M ON (C.id_moneda = M.id_moneda)
+		INNER JOIN Almacen A ON (C.id_almacen = A.id_almacen)
+		Where U.estado = 1 AND C.id_almacen = @id_almacen
+		AND (C.fecha_compra >=@fecha_Ini AND C.fecha_compra<=@fecha_Fin)
+		AND P.razon_social LIKE '%' + @nombre + '%'
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO 
 
 /*
 *************************************************************
@@ -3341,6 +4592,35 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarTodosCompra')
+	DROP PROCEDURE sp_ListarTodosCompra
+GO
+CREATE PROCEDURE sp_ListarTodosCompra
+AS
+BEGIN
+	BEGIN TRY
+
+	SELECT 
+	    C.id_compra,
+	    P.razon_social,
+	    C.numero_documento, 
+	    C.serie_documento,
+	    C.fecha_compra,
+	    M.descripcion As 'Moneda',
+	    C.total
+	FROM Compra C
+	INNER JOIN Proveedor P ON (C.id_proveedor=P.id_proveedor)
+	INNER JOIN Moneda M ON(C.id_moneda = M.id_moneda)
+	where C.Estado =1 or C.Estado =2
+
+		
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
 IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListaCompraXID')
 	DROP PROCEDURE sp_ListaCompraXID
 GO
@@ -3756,6 +5036,40 @@ BEGIN
 	END CATCH
 END
 GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarTodosVenta')
+	DROP PROCEDURE sp_ListarTodosVenta
+GO
+CREATE PROCEDURE sp_ListarTodosVenta
+AS
+BEGIN
+	BEGIN TRY
+
+	SELECT 
+	    V.id_venta,
+	    C.razon_social,
+	    V.numero_documento, 
+	    V.serie_documento,
+	    V.fecha_emision,
+	    M.descripcion As 'Moneda',
+	    V.tipo_pago,
+	    P.ap_paterno,
+	    P.ap_materno,
+	    P.nombres,
+	    V.total
+	FROM Venta V
+	INNER JOIN Cliente C ON (C.id_cliente=V.id_cliente)
+	INNER JOIN Moneda M ON(M.id_moneda = V.id_moneda)
+	INNER JOIN Personal P ON(V.id_personal = P.id_personal)
+	where V.Estado =1 or V.estado =2 or V.estado =3
+
+		
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
 IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListaVentaXID')
 	DROP PROCEDURE sp_ListaVentaXID
 GO
@@ -3912,12 +5226,15 @@ CREATE PROCEDURE sp_RegistrarKardex
 	@id_tipodocumento char(3),
 	@id_producto smallint,
 	@id_almacen tinyint,
+	@id_movimiento smallint,
 	@stock int,
 	@cantidad int,
 	@precio smallmoney,
 	@descuento smallmoney,
 	@tipo char(1),
-	@total smallmoney
+	@total smallmoney,
+	@ruc_dni varchar(11),
+	@Nombre varchar(100)
 )
 AS
 BEGIN
@@ -3929,12 +5246,15 @@ BEGIN
 							id_tipodocumento,
 							id_producto,
 							id_almacen,
+							id_movimiento,
 							stock,
 							cantidad,
 							precio,
 							Descuentro,
 							tipo,
-							total
+							total,
+							ruc_dni,
+							Nombre
 						)
 					VALUES(
 								@fecha,
@@ -3943,12 +5263,15 @@ BEGIN
 								@id_tipodocumento,
 								@id_producto,
 								@id_almacen,
+								@id_movimiento,
 								@stock,
 								@cantidad,
 								@precio,
 								@descuento,
 								@tipo,
-								@total
+								@total,
+								@ruc_dni,
+								@Nombre
 							)
 		SELECT @id_Kardex=IDENT_CURRENT('Kardex')
 		SELECT @id_Kardex
@@ -3971,12 +5294,15 @@ CREATE PROCEDURE sp_ModificarKardex
 	@id_tipodocumento char(3),
 	@id_producto smallint,
 	@id_almacen tinyint,
+	@id_movimiento smallint,
 	@stock int,
 	@cantidad int,
 	@precio smallmoney,
 	@descuento smallmoney,
 	@tipo char(1),
-	@total smallmoney
+	@total smallmoney,
+	@ruc_dni varchar(11),
+	@Nombre varchar(100)
 )
 AS
 BEGIN
@@ -3989,12 +5315,15 @@ BEGIN
 				id_tipodocumento = @id_tipodocumento,
 				id_producto = @id_producto,
 				id_almacen = @id_almacen,
+				id_movimiento = @id_movimiento,
 				stock = @stock,
 				cantidad = @cantidad,
 				precio = @precio,
 				Descuentro = @descuento,
 				tipo = @tipo,
-				total = @total
+				total = @total,
+				ruc_dni = @ruc_dni,
+				Nombre = @Nombre
 				WHERE id_kardex = @id_kardex
 	END TRY
 	BEGIN CATCH
@@ -4008,13 +5337,14 @@ IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_Eliminarkardex')
 GO
 CREATE PROCEDURE sp_Eliminarkardex
 (
-	@id_kardex smallint
+	@id_movimiento smallint
 )
 AS
 BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION
-			UPDATE Kardex SET estado = 0 WHERE id_kardex = @id_kardex
+			/* UPDATE Kardex SET estado = 0 WHERE id_movimiento = @id_movimiento */
+			DELETE FROM Kardex WHERE id_movimiento = @id_movimiento
 		COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH
@@ -4060,17 +5390,49 @@ BEGIN
 	END CATCH
 END
 GO
-IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListakardexXID')
-	DROP PROCEDURE sp_ListakardexXID
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListakardexXAlmacen')
+	DROP PROCEDURE sp_ListakardexXAlmacen
 GO
-CREATE PROCEDURE sp_ListakardexXID
+CREATE PROCEDURE sp_ListakardexXAlmacen
 (
-	@id_kardex tinyint
+	@id_almacen smallint,
+	@id_producto smallint
 	)
 AS
 BEGIN
 	BEGIN TRY
-		SELECT * FROM kardex where id_kardex = @id_kardex
+		SELECT K.id_kardex, K.fecha, K.tipo, T.abreviatura AS 'tipodocumento', K.nro_documento, 
+		K.serie_documento, K.ruc_dni, K.Nombre, K.stock, K.cantidad
+		FROM kardex  K
+		INNER JOIN TipoDocumento T ON (K.id_tipodocumento = T.id_tipodocumento)
+		where K.id_almacen = @id_almacen AND K.id_producto = @id_producto AND K.estado = 1
+		order by K.fecha desc
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListakardexXAlmacenYFecha')
+	DROP PROCEDURE sp_ListakardexXAlmacenYFecha
+GO
+CREATE PROCEDURE sp_ListakardexXAlmacenYFecha
+(
+	@id_almacen smallint,
+	@id_producto smallint,
+	@fechaIni smalldatetime,
+	@fechaFin smalldatetime
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT K.id_kardex, K.fecha, K.tipo, T.abreviatura AS 'tipodocumento', K.nro_documento, 
+		K.serie_documento, K.ruc_dni, K.Nombre, K.stock, K.cantidad
+		FROM kardex  K
+		INNER JOIN TipoDocumento T ON (K.id_tipodocumento = T.id_tipodocumento)
+		where K.id_almacen = @id_almacen AND K.id_producto = @id_producto
+		AND (K.fecha >=@fechaIni AND K.fecha<@fechaFin+1) AND K.estado = 1
+		order by K.fecha desc
 	END TRY
 	BEGIN CATCH
 		EXEC sp_retornarError
@@ -4108,6 +5470,536 @@ BEGIN
 	INNER JOIN TipoDocumento TD ON (K.id_tipodocumento = TD.id_tipodocumento)
 	INNER JOIN Unidad U ON (P.id_unidad = U.id_unidad)
 	where K.id_kardex = @id_kardex
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+/*
+*************************************************************
+*															*
+*						TABLA LETRAS						*
+*															*
+*************************************************************
+*/
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarCargarClientes')
+	DROP PROCEDURE sp_ListarCargarClientes
+GO
+CREATE PROCEDURE sp_ListarCargarClientes
+(
+	@id_cliente smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT 
+		V.id_venta,
+		V.numero_documento,
+	    V.serie_documento,
+	    V.fecha_emision,
+	    V.monto_financiado,
+	    T.abreviatura As 'TipoDocumento',
+	    v.id_moneda,
+	    m.descripcion  As 'Moneda'
+	FROM Venta V
+	INNER JOIN TipoDocumento T ON (V.id_tipodocumento = T.id_tipodocumento)
+	INNER JOIN Moneda M ON (M.id_moneda = V.id_moneda)
+	where (V.estado =1 OR V.estado =2) AND V.tipo_pago = 'C'
+	AND V.id_cliente = @id_cliente
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarLetras')
+	DROP PROCEDURE sp_RegistrarLetras
+GO
+CREATE PROCEDURE sp_RegistrarLetras
+	(
+	@id_letras smallint output,
+	@id_venta smallint,
+	@coprobrante Char(19),
+	@fecha_emision smalldatetime,
+	@tasa real,
+	@saldo smallmoney
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO Letras(
+							id_venta,
+							coprobrante,
+							fecha_emision,
+							tasa,
+							saldo
+							)
+					VALUES(
+								@id_venta,
+								@coprobrante,
+								@fecha_emision,
+								@tasa,
+								@saldo
+							)
+		SELECT @id_letras=IDENT_CURRENT('Letras')
+		SELECT @id_letras
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarLetras')
+	DROP PROCEDURE sp_EliminarLetras
+GO
+CREATE PROCEDURE sp_EliminarLetras
+(
+	@id_letras smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			UPDATE Letras SET estado = 0 WHERE id_letras = @id_letras
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_BuscarIdLetra')
+	DROP PROCEDURE sp_BuscarIdLetra
+GO
+CREATE PROCEDURE sp_BuscarIdLetra
+(
+	@Letra smallint out
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT @Letra = max(id_letras) FROM Letras
+		IF @Letra is null	
+SET @Letra = 1
+ELSE
+SELECT @Letra = @Letra + 1
+return @Letra
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ContraLetra')
+	DROP PROCEDURE sp_ContraLetra
+GO
+CREATE PROCEDURE sp_ContraLetra
+(
+	@Letra smallint out,
+	@id_letras smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT @Letra = count(*) FROM Detalle_Letras where id_letras = @id_letras and estado = 1
+		return @Letra
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarLetras')
+	DROP PROCEDURE sp_ListarLetras
+GO
+CREATE PROCEDURE sp_ListarLetras
+AS
+BEGIN
+	BEGIN TRY
+
+	SELECT 
+	 L.id_letras, C.razon_social, L.saldo, M.descripcion AS 'Moneda'
+	FROM Letras L
+	INNER JOIN Venta V ON (L.id_venta = V.id_venta)
+	INNER JOIN Cliente C ON (V.id_cliente = C.id_cliente)
+	INNER JOIN Moneda M ON (V.id_moneda = M.id_moneda) 
+	where L.estado = 1
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarLetrasXID')
+	DROP PROCEDURE sp_ListarLetrasXID
+GO
+CREATE PROCEDURE sp_ListarLetrasXID
+(
+	@id_letras smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+
+	SELECT * FROM Letras
+	where id_letras = @id_letras
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+/*
+*************************************************************
+*															*
+*					TABLA DETALLE_LETRAS					*
+*															*
+*************************************************************
+*/
+
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarDetalle_Letras')
+	DROP PROCEDURE sp_RegistrarDetalle_Letras
+GO
+CREATE PROCEDURE sp_RegistrarDetalle_Letras
+	(
+	@id_deralle_letras smallint output,
+	@id_letras smallint,
+	@num_letra int,
+	@dias int,
+	@fecha_vencimiento smalldatetime,
+	@monto smallmoney,
+	@descripcion varchar(100)
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO Detalle_Letras(
+							id_letras,
+							num_letra,
+							dias,
+							fecha_vencimiento,
+							monto,
+							descripcion
+							)
+					VALUES(
+								@id_letras,
+								@num_letra,
+								@dias,
+								@fecha_vencimiento,
+								@monto,
+								@descripcion
+							)
+		SELECT @id_deralle_letras=IDENT_CURRENT('Detalle_Letras')
+		SELECT @id_deralle_letras
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarDetalle_Letras')
+	DROP PROCEDURE sp_EliminarDetalle_Letras
+GO
+CREATE PROCEDURE sp_EliminarDetalle_Letras
+(
+	@id_letras smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			UPDATE Detalle_Letras SET estado = 0 WHERE id_letras = @id_letras
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_EliminarDetalle_LetrasXID')
+	DROP PROCEDURE sp_EliminarDetalle_LetrasXID
+GO
+CREATE PROCEDURE sp_EliminarDetalle_LetrasXID
+(
+	@id_detalle_letras smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+			UPDATE Detalle_Letras SET estado = 0 WHERE id_detalle_letras = @id_detalle_letras
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT>0
+			ROLLBACK TRANSACTION
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarDetalleLetras')
+	DROP PROCEDURE sp_ListarDetalleLetras
+GO
+CREATE PROCEDURE sp_ListarDetalleLetras
+(
+	@id_letras smallint
+)
+AS
+BEGIN
+	BEGIN TRY
+
+	SELECT * FROM Detalle_Letras
+	where id_letras = @id_letras
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarListarCuenta')
+	DROP PROCEDURE sp_ListarListarCuenta
+GO
+CREATE PROCEDURE sp_ListarListarCuenta
+(
+	@id_Almacen smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT 
+		C.razon_social, L.coprobrante, L.fecha_emision, D.fecha_vencimiento, D.monto, 
+		M.descripcion AS 'Moneda', P.nombres, P.ap_paterno, P.ap_materno, C.direccion
+	FROM Detalle_Letras D
+	INNER JOIN Letras L ON (D.id_letras = L.id_letras)
+	INNER JOIN Venta V ON (L.id_venta = V.id_venta)
+	INNER JOIN Cliente C ON (V.id_cliente = C.id_cliente)
+	INNER JOIN Moneda M ON (V.id_moneda = M.id_moneda)
+	INNER JOIN Personal P ON (V.id_personal = P.id_personal)
+	where D.estado = 1 AND V.id_almacen = @id_Almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarCuenta')
+	DROP PROCEDURE sp_ListarCuenta
+GO
+CREATE PROCEDURE sp_ListarCuenta
+(
+	@id_Almacen smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT 
+		C.razon_social, L.coprobrante, L.fecha_emision, D.fecha_vencimiento, D.monto, 
+		M.descripcion AS 'Moneda', P.nombres, P.ap_paterno, P.ap_materno, C.direccion
+	FROM Detalle_Letras D
+	INNER JOIN Letras L ON (D.id_letras = L.id_letras)
+	INNER JOIN Venta V ON (L.id_venta = V.id_venta)
+	INNER JOIN Cliente C ON (V.id_cliente = C.id_cliente)
+	INNER JOIN Moneda M ON (V.id_moneda = M.id_moneda)
+	INNER JOIN Personal P ON (V.id_personal = P.id_personal)
+	where D.estado = 1 AND V.id_almacen = @id_Almacen
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarCuentaXFecha')
+	DROP PROCEDURE sp_ListarCuentaXFecha
+GO
+CREATE PROCEDURE sp_ListarCuentaXFecha
+(
+	@id_Almacen smallint,
+	@fecha_Ini date,
+	@fecha_Fin date
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT C.razon_social, L.coprobrante, L.fecha_emision, D.fecha_vencimiento, D.monto, 
+		M.descripcion AS 'Moneda', P.nombres, P.ap_paterno, P.ap_materno, C.direccion
+	FROM Detalle_Letras D
+	INNER JOIN Letras L ON (D.id_letras = L.id_letras)
+	INNER JOIN Venta V ON (L.id_venta = V.id_venta)
+	INNER JOIN Cliente C ON (V.id_cliente = C.id_cliente)
+	INNER JOIN Moneda M ON (V.id_moneda = M.id_moneda)
+	INNER JOIN Personal P ON (V.id_personal = P.id_personal)
+	where D.estado = 1 AND V.id_almacen = @id_Almacen
+	AND (L.fecha_emision >=@fecha_Ini AND L.fecha_emision <=@fecha_Fin)
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'ListarCuentaXNombre')
+	DROP PROCEDURE ListarCuentaXNombre
+GO
+CREATE PROCEDURE ListarCuentaXNombre
+(
+	@id_Almacen smallint,
+	@nombre varchar(50)
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT C.razon_social, L.coprobrante, L.fecha_emision, D.fecha_vencimiento, D.monto, 
+		M.descripcion AS 'Moneda', P.nombres, P.ap_paterno, P.ap_materno, C.direccion
+	FROM Detalle_Letras D
+	INNER JOIN Letras L ON (D.id_letras = L.id_letras)
+	INNER JOIN Venta V ON (L.id_venta = V.id_venta)
+	INNER JOIN Cliente C ON (V.id_cliente = C.id_cliente)
+	INNER JOIN Moneda M ON (V.id_moneda = M.id_moneda)
+	INNER JOIN Personal P ON (V.id_personal = P.id_personal)
+	where D.estado = 1 AND V.id_almacen = @id_Almacen AND C.razon_social LIKE '%'+ @nombre +'%'
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarCuentaXFechaYNombre')
+	DROP PROCEDURE sp_ListarCuentaXFechaYNombre
+GO
+CREATE PROCEDURE sp_ListarCuentaXFechaYNombre
+(
+	@id_Almacen smallint,
+	@fecha_Ini date,
+	@fecha_Fin date,
+	@nombre varchar(50)
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT 
+		C.razon_social, L.coprobrante, L.fecha_emision, D.fecha_vencimiento, D.monto, 
+		M.descripcion AS 'Moneda', P.nombres, P.ap_paterno, P.ap_materno, C.direccion
+	FROM Detalle_Letras D
+	INNER JOIN Letras L ON (D.id_letras = L.id_letras)
+	INNER JOIN Venta V ON (L.id_venta = V.id_venta)
+	INNER JOIN Cliente C ON (V.id_cliente = C.id_cliente)
+	INNER JOIN Moneda M ON (V.id_moneda = M.id_moneda)
+	INNER JOIN Personal P ON (V.id_personal = P.id_personal)
+	where D.estado = 1 AND V.id_almacen = @id_Almacen AND C.razon_social LIKE '%'+ @nombre +'%'
+	AND (L.fecha_emision >=@fecha_Ini AND L.fecha_emision <=@fecha_Fin)
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+/*
+*************************************************************
+*															*
+*					TABLA PAGOS_LETRAS						*
+*															*
+*************************************************************
+*/
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarCargarLetras')
+	DROP PROCEDURE sp_ListarCargarLetras
+GO
+CREATE PROCEDURE sp_ListarCargarLetras
+(
+	@id_cliente smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT 
+		L.id_letras,
+		T.descripcion AS 'TipoDocumento',
+		L.fecha_emision,
+		L.saldo,
+		L.coprobrante,
+		V.monto_financiado,
+		V.id_moneda,
+		V.id_almacen,
+		V.nro_cuotas,
+	    M.descripcion  As 'Moneda',
+	    V.id_tipodocumento,
+	    V.id_venta,
+	    V.numero_documento,
+	    V.serie_documento
+	FROM Letras L
+	INNER JOIN Venta V ON (L.id_venta = V.id_venta)
+	INNER JOIN Moneda M ON (M.id_moneda = V.id_moneda)
+	INNER JOIN TipoDocumento T ON (V.id_tipodocumento = T.id_tipodocumento)
+	where V.id_cliente = @id_cliente and L.estado = 1
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+
+IF EXISTS(SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_ListarCargarDetalleLetras')
+	DROP PROCEDURE sp_ListarCargarDetalleLetras
+GO
+CREATE PROCEDURE sp_ListarCargarDetalleLetras
+(
+	@id_letras smallint
+	)
+AS
+BEGIN
+	BEGIN TRY
+		SELECT L.*, P.total, P.fecha
+	FROM Detalle_Letras L
+	LEFT JOIN Pagos_Letras P ON (L.id_detalle_letras = P.id_pagos_letras)
+	where L.id_letras = @id_letras
+	END TRY
+	BEGIN CATCH
+		EXEC sp_retornarError
+	END CATCH
+END
+GO
+IF EXISTS( SELECT TOP 1 1 FROM sys.procedures WHERE name = 'sp_RegistrarPagos_Letras')
+	DROP PROCEDURE sp_RegistrarPagos_Letras
+GO
+CREATE PROCEDURE sp_RegistrarPagos_Letras
+	(
+	@id_pagos_letras smallint output,
+	@id_detalle_letras smallint,
+	@id_personal smallint,
+	@fecha smalldatetime,
+	@tipo_cambio smallint,
+	@total smallmoney,
+	@observaciones varchar(100),
+	@tipo_pago char(1)
+)
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO Pagos_Letras(
+							id_detalle_letras,
+							id_personal,
+							fecha,
+							tipo_cambio,
+							total,
+							observaciones,
+							tipo_pago
+							)
+					VALUES(
+								@id_detalle_letras,
+								@id_personal,
+								@fecha,
+								@tipo_cambio,
+								@total,
+								@observaciones,
+								@tipo_pago
+							)
+		SELECT @id_pagos_letras=IDENT_CURRENT('Pagos_Letras')
+		SELECT @id_pagos_letras
 	END TRY
 	BEGIN CATCH
 		EXEC sp_retornarError
@@ -4933,7 +6825,7 @@ GO
 /*
 *************************************************************
 *															*
-*				TABLA NOTA_DEBITO_VENTA					*
+*				TABLA NOTA_DEBITO_VENTA						*
 *															*
 *************************************************************
 */

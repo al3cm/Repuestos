@@ -1,0 +1,13 @@
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\bin\Debug\Reglas_Negocio.exe.config
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\bin\Debug\Reglas_Negocio.exe
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\bin\Debug\Reglas_Negocio.pdb
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\bin\Debug\Reglas_Negocio.xml
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\bin\Debug\Entidades.exe
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\bin\Debug\Entidades.pdb
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\bin\Debug\Entidades.xml
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\obj\Debug\ResolveAssemblyReference.cache
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\obj\Debug\Reglas_Negocio.Resources.resources
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\obj\Debug\Reglas_Negocio.vbproj.GenerateResource.Cache
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\obj\Debug\Reglas_Negocio.exe
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\obj\Debug\Reglas_Negocio.xml
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Reglas_Negocio\obj\Debug\Reglas_Negocio.pdb

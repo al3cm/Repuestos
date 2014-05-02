@@ -31,7 +31,7 @@ Partial Class frmProducto
         Me.Label4 = New System.Windows.Forms.Label
         Me.txtmodelo_producto = New System.Windows.Forms.TextBox
         Me.Label5 = New System.Windows.Forms.Label
-        Me.txtComprobante = New System.Windows.Forms.TextBox
+        Me.txtprocedencia = New System.Windows.Forms.TextBox
         Me.Label6 = New System.Windows.Forms.Label
         Me.cboMarca = New System.Windows.Forms.ComboBox
         Me.Label7 = New System.Windows.Forms.Label
@@ -105,8 +105,9 @@ Partial Class frmProducto
         'txtCodigo_producto
         '
         Me.txtCodigo_producto.Location = New System.Drawing.Point(426, 53)
+        Me.txtCodigo_producto.MaxLength = 15
         Me.txtCodigo_producto.Name = "txtCodigo_producto"
-        Me.txtCodigo_producto.Size = New System.Drawing.Size(204, 20)
+        Me.txtCodigo_producto.Size = New System.Drawing.Size(148, 20)
         Me.txtCodigo_producto.TabIndex = 2
         '
         'Label4
@@ -130,16 +131,16 @@ Partial Class frmProducto
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(347, 92)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(73, 13)
+        Me.Label5.Size = New System.Drawing.Size(70, 13)
         Me.Label5.TabIndex = 8
-        Me.Label5.Text = "Comprobante:"
+        Me.Label5.Text = "Procedencia:"
         '
-        'txtComprobante
+        'txtprocedencia
         '
-        Me.txtComprobante.Location = New System.Drawing.Point(426, 88)
-        Me.txtComprobante.Name = "txtComprobante"
-        Me.txtComprobante.Size = New System.Drawing.Size(204, 20)
-        Me.txtComprobante.TabIndex = 4
+        Me.txtprocedencia.Location = New System.Drawing.Point(426, 88)
+        Me.txtprocedencia.Name = "txtprocedencia"
+        Me.txtprocedencia.Size = New System.Drawing.Size(148, 20)
+        Me.txtprocedencia.TabIndex = 4
         '
         'Label6
         '
@@ -225,7 +226,7 @@ Partial Class frmProducto
         '
         Me.btnSalir.Image = Global.Sistema_Autos.My.Resources.Resources.salir
         Me.btnSalir.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSalir.Location = New System.Drawing.Point(490, 309)
+        Me.btnSalir.Location = New System.Drawing.Point(535, 304)
         Me.btnSalir.Name = "btnSalir"
         Me.btnSalir.Size = New System.Drawing.Size(75, 51)
         Me.btnSalir.TabIndex = 18
@@ -237,7 +238,7 @@ Partial Class frmProducto
         '
         Me.btnBuscar.Image = Global.Sistema_Autos.My.Resources.Resources.buscar
         Me.btnBuscar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnBuscar.Location = New System.Drawing.Point(409, 309)
+        Me.btnBuscar.Location = New System.Drawing.Point(454, 304)
         Me.btnBuscar.Name = "btnBuscar"
         Me.btnBuscar.Size = New System.Drawing.Size(75, 51)
         Me.btnBuscar.TabIndex = 17
@@ -249,7 +250,7 @@ Partial Class frmProducto
         '
         Me.btnEliminar.Image = Global.Sistema_Autos.My.Resources.Resources.eliminar
         Me.btnEliminar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnEliminar.Location = New System.Drawing.Point(328, 309)
+        Me.btnEliminar.Location = New System.Drawing.Point(373, 304)
         Me.btnEliminar.Name = "btnEliminar"
         Me.btnEliminar.Size = New System.Drawing.Size(75, 51)
         Me.btnEliminar.TabIndex = 16
@@ -261,7 +262,7 @@ Partial Class frmProducto
         '
         Me.btnModificar.Image = Global.Sistema_Autos.My.Resources.Resources.modificar
         Me.btnModificar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnModificar.Location = New System.Drawing.Point(247, 309)
+        Me.btnModificar.Location = New System.Drawing.Point(292, 304)
         Me.btnModificar.Name = "btnModificar"
         Me.btnModificar.Size = New System.Drawing.Size(75, 51)
         Me.btnModificar.TabIndex = 15
@@ -273,7 +274,7 @@ Partial Class frmProducto
         '
         Me.btnGrabar.Image = Global.Sistema_Autos.My.Resources.Resources.guardar
         Me.btnGrabar.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnGrabar.Location = New System.Drawing.Point(166, 309)
+        Me.btnGrabar.Location = New System.Drawing.Point(211, 304)
         Me.btnGrabar.Name = "btnGrabar"
         Me.btnGrabar.Size = New System.Drawing.Size(75, 51)
         Me.btnGrabar.TabIndex = 13
@@ -285,7 +286,7 @@ Partial Class frmProducto
         '
         Me.btnNuevo.Image = Global.Sistema_Autos.My.Resources.Resources.nuevo
         Me.btnNuevo.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnNuevo.Location = New System.Drawing.Point(85, 309)
+        Me.btnNuevo.Location = New System.Drawing.Point(130, 304)
         Me.btnNuevo.Name = "btnNuevo"
         Me.btnNuevo.Size = New System.Drawing.Size(75, 51)
         Me.btnNuevo.TabIndex = 14
@@ -397,7 +398,7 @@ Partial Class frmProducto
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.cboMarca)
         Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.txtComprobante)
+        Me.Controls.Add(Me.txtprocedencia)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.txtmodelo_producto)
         Me.Controls.Add(Me.Label4)
@@ -428,7 +429,7 @@ Partial Class frmProducto
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtmodelo_producto As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents txtComprobante As System.Windows.Forms.TextBox
+    Friend WithEvents txtprocedencia As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents cboMarca As System.Windows.Forms.ComboBox
     Friend WithEvents Label7 As System.Windows.Forms.Label

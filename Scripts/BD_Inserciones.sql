@@ -3,6 +3,8 @@
 */
 USE Autos
 GO
+select * from Venta
+select * from Venta_Producto
 /*
 	Menu
 */
@@ -67,12 +69,12 @@ INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(12,2,'Sucursal')
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(13,2,'Almacén')
+--INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
+--	VALUES(14,2,'Precio')
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
-	VALUES(14,2,'Precio')
+	VALUES(14,2,'Conceptos')
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
-	VALUES(15,2,'Conceptos')
-INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
-	VALUES(16,2,'Tipo de Documento')
+	VALUES(15,2,'Tipo de Documento')
 
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(1,3,'Orden de Compra')
@@ -100,6 +102,8 @@ INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(4,5,'Canje de Letras')
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(5,5,'Gastos')
+INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
+	VALUES(6,5,'Pago de Letras')
 	
 	
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
@@ -111,12 +115,17 @@ INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 
 INSERT INTO SubMenu(id_submenu,id_menu,descripcion)
 	VALUES(1,7,'Registro de Ventas')
-
+select * from Almacen_Personal
+select * from Almacen
 
 -- Usuario de prueba 1
 INSERT INTO Personal(nombres,ap_paterno,ap_materno,dni,direccion,telefono,celular,estado,cargo,usuario,clave)
 	VALUES('Administrador','','','','','','','A','A','admin','1234')
-
+	
+INSERT INTO TipoDocumento(id_tipodocumento,abreviatura,descripcion)
+   VALUES ('001','FAC','FACTURA')	
+INSERT INTO TipoDocumento(id_tipodocumento,abreviatura,descripcion)
+   VALUES ('002','BOL','BOLETA')
 
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 	VALUES(1,1,1,1,1,1,1,1)--Iniciar Sesión
@@ -189,6 +198,8 @@ INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,elimina
 	VALUES(5,4,1,1,1,1,1,1)--Canje de Letras
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 	VALUES(5,5,1,1,1,1,1,1)--Gastos
+INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
+	VALUES(5,6,1,1,1,1,1,1)--Pago de Letras
 
 INSERT INTO Personal_SubMenu(id_menu,id_submenu,id_personal,estado,nuevo,eliminar,modificar,buscar)
 	VALUES(6,1,1,1,1,1,1,1)--Ingreso al Kardex

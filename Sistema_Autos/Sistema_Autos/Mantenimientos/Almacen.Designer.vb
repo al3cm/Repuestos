@@ -34,6 +34,8 @@ Partial Class frmAlmacen
         Me.btnModificar = New System.Windows.Forms.Button
         Me.btnGrabar = New System.Windows.Forms.Button
         Me.btnNuevo = New System.Windows.Forms.Button
+        Me.TxtCodigo = New System.Windows.Forms.TextBox
+        Me.Label4 = New System.Windows.Forms.Label
         Me.SuspendLayout()
         '
         'Label1
@@ -75,7 +77,7 @@ Partial Class frmAlmacen
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(21, 87)
+        Me.Label3.Location = New System.Drawing.Point(21, 76)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(66, 13)
         Me.Label3.TabIndex = 4
@@ -83,7 +85,7 @@ Partial Class frmAlmacen
         '
         'txtdescripcion
         '
-        Me.txtdescripcion.Location = New System.Drawing.Point(93, 84)
+        Me.txtdescripcion.Location = New System.Drawing.Point(93, 73)
         Me.txtdescripcion.Name = "txtdescripcion"
         Me.txtdescripcion.Size = New System.Drawing.Size(215, 20)
         Me.txtdescripcion.TabIndex = 5
@@ -95,7 +97,7 @@ Partial Class frmAlmacen
         Me.btnSalir.Location = New System.Drawing.Point(417, 127)
         Me.btnSalir.Name = "btnSalir"
         Me.btnSalir.Size = New System.Drawing.Size(75, 55)
-        Me.btnSalir.TabIndex = 11
+        Me.btnSalir.TabIndex = 13
         Me.btnSalir.Text = "&Salir"
         Me.btnSalir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSalir.UseVisualStyleBackColor = True
@@ -107,7 +109,7 @@ Partial Class frmAlmacen
         Me.btnBuscar.Location = New System.Drawing.Point(336, 127)
         Me.btnBuscar.Name = "btnBuscar"
         Me.btnBuscar.Size = New System.Drawing.Size(75, 55)
-        Me.btnBuscar.TabIndex = 10
+        Me.btnBuscar.TabIndex = 12
         Me.btnBuscar.Text = "&Buscar"
         Me.btnBuscar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnBuscar.UseVisualStyleBackColor = True
@@ -119,7 +121,7 @@ Partial Class frmAlmacen
         Me.btnEliminar.Location = New System.Drawing.Point(255, 127)
         Me.btnEliminar.Name = "btnEliminar"
         Me.btnEliminar.Size = New System.Drawing.Size(75, 55)
-        Me.btnEliminar.TabIndex = 9
+        Me.btnEliminar.TabIndex = 11
         Me.btnEliminar.Text = "&Eliminar"
         Me.btnEliminar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnEliminar.UseVisualStyleBackColor = True
@@ -131,7 +133,7 @@ Partial Class frmAlmacen
         Me.btnModificar.Location = New System.Drawing.Point(174, 127)
         Me.btnModificar.Name = "btnModificar"
         Me.btnModificar.Size = New System.Drawing.Size(75, 55)
-        Me.btnModificar.TabIndex = 8
+        Me.btnModificar.TabIndex = 10
         Me.btnModificar.Text = "&Modificar"
         Me.btnModificar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnModificar.UseVisualStyleBackColor = True
@@ -143,7 +145,7 @@ Partial Class frmAlmacen
         Me.btnGrabar.Location = New System.Drawing.Point(93, 127)
         Me.btnGrabar.Name = "btnGrabar"
         Me.btnGrabar.Size = New System.Drawing.Size(75, 55)
-        Me.btnGrabar.TabIndex = 7
+        Me.btnGrabar.TabIndex = 9
         Me.btnGrabar.Text = "&Grabar"
         Me.btnGrabar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnGrabar.UseVisualStyleBackColor = True
@@ -155,10 +157,27 @@ Partial Class frmAlmacen
         Me.btnNuevo.Location = New System.Drawing.Point(12, 127)
         Me.btnNuevo.Name = "btnNuevo"
         Me.btnNuevo.Size = New System.Drawing.Size(75, 55)
-        Me.btnNuevo.TabIndex = 6
+        Me.btnNuevo.TabIndex = 8
         Me.btnNuevo.Text = "&Nuevo"
         Me.btnNuevo.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnNuevo.UseVisualStyleBackColor = True
+        '
+        'TxtCodigo
+        '
+        Me.TxtCodigo.Location = New System.Drawing.Point(174, 101)
+        Me.TxtCodigo.MaxLength = 3
+        Me.TxtCodigo.Name = "TxtCodigo"
+        Me.TxtCodigo.Size = New System.Drawing.Size(134, 20)
+        Me.TxtCodigo.TabIndex = 7
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(21, 104)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(117, 13)
+        Me.Label4.TabIndex = 6
+        Me.Label4.Text = "Codigo de Facturacion:"
         '
         'frmAlmacen
         '
@@ -166,6 +185,8 @@ Partial Class frmAlmacen
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.ClientSize = New System.Drawing.Size(502, 192)
+        Me.Controls.Add(Me.TxtCodigo)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.btnSalir)
         Me.Controls.Add(Me.btnBuscar)
         Me.Controls.Add(Me.btnEliminar)
@@ -201,4 +222,6 @@ Partial Class frmAlmacen
     Friend WithEvents btnModificar As System.Windows.Forms.Button
     Friend WithEvents btnGrabar As System.Windows.Forms.Button
     Friend WithEvents btnNuevo As System.Windows.Forms.Button
+    Friend WithEvents TxtCodigo As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 End Class

@@ -75,6 +75,7 @@ Public Class frmNota_Credito_Cliente
         Sumar()
     End Sub
     Private Sub btnbuscar_registro_ventas_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnbuscar_registro_ventas.Click
+        frmListado_Orden_Venta.accion = 2
         If frmListado_Orden_Venta.ShowDialog = Windows.Forms.DialogResult.OK Then
             Me.objOrden_Venta = frmListado_Orden_Venta.objOrden_Venta
             CargarVenta()
@@ -256,6 +257,8 @@ Public Class frmNota_Credito_Cliente
                 objKardex.numero_documento = Me.txtnro_documento.Text
                 objKardex.serie_documento = Me.txtserie_documento.Text
                 objKardex.id_tipodocumento = Me.cbotipo_comprobante.SelectedValue
+                objKardex.ruc_dni = Me.TxtDni.Text
+                objKardex.Nombre = Me.txtcliente.Text
                 objKardex.tipo = "S"
                 If MessageBox.Show("¿Desea registrar los datos de este Nota de Credito?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                     objNota_Credito_Cliente = nNota_Credito_Cliente.RegistrarNota_Credito_Cliente(objNota_Credito_Cliente)
@@ -289,7 +292,7 @@ Public Class frmNota_Credito_Cliente
                                     Next
                                     objKardex.stock = objProducto_Almacen.stock
                                     objKardex = nKardex.RegistrarKardex(objKardex)
-                                    objProducto_Almacen.stock = objKardex.stock - objKardex.cantidad
+                                    objProducto_Almacen.stock = objKardex.stock + objKardex.cantidad
                                     nProducto_Almacen.AutorizaStock(objProducto_Almacen)
                                 End If
                             End If
@@ -428,6 +431,7 @@ Public Class frmNota_Credito_Cliente
                 objOrden_Venta.numero_documento = Fila.Item("numero_documento")
                 objOrden_Venta.serie_documento = Fila.Item("serie_documento")
                 objOrden_Venta.id_almacen = Fila.Item("id_almacen")
+                objOrden_Venta.id_Moneda = Fila.Item("id_Moneda")
             Next
             Me.txttipo_documento.Text = "OV/ " & objOrden_Venta.numero_documento
             Me.txt_documento.Text = objOrden_Venta.serie_documento
@@ -437,9 +441,17 @@ Public Class frmNota_Credito_Cliente
             Me.cboAlmacen.SelectedValue = objOrden_Venta.id_almacen
             Tabla = nCliente.Listar(objOrden_Venta.id_cliente)
             For Each Fila As DataRow In Tabla.Rows
+                objCliente.ruc = Fila.Item("ruc")
+                objCliente.dni = Fila.Item("dni")
                 objCliente.razon_social = Fila.Item("razon_social")
+                objCliente.tipo_cliente = Fila.Item("tipo_cliente")
             Next
             Me.txtcliente.Text = objCliente.razon_social
+            If objCliente.tipo_cliente = "N" Then
+                Me.TxtDni.Text = objCliente.dni
+            Else
+                Me.TxtDni.Text = objCliente.ruc
+            End If
             btnModificar.Enabled = True
             btnImprimir.Enabled = True
             btnEliminarOrden.Enabled = True
@@ -466,6 +478,7 @@ Public Class frmNota_Credito_Cliente
                 objOrden_Venta.id_cliente = Fila.Item("id_cliente")
                 objOrden_Venta.id_venta = Fila.Item("id_Venta")
                 objOrden_Venta.total = Fila.Item("Total")
+                objOrden_Venta.id_Moneda = Fila.Item("id_Moneda")
             Next
             Me.TxtIdOrden.Text = objOrden_Venta.id_venta
             Me.txttipo_documento.Text = "OV/ " & objOrden_Venta.numero_documento
@@ -475,11 +488,18 @@ Public Class frmNota_Credito_Cliente
             Tabla = nCliente.Listar(objOrden_Venta.id_cliente)
             For Each Fila As DataRow In Tabla.Rows
                 objCliente.ruc = Fila.Item("ruc")
+                objCliente.dni = Fila.Item("dni")
                 objCliente.razon_social = Fila.Item("razon_social")
+                objCliente.tipo_cliente = Fila.Item("tipo_cliente")
             Next
             Me.txtcliente.Text = objCliente.razon_social
+            If objCliente.tipo_cliente = "N" Then
+                Me.TxtDni.Text = objCliente.dni
+            Else
+                Me.TxtDni.Text = objCliente.ruc
+            End If
             LlenarMoneda()
-            Me.cboMoneda.SelectedValue = objOrden_Venta.id_venta
+            Me.cboMoneda.SelectedValue = objOrden_Venta.id_Moneda
             Me.txtPrecio_neto.Text = objOrden_Venta.subtotal
             Me.txtigv.Text = objOrden_Venta.igv
             Me.TxtTotal.Text = objOrden_Venta.total
@@ -593,6 +613,8 @@ Public Class frmNota_Credito_Cliente
         Me.txtPrecio_neto.Text = ""
         Me.txtigv.Text = ""
         Me.TxtTotal.Text = ""
+        Me.TxtDni.Text = ""
+        Me.TxtDni.Visible = False
         Me.dtpfecha_emision.Value = DateTime.Now()
         Me.dtpfecha_comprobante.Value = DateTime.Now
         Me.dtvListado_Productos.Rows.Clear()

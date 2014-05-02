@@ -90,6 +90,30 @@ Public Class RNAlmacen
         End Try
         Return ds
     End Function
+    Public Function Listar(ByVal objAlmacen As Almacen) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarAlmacenXID", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen ", objAlmacen.id_almacen)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
     Public Function Listar(ByVal Id_sucursal As Integer) As DataTable
         Dim ds As New DataTable
         Dim cn As New SqlConnection(My.Settings.conexion)

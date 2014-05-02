@@ -23,8 +23,6 @@ Partial Class frmActualizar_precios
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.txtCodigo = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
         Me.btnConsultar = New System.Windows.Forms.Button
         Me.cboMarca = New System.Windows.Forms.ComboBox
         Me.Label4 = New System.Windows.Forms.Label
@@ -33,34 +31,29 @@ Partial Class frmActualizar_precios
         Me.Label2 = New System.Windows.Forms.Label
         Me.txtfiltro_producto = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
-        Me.cboUnidad = New System.Windows.Forms.ComboBox
+        Me.cboAlmacen = New System.Windows.Forms.ComboBox
         Me.btnGrabar = New System.Windows.Forms.Button
         Me.btnSalir = New System.Windows.Forms.Button
         Me.btnExportar = New System.Windows.Forms.Button
-        Me.txtProducto = New System.Windows.Forms.TextBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.txtCosto = New System.Windows.Forms.TextBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.txtPrecio = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.TxtidProducto = New System.Windows.Forms.TextBox
         Me.dgvProducto = New System.Windows.Forms.DataGridView
         Me.ChId_Poducto = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChProducto = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.ChCodigo = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.ChUnidad = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.ChMarca = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChId_Almacen = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChAlmacen = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChId_Linea = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChLinea = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChId_Marca = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChMarca = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChStock = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChCosto = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChPrecio = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.CHPrecioTrajecta = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.GroupBox1.SuspendLayout()
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.txtCodigo)
-        Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.btnConsultar)
         Me.GroupBox1.Controls.Add(Me.cboMarca)
         Me.GroupBox1.Controls.Add(Me.Label4)
@@ -69,32 +62,16 @@ Partial Class frmActualizar_precios
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.txtfiltro_producto)
         Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.cboUnidad)
+        Me.GroupBox1.Controls.Add(Me.cboAlmacen)
         Me.GroupBox1.Location = New System.Drawing.Point(13, 13)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(618, 89)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         '
-        'txtCodigo
-        '
-        Me.txtCodigo.Location = New System.Drawing.Point(373, 56)
-        Me.txtCodigo.Name = "txtCodigo"
-        Me.txtCodigo.Size = New System.Drawing.Size(113, 20)
-        Me.txtCodigo.TabIndex = 58
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(324, 59)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(43, 13)
-        Me.Label5.TabIndex = 57
-        Me.Label5.Text = "Código:"
-        '
         'btnConsultar
         '
-        Me.btnConsultar.Location = New System.Drawing.Point(501, 56)
+        Me.btnConsultar.Location = New System.Drawing.Point(333, 54)
         Me.btnConsultar.Name = "btnConsultar"
         Me.btnConsultar.Size = New System.Drawing.Size(75, 23)
         Me.btnConsultar.TabIndex = 56
@@ -138,11 +115,11 @@ Partial Class frmActualizar_precios
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(18, 24)
+        Me.Label2.Location = New System.Drawing.Point(17, 25)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(44, 13)
+        Me.Label2.Size = New System.Drawing.Size(51, 13)
         Me.Label2.TabIndex = 51
-        Me.Label2.Text = "Unidad:"
+        Me.Label2.Text = "Almacén:"
         '
         'txtfiltro_producto
         '
@@ -160,13 +137,13 @@ Partial Class frmActualizar_precios
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Producto:"
         '
-        'cboUnidad
+        'cboAlmacen
         '
-        Me.cboUnidad.FormattingEnabled = True
-        Me.cboUnidad.Location = New System.Drawing.Point(73, 21)
-        Me.cboUnidad.Name = "cboUnidad"
-        Me.cboUnidad.Size = New System.Drawing.Size(121, 21)
-        Me.cboUnidad.TabIndex = 0
+        Me.cboAlmacen.FormattingEnabled = True
+        Me.cboAlmacen.Location = New System.Drawing.Point(73, 21)
+        Me.cboAlmacen.Name = "cboAlmacen"
+        Me.cboAlmacen.Size = New System.Drawing.Size(121, 21)
+        Me.cboAlmacen.TabIndex = 0
         '
         'btnGrabar
         '
@@ -204,71 +181,15 @@ Partial Class frmActualizar_precios
         Me.btnExportar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnExportar.UseVisualStyleBackColor = True
         '
-        'txtProducto
-        '
-        Me.txtProducto.Location = New System.Drawing.Point(14, 125)
-        Me.txtProducto.Name = "txtProducto"
-        Me.txtProducto.Size = New System.Drawing.Size(305, 20)
-        Me.txtProducto.TabIndex = 52
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(11, 110)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(62, 13)
-        Me.Label9.TabIndex = 51
-        Me.Label9.Text = "Producto:"
-        '
-        'txtCosto
-        '
-        Me.txtCosto.Location = New System.Drawing.Point(325, 125)
-        Me.txtCosto.Name = "txtCosto"
-        Me.txtCosto.Size = New System.Drawing.Size(79, 20)
-        Me.txtCosto.TabIndex = 54
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(326, 109)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(65, 13)
-        Me.Label12.TabIndex = 53
-        Me.Label12.Text = "Costo S/.:"
-        '
-        'txtPrecio
-        '
-        Me.txtPrecio.Location = New System.Drawing.Point(410, 125)
-        Me.txtPrecio.Name = "txtPrecio"
-        Me.txtPrecio.Size = New System.Drawing.Size(79, 20)
-        Me.txtPrecio.TabIndex = 56
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(411, 109)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(69, 13)
-        Me.Label6.TabIndex = 55
-        Me.Label6.Text = "Precio S/.:"
-        '
-        'TxtidProducto
-        '
-        Me.TxtidProducto.Location = New System.Drawing.Point(495, 125)
-        Me.TxtidProducto.Name = "TxtidProducto"
-        Me.TxtidProducto.Size = New System.Drawing.Size(35, 20)
-        Me.TxtidProducto.TabIndex = 70
-        '
         'dgvProducto
         '
+        Me.dgvProducto.AllowUserToDeleteRows = False
         Me.dgvProducto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvProducto.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ChId_Poducto, Me.ChProducto, Me.ChCodigo, Me.ChUnidad, Me.ChMarca, Me.ChLinea, Me.ChCosto, Me.ChPrecio})
-        Me.dgvProducto.Location = New System.Drawing.Point(12, 169)
+        Me.dgvProducto.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ChId_Poducto, Me.ChProducto, Me.ChId_Almacen, Me.ChAlmacen, Me.ChId_Linea, Me.ChLinea, Me.ChId_Marca, Me.ChMarca, Me.ChStock, Me.ChCosto, Me.ChPrecio, Me.CHPrecioTrajecta})
+        Me.dgvProducto.Location = New System.Drawing.Point(13, 108)
         Me.dgvProducto.Name = "dgvProducto"
-        Me.dgvProducto.Size = New System.Drawing.Size(619, 224)
+        Me.dgvProducto.ReadOnly = True
+        Me.dgvProducto.Size = New System.Drawing.Size(619, 285)
         Me.dgvProducto.TabIndex = 71
         '
         'ChId_Poducto
@@ -284,17 +205,38 @@ Partial Class frmActualizar_precios
         Me.ChProducto.Name = "ChProducto"
         Me.ChProducto.ReadOnly = True
         '
-        'ChCodigo
+        'ChId_Almacen
         '
-        Me.ChCodigo.HeaderText = "Codigo"
-        Me.ChCodigo.Name = "ChCodigo"
-        Me.ChCodigo.ReadOnly = True
+        Me.ChId_Almacen.HeaderText = "Id_Almacen"
+        Me.ChId_Almacen.Name = "ChId_Almacen"
+        Me.ChId_Almacen.ReadOnly = True
+        Me.ChId_Almacen.Visible = False
         '
-        'ChUnidad
+        'ChAlmacen
         '
-        Me.ChUnidad.HeaderText = "Unidad"
-        Me.ChUnidad.Name = "ChUnidad"
-        Me.ChUnidad.ReadOnly = True
+        Me.ChAlmacen.HeaderText = "Almacen"
+        Me.ChAlmacen.Name = "ChAlmacen"
+        Me.ChAlmacen.ReadOnly = True
+        '
+        'ChId_Linea
+        '
+        Me.ChId_Linea.HeaderText = "Id_Linea"
+        Me.ChId_Linea.Name = "ChId_Linea"
+        Me.ChId_Linea.ReadOnly = True
+        Me.ChId_Linea.Visible = False
+        '
+        'ChLinea
+        '
+        Me.ChLinea.HeaderText = "Linea"
+        Me.ChLinea.Name = "ChLinea"
+        Me.ChLinea.ReadOnly = True
+        '
+        'ChId_Marca
+        '
+        Me.ChId_Marca.HeaderText = "Id_Marca"
+        Me.ChId_Marca.Name = "ChId_Marca"
+        Me.ChId_Marca.ReadOnly = True
+        Me.ChId_Marca.Visible = False
         '
         'ChMarca
         '
@@ -302,11 +244,11 @@ Partial Class frmActualizar_precios
         Me.ChMarca.Name = "ChMarca"
         Me.ChMarca.ReadOnly = True
         '
-        'ChLinea
+        'ChStock
         '
-        Me.ChLinea.HeaderText = "Linea"
-        Me.ChLinea.Name = "ChLinea"
-        Me.ChLinea.ReadOnly = True
+        Me.ChStock.HeaderText = "Stock"
+        Me.ChStock.Name = "ChStock"
+        Me.ChStock.ReadOnly = True
         '
         'ChCosto
         '
@@ -318,6 +260,13 @@ Partial Class frmActualizar_precios
         '
         Me.ChPrecio.HeaderText = "Precio (S/.)"
         Me.ChPrecio.Name = "ChPrecio"
+        Me.ChPrecio.ReadOnly = True
+        '
+        'CHPrecioTrajecta
+        '
+        Me.CHPrecioTrajecta.HeaderText = "Precio Tarjeta (S/.)"
+        Me.CHPrecioTrajecta.Name = "CHPrecioTrajecta"
+        Me.CHPrecioTrajecta.ReadOnly = True
         '
         'frmActualizar_precios
         '
@@ -326,13 +275,6 @@ Partial Class frmActualizar_precios
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.ClientSize = New System.Drawing.Size(716, 405)
         Me.Controls.Add(Me.dgvProducto)
-        Me.Controls.Add(Me.TxtidProducto)
-        Me.Controls.Add(Me.txtPrecio)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.txtCosto)
-        Me.Controls.Add(Me.Label12)
-        Me.Controls.Add(Me.txtProducto)
-        Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.btnSalir)
         Me.Controls.Add(Me.btnExportar)
         Me.Controls.Add(Me.btnGrabar)
@@ -345,11 +287,10 @@ Partial Class frmActualizar_precios
         Me.GroupBox1.PerformLayout()
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents cboUnidad As System.Windows.Forms.ComboBox
+    Friend WithEvents cboAlmacen As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtfiltro_producto As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
@@ -361,22 +302,17 @@ Partial Class frmActualizar_precios
     Friend WithEvents btnGrabar As System.Windows.Forms.Button
     Friend WithEvents btnSalir As System.Windows.Forms.Button
     Friend WithEvents btnExportar As System.Windows.Forms.Button
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents txtCodigo As System.Windows.Forms.TextBox
-    Friend WithEvents txtProducto As System.Windows.Forms.TextBox
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents txtCosto As System.Windows.Forms.TextBox
-    Friend WithEvents Label12 As System.Windows.Forms.Label
-    Friend WithEvents txtPrecio As System.Windows.Forms.TextBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents TxtidProducto As System.Windows.Forms.TextBox
     Friend WithEvents dgvProducto As System.Windows.Forms.DataGridView
     Friend WithEvents ChId_Poducto As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ChProducto As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents ChCodigo As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents ChUnidad As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents ChMarca As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChId_Almacen As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChAlmacen As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChId_Linea As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ChLinea As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChId_Marca As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChMarca As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChStock As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ChCosto As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ChPrecio As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents CHPrecioTrajecta As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

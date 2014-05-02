@@ -91,6 +91,30 @@ Public Class RNTipoDocumento
         End Try
         Return ds
     End Function
+    Public Function Listar(ByVal Id_TipoDocumento As String) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarTipoDocumentoXID", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_tipodocumento", Id_TipoDocumento)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
     Public Function buscarid() As Integer
         Dim id As Integer
         Dim cn As New SqlConnection(My.Settings.conexion)

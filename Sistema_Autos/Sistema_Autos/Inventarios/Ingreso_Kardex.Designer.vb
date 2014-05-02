@@ -89,6 +89,8 @@ Partial Class frmIngreso_Kardex
         Me.LblProcetaje = New System.Windows.Forms.Label
         Me.lblCodigo = New System.Windows.Forms.Label
         Me.txtCantidad = New System.Windows.Forms.TextBox
+        Me.cboCaja = New System.Windows.Forms.ComboBox
+        Me.Label8 = New System.Windows.Forms.Label
         Me.gpbDatos.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -326,9 +328,11 @@ Partial Class frmIngreso_Kardex
         '
         'gpbDatos
         '
+        Me.gpbDatos.Controls.Add(Me.cboCaja)
         Me.gpbDatos.Controls.Add(Me.TxtIdAlmance)
         Me.gpbDatos.Controls.Add(Me.cboTipoPago)
         Me.gpbDatos.Controls.Add(Me.Label3)
+        Me.gpbDatos.Controls.Add(Me.Label8)
         Me.gpbDatos.Controls.Add(Me.TxtIdOrden)
         Me.gpbDatos.Controls.Add(Me.txtMonto_cuota)
         Me.gpbDatos.Controls.Add(Me.Label26)
@@ -384,14 +388,14 @@ Partial Class frmIngreso_Kardex
         '
         'TxtIdOrden
         '
-        Me.TxtIdOrden.Location = New System.Drawing.Point(711, 81)
+        Me.TxtIdOrden.Location = New System.Drawing.Point(114, 100)
         Me.TxtIdOrden.Name = "TxtIdOrden"
         Me.TxtIdOrden.Size = New System.Drawing.Size(66, 20)
         Me.TxtIdOrden.TabIndex = 78
         '
         'txtMonto_cuota
         '
-        Me.txtMonto_cuota.Location = New System.Drawing.Point(711, 54)
+        Me.txtMonto_cuota.Location = New System.Drawing.Point(607, 82)
         Me.txtMonto_cuota.Name = "txtMonto_cuota"
         Me.txtMonto_cuota.Size = New System.Drawing.Size(65, 20)
         Me.txtMonto_cuota.TabIndex = 69
@@ -399,7 +403,7 @@ Partial Class frmIngreso_Kardex
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(622, 60)
+        Me.Label26.Location = New System.Drawing.Point(518, 88)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(83, 13)
         Me.Label26.TabIndex = 68
@@ -407,7 +411,7 @@ Partial Class frmIngreso_Kardex
         '
         'txtmonto_financiado
         '
-        Me.txtmonto_financiado.Location = New System.Drawing.Point(712, 27)
+        Me.txtmonto_financiado.Location = New System.Drawing.Point(717, 30)
         Me.txtmonto_financiado.Name = "txtmonto_financiado"
         Me.txtmonto_financiado.Size = New System.Drawing.Size(65, 20)
         Me.txtmonto_financiado.TabIndex = 65
@@ -415,7 +419,7 @@ Partial Class frmIngreso_Kardex
         'Label25
         '
         Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(599, 30)
+        Me.Label25.Location = New System.Drawing.Point(604, 33)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(112, 13)
         Me.Label25.TabIndex = 64
@@ -488,11 +492,11 @@ Partial Class frmIngreso_Kardex
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(17, 29)
+        Me.Label2.Location = New System.Drawing.Point(11, 29)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(100, 13)
+        Me.Label2.Size = New System.Drawing.Size(109, 13)
         Me.Label2.TabIndex = 53
-        Me.Label2.Text = "Orden de Venta:"
+        Me.Label2.Text = "Orden de Compra:"
         '
         'txtOrden_Venta
         '
@@ -523,7 +527,7 @@ Partial Class frmIngreso_Kardex
         Me.chkigv.AutoSize = True
         Me.chkigv.Checked = True
         Me.chkigv.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkigv.Location = New System.Drawing.Point(573, 84)
+        Me.chkigv.Location = New System.Drawing.Point(293, 100)
         Me.chkigv.Name = "chkigv"
         Me.chkigv.Size = New System.Drawing.Size(92, 17)
         Me.chkigv.TabIndex = 15
@@ -689,6 +693,24 @@ Partial Class frmIngreso_Kardex
         Me.txtCantidad.Size = New System.Drawing.Size(61, 20)
         Me.txtCantidad.TabIndex = 103
         '
+        'cboCaja
+        '
+        Me.cboCaja.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboCaja.FormattingEnabled = True
+        Me.cboCaja.Location = New System.Drawing.Point(639, 57)
+        Me.cboCaja.Name = "cboCaja"
+        Me.cboCaja.Size = New System.Drawing.Size(143, 21)
+        Me.cboCaja.TabIndex = 105
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(590, 61)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(36, 13)
+        Me.Label8.TabIndex = 104
+        Me.Label8.Text = "Caja:"
+        '
         'frmIngreso_Kardex
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -810,4 +832,6 @@ Partial Class frmIngreso_Kardex
     Friend WithEvents lblCodigo As System.Windows.Forms.Label
     Friend WithEvents txtCantidad As System.Windows.Forms.TextBox
     Friend WithEvents TxtIdAlmance As System.Windows.Forms.TextBox
+    Friend WithEvents cboCaja As System.Windows.Forms.ComboBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
 End Class

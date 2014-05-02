@@ -82,6 +82,177 @@ Public Class RNProducto_Almacen
             cn = Nothing
         End Try
     End Sub
+    Sub Eliminar(ByVal id_almacen As String)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_EliminarProducto_Almacen", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen", id_almacen)
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+    End Sub
+    Public Function Listar(ByVal Id_almacen As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarProducto_AlmacenXAlmacen", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function Listar(ByVal Id_almacen As Integer, ByVal Id_linea As Integer, ByVal Id_Marca As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarProducto_AlmacenXAlmacenYLinea", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        cmd.Parameters.AddWithValue("@id_linea", Id_linea)
+        cmd.Parameters.AddWithValue("@id_Marca", id_Marca)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function Listar(ByVal Id_almacen As Integer, ByVal Id_linea As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarProducto_AlmacenXAlmacenConLinea", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        cmd.Parameters.AddWithValue("@id_linea", Id_linea)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function ListarAlmacen(ByVal Id_almacen As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarProducto_AlmacenXAlmacenSinLinea", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function ListarLinea(ByVal Id_almacen As Integer, ByVal Id_linea As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarProducto_AlmacenXLineaYAlmacen", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        cmd.Parameters.AddWithValue("@id_linea", Id_linea)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function ListarMarca(ByVal Id_almacen As Integer, ByVal Id_Marca As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarProducto_AlmacenXAlmacenYMarca", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        cmd.Parameters.AddWithValue("@id_Marca", Id_Marca)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
     Public Function Listar(ByVal objProducto_Almacen As Producto_Almacen) As DataTable
         Dim ds As New DataTable
         Dim cn As New SqlConnection(My.Settings.conexion)

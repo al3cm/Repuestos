@@ -13,7 +13,7 @@ Public Class RNProducto
             .AddWithValue("@nombre_producto", objProducto.nombre_producto)
             .AddWithValue("@codigo_producto", objProducto.codigo_producto)
             .AddWithValue("@modelo_producto", objProducto.modelo_producto)
-            .AddWithValue("@numero_comprobante", objProducto.numero_comprobante)
+            .AddWithValue("@procedencia", objProducto.procedencia)
             .AddWithValue("@precio_compra", objProducto.precio_compra)
             .AddWithValue("@precio_venta", objProducto.precio_venta)
             .AddWithValue("@estado", objProducto.estado)
@@ -51,7 +51,7 @@ Public Class RNProducto
             .AddWithValue("@nombre_producto", objProducto.nombre_producto)
             .AddWithValue("@codigo_producto", objProducto.codigo_producto)
             .AddWithValue("@modelo_producto", objProducto.modelo_producto)
-            .AddWithValue("@numero_comprobante", objProducto.numero_comprobante)
+            .AddWithValue("@procedencia", objProducto.procedencia)
             .AddWithValue("@precio_compra", objProducto.precio_compra)
             .AddWithValue("@precio_venta", objProducto.precio_venta)
             ' Added 2014.03.23 ---------------------------

@@ -45,7 +45,6 @@ Partial Class frmPrincipal
         Me.MonedaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.SucursalToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AlmacénToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.PrecioToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConceptosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.TipoDeDocumentoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ComprasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -62,6 +61,7 @@ Partial Class frmPrincipal
         Me.CuentasPorCobrarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CuentasPorPagarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CanjeDeLetrasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.GastosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.InventariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.IngresoAlKardexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MovimientoDeKardexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -73,7 +73,7 @@ Partial Class frmPrincipal
         Me.ExcelToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.WordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AcercaDeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.GastosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.PagoDeLetrasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.mns_principal.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -131,7 +131,7 @@ Partial Class frmPrincipal
         '
         'MantenimientoToolStripMenuItem
         '
-        Me.MantenimientoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PersonalToolStripMenuItem, Me.AsignarPermisosPersonalToolStripMenuItem, Me.ToolStripSeparator2, Me.ClienteToolStripMenuItem, Me.LineaToolStripMenuItem, Me.MarcaToolStripMenuItem, Me.ProductoToolStripMenuItem, Me.ProveedorToolStripMenuItem, Me.UnidadToolStripMenuItem1, Me.ActualizarPreciosToolStripMenuItem, Me.VehiculoToolStripMenuItem, Me.MonedaToolStripMenuItem, Me.SucursalToolStripMenuItem, Me.AlmacénToolStripMenuItem, Me.PrecioToolStripMenuItem, Me.ConceptosToolStripMenuItem, Me.TipoDeDocumentoToolStripMenuItem})
+        Me.MantenimientoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PersonalToolStripMenuItem, Me.AsignarPermisosPersonalToolStripMenuItem, Me.ToolStripSeparator2, Me.ClienteToolStripMenuItem, Me.LineaToolStripMenuItem, Me.MarcaToolStripMenuItem, Me.ProductoToolStripMenuItem, Me.ProveedorToolStripMenuItem, Me.UnidadToolStripMenuItem1, Me.ActualizarPreciosToolStripMenuItem, Me.VehiculoToolStripMenuItem, Me.MonedaToolStripMenuItem, Me.SucursalToolStripMenuItem, Me.AlmacénToolStripMenuItem, Me.ConceptosToolStripMenuItem, Me.TipoDeDocumentoToolStripMenuItem})
         Me.MantenimientoToolStripMenuItem.Name = "MantenimientoToolStripMenuItem"
         Me.MantenimientoToolStripMenuItem.Size = New System.Drawing.Size(101, 20)
         Me.MantenimientoToolStripMenuItem.Text = "Mantenimiento"
@@ -219,12 +219,6 @@ Partial Class frmPrincipal
         Me.AlmacénToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.AlmacénToolStripMenuItem.Text = "Almacén"
         '
-        'PrecioToolStripMenuItem
-        '
-        Me.PrecioToolStripMenuItem.Name = "PrecioToolStripMenuItem"
-        Me.PrecioToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.PrecioToolStripMenuItem.Text = "Precio"
-        '
         'ConceptosToolStripMenuItem
         '
         Me.ConceptosToolStripMenuItem.Name = "ConceptosToolStripMenuItem"
@@ -295,7 +289,7 @@ Partial Class frmPrincipal
         '
         'CajaToolStripMenuItem
         '
-        Me.CajaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ResumenDeCajaToolStripMenuItem, Me.CuentasPorCobrarToolStripMenuItem, Me.CuentasPorPagarToolStripMenuItem, Me.CanjeDeLetrasToolStripMenuItem, Me.GastosToolStripMenuItem})
+        Me.CajaToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ResumenDeCajaToolStripMenuItem, Me.CuentasPorCobrarToolStripMenuItem, Me.CuentasPorPagarToolStripMenuItem, Me.CanjeDeLetrasToolStripMenuItem, Me.GastosToolStripMenuItem, Me.PagoDeLetrasToolStripMenuItem})
         Me.CajaToolStripMenuItem.Name = "CajaToolStripMenuItem"
         Me.CajaToolStripMenuItem.Size = New System.Drawing.Size(42, 20)
         Me.CajaToolStripMenuItem.Text = "Caja"
@@ -323,6 +317,12 @@ Partial Class frmPrincipal
         Me.CanjeDeLetrasToolStripMenuItem.Name = "CanjeDeLetrasToolStripMenuItem"
         Me.CanjeDeLetrasToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
         Me.CanjeDeLetrasToolStripMenuItem.Text = "Canje de Letras"
+        '
+        'GastosToolStripMenuItem
+        '
+        Me.GastosToolStripMenuItem.Name = "GastosToolStripMenuItem"
+        Me.GastosToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.GastosToolStripMenuItem.Text = "Gastos"
         '
         'InventariosToolStripMenuItem
         '
@@ -393,11 +393,11 @@ Partial Class frmPrincipal
         Me.AcercaDeToolStripMenuItem.Size = New System.Drawing.Size(71, 20)
         Me.AcercaDeToolStripMenuItem.Text = "Acerca de"
         '
-        'GastosToolStripMenuItem
+        'PagoDeLetrasToolStripMenuItem
         '
-        Me.GastosToolStripMenuItem.Name = "GastosToolStripMenuItem"
-        Me.GastosToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
-        Me.GastosToolStripMenuItem.Text = "Gastos"
+        Me.PagoDeLetrasToolStripMenuItem.Name = "PagoDeLetrasToolStripMenuItem"
+        Me.PagoDeLetrasToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.PagoDeLetrasToolStripMenuItem.Text = "Pago de Letras"
         '
         'frmPrincipal
         '
@@ -445,7 +445,6 @@ Partial Class frmPrincipal
     Friend WithEvents MonedaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SucursalToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AlmacénToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents PrecioToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ConceptosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents IniciarSesionToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
@@ -469,4 +468,5 @@ Partial Class frmPrincipal
     Friend WithEvents WordToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EmpresaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents GastosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents PagoDeLetrasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

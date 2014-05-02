@@ -146,8 +146,8 @@ create table Personal -- 1
 	ap_materno varchar(50) not null,
 	dni char(8) not null,
 	direccion varchar(100) not null,
-	telefono char(9) not null,
-	celular char(10) not null,
+	telefono char(9) null,
+	celular char(10) null,
 	estado char(1) not null constraint CK_Usuario_estado check (estado in('A','C','V')),
 	cargo char(1) not null constraint CK_Usuario_cargo check (cargo in('A','V')),
 	usuario varchar(30) not null,
@@ -245,7 +245,7 @@ create table Producto -- 2
 	nombre_producto varchar(50) not null,
 	codigo_producto char(15) not null,
 	modelo_producto varchar(50) not null,
-	numero_comprobante char(10) not null,
+	procedencia varchar(20) not null,
 	estado bit not null constraint DF_Producto_estado default 1,
 	precio_venta smallmoney not null,
 	precio_compra smallmoney not null,
@@ -294,7 +294,7 @@ alter table Personal_SubMenu add constraint FK_Personal_SubMenu_Menu foreign key
 	references Menu
 			on delete no action
 				on update no action
-
+			
 create table Almacen_Personal -- 3
 (
    id_almacen smallint not null,
@@ -430,7 +430,7 @@ create table Venta -- 3
     igv smallmoney not null constraint DF_Ventas_igv default 0.00,
     estado char(1) not null constraint DF_Ventas_estado default 1,
     id_moneda tinyint not null,
-    tipo_pago char(1) not null constraint CK_Ventas_tipo_pago check (tipo_pago in('C','E')),
+    tipo_pago char(1) not null constraint CK_Ventas_tipo_pago check (tipo_pago in('C','E','T','P')),
     pago_inicial smallmoney not null constraint DF_Ventas_pago_inicial default 0.00,
     monto_financiado smallmoney null,
     nro_cuotas int null,
@@ -463,41 +463,23 @@ alter table Venta add constraint FK_Venta_Almacen foreign key (id_almacen)
 	references almacen
 			on delete no action
 				on update no action
-				
-create table Kardex -- 4
+
+create table Cuenta -- 4
 (
-	id_kardex smallint identity(1,1) not null primary key,
-	fecha smalldatetime not null constraint DF_Kardex_fecha default getdate(),
-	nro_documento char(3) not null,
-	serie_documento char(7) not null,
-	id_tipodocumento char(3) not null,
-	id_producto smallint not null,
-	id_almacen smallint not null,
-	stock int not null,
-	cantidad int not null,
-	precio smallmoney not null,
-	Descuentro smallmoney not null,
-	tipo char(1) not null constraint CK_Kardex_tipo check (tipo in('S','E')),
-	total smallmoney not null constraint DF_Kardex_total default 0.0,
-    estado bit not null constraint DF_Kardex_estado default 1
+	id_cuenta smallint identity(1,1) not null primary key,
+	id_compra smallint not null,
+	pago_inicial smallmoney not null constraint DF_Cuenta_pago_inicial default 0.00,
+    monto_financiado smallmoney not null constraint DF_Cuenta_monto_financiado default 0.00,
+    nro_cuotas int  not null constraint DF_Cuenta_nro_cuotas default 0,
+    deudad smallmoney not null constraint DF_Cuenta_deudad default 0.00,
+    estado bit not null constraint DF_Cuenta_estado default 1
 )
 go
-
-alter table Kardex add constraint FK_Kardex_TipoDocumento foreign key (id_tipodocumento)
-	references TipoDocumento
+alter table Cuenta add constraint FK_Cuenta_Compra foreign key (id_compra)
+	references Compra
 			on delete no action
 				on update no action
-
-alter table Kardex add constraint FK_Kardex_Producto foreign key (id_producto)
-	references Producto
-			on delete no action
-				on update no action
-
-alter table Kardex add constraint FK_Kardex_Almacen foreign key (id_almacen)
-	references Almacen
-			on delete no action
-				on update no action
-				
+								
 create table Compra_Producto -- 4
 (
 	id_compra smallint not null,
@@ -600,39 +582,6 @@ alter table Venta_Producto add constraint FK_Venta_Producto_Producto foreign key
 			on delete no action
 				on update no action
 
-create table Movimiento -- 4
-(
-	id_movimiento smallint identity(1,1) not null primary key,
-	id_caja smallint not null,--FK con Detalle_Caja
-	id_operacion smallint not null,--Equivalente a id_Venta
-	id_almacen smallint not null,--FK con Detalle_Caja
-	id_tipodocumento char(3) not null,--A evaluar si es el mismo tipodocumento de venta
-	numero_documento char(3) null,-- A evaluar si es el mismo numero_documento de venta
-	serie_documento char(7) null,-- A evaluar si es el mismo serie_documento de venta
-	tipo_movimiento char(1) not null constraint CK_Movimiento_tipo_movimiento check (tipo_movimiento in('E','S','C')),
-	monto smallmoney not null constraint DF_Movimiento_monto default 0.0, -- A evaluar si es el total en venta
-	fecha_movimiento smalldatetime not null constraint DF_Movimiento_fecha_movimiento default getdate(),
-	tipo_cambio smallint null, --A evaluar si es el mismo tipo_cambio de venta	
-	estado bit not null constraint DF_Movimiento_estado default 1
-)
-go
---Modified 2014.04.11: relación modificada hacia Detalle_Caja
-alter table Movimiento add constraint FK_Movimiento_Detalle_Caja foreign key (id_caja,id_almacen)
-	references Detalle_Caja
-			on delete no action
-				on update no action
-/*
---Deleted 2014.04.11: no guarda relación con almacén, lo hace mediante Detalle_Caja
-alter table Movimiento add constraint FK_Movimiento_Personal foreign key (id_almacen)
-	references Almacen
-			on delete no action
-				on update no action
-*/				
-alter table Movimiento add constraint FK_Movimiento_TipoDocumento foreign key (id_tipodocumento)
-	references TipoDocumento
-			on delete no action
-				on update no action
-								
 create table Detalle_Nota_Credito_Compra -- 4
 (
 	id_nota_credito smallint not null,
@@ -683,7 +632,23 @@ alter table Detalle_Nota_Debito_Compra add constraint FK_Detalle_Nota_Debito_Com
 	references Producto
 			on delete no action
 				on update no action
-								
+
+create table Letras -- 4
+(
+	id_letras smallint identity(1,1) not null primary key,
+	id_venta smallint not null,
+	coprobrante Char(19) not null,
+	fecha_emision smalldatetime not null constraint DF_Letras_fecha_emision default getdate(),
+	tasa real not null constraint DF_Letras_Tasa default 0.00,
+	saldo smallmoney not null constraint DF_Letras_Saldo default 0.00,
+    estado bit not null constraint DF_Letras_estado default 1
+)
+
+alter table Letras add constraint FK_Letras_Venta foreign key (id_venta)
+	references venta
+			on delete no action
+				on update no action
+									
 create table Detalle_Nota_Debito_Venta -- 5
 (
 	id_nota_debito smallint not null,
@@ -732,6 +697,116 @@ alter table Detalle_Nota_Credito_Venta add constraint FK_Detalle_Nota_Credito_Ve
 			
 alter table Detalle_Nota_Credito_Venta add constraint FK_Detalle_Nota_Credito_Venta_Producto foreign key (id_producto)
 	references Producto
+			on delete no action
+				on update no action
+
+create table Detalle_Letras -- 5
+(
+	id_detalle_letras smallint identity(1,1) not null primary key,
+	id_letras smallint not null,
+	num_letra int not null,
+	dias int not null,
+	fecha_vencimiento smalldatetime not null constraint DF_Detalle_Letras_fecha_emision default getdate(),
+	monto smallmoney not null constraint DF_Detalle_Letras_monto default 0.0,
+	descripcion varchar(100) not null,
+    estado bit not null constraint DF_Detalle_Letras_estado default 1
+)
+
+alter table Detalle_Letras add constraint DF_Detalle_Letras_Letras foreign key (id_letras)
+	references Letras
+			on delete no action
+				on update no action
+
+create table Movimiento -- 6
+(
+	id_movimiento smallint identity(1,1) not null primary key,
+	id_caja smallint not null,--FK con Detalle_Caja
+	id_operacion smallint not null,--Equivalente a id_Venta
+	id_almacen smallint not null,--FK con Detalle_Caja
+	id_tipodocumento char(3) not null,--A evaluar si es el mismo tipodocumento de venta
+	numero_documento char(3) null,-- A evaluar si es el mismo numero_documento de venta
+	serie_documento char(7) null,-- A evaluar si es el mismo serie_documento de venta
+	tipo_movimiento char(1) not null constraint CK_Movimiento_tipo_movimiento check (tipo_movimiento in('E','S','C')),
+	monto smallmoney not null constraint DF_Movimiento_monto default 0.0, -- A evaluar si es el total en venta
+	fecha_movimiento smalldatetime not null constraint DF_Movimiento_fecha_movimiento default getdate(),
+	tipo_cambio smallint null, --A evaluar si es el mismo tipo_cambio de venta	
+	estado bit not null constraint DF_Movimiento_estado default 1
+)
+go
+--Modified 2014.04.11: relación modificada hacia Detalle_Caja
+alter table Movimiento add constraint FK_Movimiento_Detalle_Caja foreign key (id_caja,id_almacen)
+	references Detalle_Caja
+			on delete no action
+				on update no action
+/*
+--Deleted 2014.04.11: no guarda relación con almacén, lo hace mediante Detalle_Caja
+alter table Movimiento add constraint FK_Movimiento_Personal foreign key (id_almacen)
+	references Almacen
+			on delete no action
+				on update no action
+*/				
+alter table Movimiento add constraint FK_Movimiento_TipoDocumento foreign key (id_tipodocumento)
+	references TipoDocumento
+			on delete no action
+				on update no action
+
+create table Pagos_Letras -- 6
+(
+	id_pagos_letras smallint identity(1,1) not null primary key,
+	id_detalle_letras smallint not null,
+	id_personal smallint not null,
+	fecha smalldatetime not null constraint DF_Pagos_Letras_fecha default getdate(),
+	tipo_cambio smallint not null,
+	total smallmoney not null constraint DF_Pagos_Letras_total default 0.0,
+	observaciones varchar(100) not null,
+	tipo_pago char(1) not null constraint CK_Pagos_Letras_tipo_pago check (tipo_pago in('T','E')),
+    estado bit not null constraint DF_Pagos_Letras_estado default 1
+)
+											
+alter table Pagos_Letras add constraint FK_Pagos_Letras_Personal foreign key (id_personal)
+	references Personal
+			on delete no action
+				on update no action
+						
+create table Kardex -- 7
+(
+	id_kardex smallint identity(1,1) not null primary key,
+	fecha smalldatetime not null constraint DF_Kardex_fecha default getdate(),
+	nro_documento char(3) not null,
+	serie_documento char(7) not null,
+	id_tipodocumento char(3) not null,
+	id_producto smallint not null,
+	id_almacen smallint not null,
+	id_movimiento smallint not null,
+	stock int not null,
+	cantidad int not null,
+	precio smallmoney not null,
+	Descuentro smallmoney not null,
+	tipo char(1) not null constraint CK_Kardex_tipo check (tipo in('S','E','V','C','P','D')),
+	total smallmoney not null constraint DF_Kardex_total default 0.0,
+	ruc_dni varchar(11) not null,
+	Nombre varchar(100) not null,
+    estado bit not null constraint DF_Kardex_estado default 1
+)
+go
+
+alter table Kardex add constraint FK_Kardex_TipoDocumento foreign key (id_tipodocumento)
+	references TipoDocumento
+			on delete no action
+				on update no action
+
+alter table Kardex add constraint FK_Kardex_Producto foreign key (id_producto)
+	references Producto
+			on delete no action
+				on update no action
+
+alter table Kardex add constraint FK_Kardex_Almacen foreign key (id_almacen)
+	references Almacen
+			on delete no action
+				on update no action
+
+alter table Kardex add constraint FK_Kardex_Movimiento foreign key (id_movimiento)
+	references Movimiento
 			on delete no action
 				on update no action
 

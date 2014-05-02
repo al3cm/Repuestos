@@ -85,6 +85,7 @@ Partial Class frmNota_Debito_Proveedor
         Me.txtProducto = New System.Windows.Forms.TextBox
         Me.Label16 = New System.Windows.Forms.Label
         Me.btnModificar = New System.Windows.Forms.Button
+        Me.TxtRuc = New System.Windows.Forms.TextBox
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -146,6 +147,7 @@ Partial Class frmNota_Debito_Proveedor
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TxtRuc)
         Me.GroupBox2.Controls.Add(Me.chkigv)
         Me.GroupBox2.Controls.Add(Me.txtsaldo_pendiente)
         Me.GroupBox2.Controls.Add(Me.Label4)
@@ -663,6 +665,13 @@ Partial Class frmNota_Debito_Proveedor
         Me.btnModificar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnModificar.UseVisualStyleBackColor = True
         '
+        'TxtRuc
+        '
+        Me.TxtRuc.Location = New System.Drawing.Point(263, 56)
+        Me.TxtRuc.Name = "TxtRuc"
+        Me.TxtRuc.Size = New System.Drawing.Size(66, 20)
+        Me.TxtRuc.TabIndex = 94
+        '
         'frmNota_Debito_Proveedor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -779,4 +788,5 @@ Partial Class frmNota_Debito_Proveedor
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents btnModificar As System.Windows.Forms.Button
     Friend WithEvents chkigv As System.Windows.Forms.CheckBox
+    Friend WithEvents TxtRuc As System.Windows.Forms.TextBox
 End Class

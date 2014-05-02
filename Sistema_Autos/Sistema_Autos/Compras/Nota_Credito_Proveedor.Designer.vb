@@ -91,6 +91,7 @@ Partial Class frmNota_Credito_Proveedor
         Me.Chdescuento = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChTotal = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.TxtidProducto = New System.Windows.Forms.TextBox
+        Me.TxtRuc = New System.Windows.Forms.TextBox
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -154,6 +155,7 @@ Partial Class frmNota_Credito_Proveedor
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TxtRuc)
         Me.GroupBox2.Controls.Add(Me.rbtKardex)
         Me.GroupBox2.Controls.Add(Me.rbtDevolucion)
         Me.GroupBox2.Controls.Add(Me.txtsaldo_pendiente)
@@ -725,6 +727,13 @@ Partial Class frmNota_Credito_Proveedor
         Me.TxtidProducto.Size = New System.Drawing.Size(48, 20)
         Me.TxtidProducto.TabIndex = 110
         '
+        'TxtRuc
+        '
+        Me.TxtRuc.Location = New System.Drawing.Point(382, 23)
+        Me.TxtRuc.Name = "TxtRuc"
+        Me.TxtRuc.Size = New System.Drawing.Size(66, 20)
+        Me.TxtRuc.TabIndex = 95
+        '
         'frmNota_Credito_Proveedor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -851,4 +860,5 @@ Partial Class frmNota_Credito_Proveedor
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents rbtKardex As System.Windows.Forms.RadioButton
     Friend WithEvents rbtDevolucion As System.Windows.Forms.RadioButton
+    Friend WithEvents TxtRuc As System.Windows.Forms.TextBox
 End Class

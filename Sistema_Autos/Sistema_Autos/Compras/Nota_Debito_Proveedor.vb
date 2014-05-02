@@ -36,7 +36,7 @@ Public Class frmNota_Debito_Proveedor
             MessageBox.Show(ex.Message)
         End Try
     End Sub
-    Private Sub dtvListado_Productos_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dtvListado_Productos.DoubleClick
+    Private Sub dtvListado_Productos_CellContentDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dtvListado_Productos.CellContentDoubleClick
         Dim DGV As DataGridView
         Dim Id_Producto As Integer
         Dim Producto As String
@@ -73,6 +73,7 @@ Public Class frmNota_Debito_Proveedor
     End Sub
    
     Private Sub btnbuscar_proveedor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnbuscar_proveedor.Click
+        frmListar_Orden_Compra.accion = 2
         If frmListar_Orden_Compra.ShowDialog = Windows.Forms.DialogResult.OK Then
             Me.objOrden_Compra = frmListar_Orden_Compra.objOrden_Compra
             CargarCompra()
@@ -258,7 +259,9 @@ Public Class frmNota_Debito_Proveedor
                 objKardex.numero_documento = Me.txtnro_documento.Text
                 objKardex.serie_documento = Me.txtserie_documento.Text
                 objKardex.id_tipodocumento = Me.cbotipo_documento.SelectedValue
-                objKardex.tipo = "E"
+                objKardex.ruc_dni = Me.TxtRuc.Text()
+                objKardex.Nombre = Me.txtproveedor.Text
+                objKardex.tipo = "P"
                 If MessageBox.Show("¿Desea registrar los datos de este Nota de Debito?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                     objNota_Debito_Proveedor = nNota_Debito_Proveedor.RegistrarNota_Debito_Proveedor(objNota_Debito_Proveedor)
                     Dim Dgv As DataGridView
@@ -291,7 +294,7 @@ Public Class frmNota_Debito_Proveedor
                                     Next
                                     objKardex.stock = objProducto_Almacen.stock
                                     objKardex = nKardex.RegistrarKardex(objKardex)
-                                    objProducto_Almacen.stock = objKardex.stock + objKardex.cantidad
+                                    objProducto_Almacen.stock = objKardex.stock - objKardex.cantidad
                                     nProducto_Almacen.AutorizaStock(objProducto_Almacen)
                                 End If
                             End If
@@ -408,6 +411,7 @@ Public Class frmNota_Debito_Proveedor
                 objOrden_Compra.id_proveedor = Fila.Item("id_proveedor")
                 objOrden_Compra.numero_documento = Fila.Item("numero_documento")
                 objOrden_Compra.serie_documento = Fila.Item("serie_documento")
+                objOrden_Compra.id_Moneda = Fila.Item("id_Moneda")
             Next
             Me.txt_documento.Text = "OC/ " & objOrden_Compra.numero_documento & " - " & objOrden_Compra.serie_documento
             LlenarMoneda()
@@ -415,8 +419,10 @@ Public Class frmNota_Debito_Proveedor
             Me.cboAlmacen.SelectedValue = objOrden_Compra.id_almacen
             Tabla = nProveedor.Listar(objOrden_Compra.id_proveedor)
             For Each Fila As DataRow In Tabla.Rows
+                objProveedor.ruc = Fila.Item("ruc")
                 objProveedor.razon_social = Fila.Item("razon_social")
             Next
+            Me.TxtRuc.Text = objProveedor.ruc
             Me.txtproveedor.Text = objProveedor.razon_social
             Tabla = nOrden_Compra.ListarDetalle(objOrden_Compra.id_compra)
             ToDescuento = 0.0
@@ -465,6 +471,7 @@ Public Class frmNota_Debito_Proveedor
                 objOrden_Compra.id_proveedor = Fila.Item("id_proveedor")
                 objOrden_Compra.id_compra = Fila.Item("id_compra")
                 objOrden_Compra.total = Fila.Item("Total")
+                objOrden_Compra.id_Moneda = Fila.Item("id_Moneda")
             Next
             Me.TxtIdOrden.Text = objOrden_Compra.id_compra
             Me.txt_documento.Text = "OV/ " & objOrden_Compra.numero_documento & " - " & objOrden_Compra.serie_documento
@@ -474,9 +481,10 @@ Public Class frmNota_Debito_Proveedor
                 objProveedor.ruc = Fila.Item("ruc")
                 objProveedor.razon_social = Fila.Item("razon_social")
             Next
+            Me.TxtRuc.Text = objProveedor.ruc
             Me.txtproveedor.Text = objProveedor.razon_social
             LlenarMoneda()
-            Me.cboMoneda.SelectedValue = objOrden_Compra.id_compra
+            Me.cboMoneda.SelectedValue = objOrden_Compra.id_Moneda
             Me.txtPrecio_neto.Text = objOrden_Compra.subtotal
             Me.txtigv.Text = objOrden_Compra.igv
             Me.TxtTotal.Text = objOrden_Compra.total
@@ -592,6 +600,8 @@ Public Class frmNota_Debito_Proveedor
         Me.txtPrecio_neto.Text = ""
         Me.txtigv.Text = ""
         Me.TxtTotal.Text = ""
+        Me.TxtRuc.Text = ""
+        Me.TxtRuc.Visible = False
         Me.dtpfecha_emision.Value = DateTime.Now()
         Me.dtvListado_Productos.Rows.Clear()
         Me.btnNuevo.Enabled = True

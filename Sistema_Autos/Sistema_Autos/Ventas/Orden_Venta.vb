@@ -5,15 +5,20 @@ Public Class frmOrden_Venta
     Dim nTipoDocumento As New RNTipoDocumento
     Dim nSucursal As New RNSucursal
     Dim nMoneda As New RNMoneda
-    Dim nAlmacen As New RNAlmacen
     Dim nUnidad As New RNUnidad
+    Dim nProducto_Almacen As New RNProducto_Almacen
+    Dim nAlmacen As New RNAlmacen
     Dim nPersonal As New RNPersonal
     Dim nClientes As New RNCliente
     Dim nOrden_Venta As New RNOrden_Venta
     Dim objOrden_Venta As New Orden_Venta
     Dim objClientes As New Cliente
     Dim objPersonal As New Personal
+    Dim objAlmacen As New Almacen
+    Dim objProducto_Almacen As New Producto_Almacen
     Dim objProducto As New Producto
+    Dim Cantidad As Integer
+    Dim Tabla As DataTable
     Private Sub frmOrden_Venta_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Limpiar()
     End Sub
@@ -26,15 +31,17 @@ Public Class frmOrden_Venta
                 Me.Close()
             End If
             ' -----------------------------------------------------------------
-
-            Limpiar()
+            Cantidad = nPersonal.ContraAlmacen_Personal(id_Vededor)
             LlenaCombos()
+            Limpiar()
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
     End Sub
     Private Sub cboSucursal_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboSucursal.SelectedIndexChanged
-        Me.cboAlmacen.Enabled = True
+        If Cantidad <> 1 Then
+            Me.cboAlmacen.Enabled = True
+        End If
         LlenaAlmacen()
     End Sub
     Private Sub cboTipoPago_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboTipoPago.SelectedIndexChanged
@@ -93,13 +100,13 @@ Public Class frmOrden_Venta
             If Tipo = "N" Then
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_documento.SelectedValue = "001" 'Modified 2014.04.12
+                    Me.cboTipo_documento.SelectedValue = "002" 'Modified 2014.04.12
                 End If
                 ' Me.cboTipo_documento.Enabled = False 'Added 2014.04.12 por revisar
             Else
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_documento.SelectedValue = "002" 'Modified 2014.04.12
+                    Me.cboTipo_documento.SelectedValue = "001" 'Modified 2014.04.12
                 End If
                 Me.txtdocumento.Text = objClientes.ruc
                 'Me.cboTipo_documento.Enabled = True 'Added 2014.04.12 por revisar
@@ -119,7 +126,11 @@ Public Class frmOrden_Venta
             Me.txtCantidad.Enabled = True
             Me.TxtidProducto.Text = objProducto.id_producto
             Me.txtCantidad.Text = "0"
-            Me.txtPrecio_Unitario.Text = objProducto.precio_venta
+            If Me.cboTipoPago.SelectedValue = "T" Then
+                Me.txtPrecio_Unitario.Text = Format(objProducto.precio_venta * Cambio_Trajecta, "##0.00")
+            Else
+                Me.txtPrecio_Unitario.Text = objProducto.precio_venta
+            End If
             Me.txtDescuento.Enabled = True
             Me.txtDescuento.Text = "0"
             Me.btnAgregar.Enabled = True
@@ -213,6 +224,7 @@ Public Class frmOrden_Venta
     End Sub
 
     Private Sub btnBuscar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBuscar.Click
+        frmListado_Orden_Venta.accion = 1
         If frmListado_Orden_Venta.ShowDialog = Windows.Forms.DialogResult.OK Then
             Me.objOrden_Venta = frmListado_Orden_Venta.objOrden_Venta
             Cargar()
@@ -239,6 +251,7 @@ Public Class frmOrden_Venta
         Dim Procetaje As Double
         Dim Descuento As Double
         Dim Total As Double
+        Dim Stock As Integer
         Dim estado As Boolean
         Dim TextoError As String = ""
         estado = True
@@ -260,12 +273,22 @@ Public Class frmOrden_Venta
                 For i As Integer = 0 To Dgv.RowCount - 1
                     If Id_Producto = CDbl(Dgv.Item(0, i).Value) Then
                         estado = False
-                        TextoError = "- Producto Ya Igresado"
+                        TextoError = "- Producto Ya Ingresado"
                     End If
                 Next
             Catch ex As Exception
                 MsgBox(ex.Message.ToString)
             End Try
+        End If
+        objProducto_Almacen.id_producto = Id_Producto
+        objProducto_Almacen.id_almacen = Me.cboAlmacen.SelectedValue
+        Tabla = nProducto_Almacen.Listar(objProducto_Almacen)
+        For Each Fila As DataRow In Tabla.Rows
+            Stock = Fila.Item("stock")
+        Next
+        If Stock < Cantidad Then
+            estado = False
+            TextoError = "- NO TIENE EN STOCK"
         End If
         If estado Then
             Me.dtvListado_Productos.Rows.Add(Id_Producto, Producto, Cantidad, Unidad, costo, Descuento, Total)
@@ -295,11 +318,17 @@ Public Class frmOrden_Venta
     End Sub
     Private Sub txtinicial_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtinicial.KeyPress
         If Asc(e.KeyChar) = 13 Then
-            Dim financiado As Double
-            financiado = Me.TxtTotal.Text - Me.txtinicial.Text
-            Me.txtmonto_financiado.Text = financiado
-            Me.txtnro_cuotas.Enabled = True
-            Me.txtnro_cuotas.Focus()
+            If Val(Me.txtinicial.Text) < Val(Me.TxtTotal.Text) Then
+                Dim financiado As Double
+                financiado = Me.TxtTotal.Text - Me.txtinicial.Text
+                Me.txtmonto_financiado.Text = Format(financiado, "##0.00")
+                Me.txtnro_cuotas.Enabled = True
+                Me.txtnro_cuotas.Focus()
+            Else
+                MessageBox.Show("El Monto Inicial deber ser menor al Total")
+                Me.txtinicial.Text = ""
+                Me.txtinicial.Focus()
+            End If
         End If
     End Sub
     Private Sub txtnro_cuotas_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtnro_cuotas.KeyPress
@@ -393,6 +422,7 @@ Public Class frmOrden_Venta
         Try
             'Modified 2014.03.26
             objOrden_Venta.id_venta = Me.lblCodigo.Text
+            objOrden_Venta.fecha_emision = Me.dtpFecha.Value
             objOrden_Venta.total = Me.TxtTotal.Text.Trim
             objOrden_Venta.subtotal = Me.txtPrecio_neto.Text.Trim
             objOrden_Venta.igv = Me.txtigv.Text.Trim
@@ -499,7 +529,8 @@ Public Class frmOrden_Venta
             Me.txtigv.Text = objOrden_Venta.igv
             Me.TxtTotal.Text = objOrden_Venta.total
             Me.txtinicial.Text = objOrden_Venta.pago_inicial
-            Tabla = nAlmacen.Listar(objOrden_Venta.id_almacen)
+            objAlmacen.id_almacen = objOrden_Venta.id_almacen
+            Tabla = nAlmacen.Listar(objAlmacen)
             For Each Fila As DataRow In Tabla.Rows
                 objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
             Next
@@ -528,15 +559,16 @@ Public Class frmOrden_Venta
             If objClientes.tipo_cliente = "N" Then
                 Me.txtdocumento.Text = objClientes.dni
                 If TipoDocumento.Rows.Count > 0 Then
-                    Me.cboTipo_documento.SelectedValue = "001" 'Modified 2014.04.12
-                End If
-                ' Me.cboTipo_documento.Enabled = False 'Added 2014.04.12 por revisar
-            Else
-                Me.txtdocumento.Text = objClientes.dni
-                If TipoDocumento.Rows.Count > 0 Then
                     Me.cboTipo_documento.SelectedValue = "002" 'Modified 2014.04.12
                 End If
-                Me.txtdocumento.Text = objClientes.ruc
+
+                ' Me.cboTipo_documento.Enabled = False 'Added 2014.04.12 por revisar
+            Else
+                'Me.txtdocumento.Text = objClientes.ruc
+                If TipoDocumento.Rows.Count > 0 Then
+                    Me.cboTipo_documento.SelectedValue = "001" 'Modified 2014.04.12
+                End If
+                Me.txtdocumento.Text = objClientes.dni
                 ' Me.cboTipo_documento.Enabled = True 'Added 2014.04.12 ' por revisar
             End If
             LenarPersonal()
@@ -572,8 +604,10 @@ Public Class frmOrden_Venta
         Me.txtNotas.Enabled = Estado
         Me.cboMoneda.Enabled = Estado
         Me.cboTipoPago.Enabled = Estado
-        Me.cboSucursal.Enabled = Estado
-        Me.cboAlmacen.Enabled = Estado
+        If Cantidad <> 1 Then
+            Me.cboSucursal.Enabled = Estado
+            Me.cboAlmacen.Enabled = Estado
+        End If
         Me.btnAgregar.Enabled = Estado
         Me.dtvListado_Productos.Enabled = Estado
         Me.btnFiltro_Producto.Enabled = Estado
@@ -610,7 +644,7 @@ Public Class frmOrden_Venta
         Me.txtMonto_descuento.Text = Format(Descuento, "##0.00")
         Me.txtigv.Text = Format(Igv, "##0.00")
         Me.TxtTotal.Text = Format(Total, "##0.00")
-        If Me.cboTipoPago.SelectedValue = "E" Then
+        If Me.cboTipoPago.SelectedValue <> "C" Then
             Me.txtinicial.Text = Format(Total, "##0.00")
             Me.txtmonto_financiado.Text = 0.0
             Me.txtnro_cuotas.Text = 0
@@ -626,6 +660,10 @@ Public Class frmOrden_Venta
     Sub Limpiar()
         Habilitar(True)
         BuscarSerie()
+        If Cantidad = 1 Then
+            Me.cboAlmacen.Enabled = False
+            Me.cboSucursal.Enabled = False
+        End If
         Me.txtCliente.Enabled = False
         Me.txtdireccion.Enabled = False
         Me.txtProducto.Enabled = False
@@ -643,16 +681,33 @@ Public Class frmOrden_Venta
         Me.cboTipo_documento.Enabled = False
         Me.cboVendedor.Enabled = False
         Me.txtsubtotal.Enabled = False
+        Me.lblCodigo.Visible = False
         Me.lblCodigo.Text = ""
         Me.txtCliente.Text = ""
         Me.txtdireccion.Text = ""
         Me.Txtid_Cliente.Text = ""
         Me.txtdocumento.Text = ""
         Me.cboTipo_documento.SelectedValue = "1"
-        Me.cboVendedor.SelectedValue = "0"
+        Me.cboVendedor.SelectedValue = id_Vededor
         Me.cboMoneda.SelectedValue = "1"
         Me.cboTipoPago.SelectedValue = "0"
         Me.cboUnidad.SelectedValue = "0"
+        If Cantidad = 1 Then
+            Tabla = nPersonal.ListarAlmacen_Personal(id_Vededor)
+            For Each Fila As DataRow In Tabla.Rows
+                objOrden_Venta.id_almacen = Fila.Item("id_almacen")
+                objAlmacen.id_almacen = Fila.Item("id_almacen")
+            Next
+            Tabla = nAlmacen.Listar(objAlmacen)
+            For Each Fila As DataRow In Tabla.Rows
+                objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
+            Next
+            Me.cboSucursal.SelectedValue = objOrden_Venta.id_sucursal
+            Me.cboAlmacen.SelectedValue = objOrden_Venta.id_almacen
+        Else
+            Me.cboAlmacen.SelectedValue = "1"
+            Me.cboSucursal.SelectedValue = "1"
+        End If
         Me.txtProducto.Text = ""
         Me.txtCantidad.Text = ""
         Me.txtPrecio_Unitario.Text = ""
@@ -704,7 +759,19 @@ Public Class frmOrden_Venta
             Me.cboSucursal.ValueMember = "id_sucursal"
             Me.cboSucursal.DisplayMember = "descripcion"
             Me.cboSucursal.DataSource = Sucursales
-            Me.cboSucursal.SelectedValue = 1
+            If Cantidad = 1 Then
+                Tabla = nPersonal.ListarAlmacen_Personal(id_Vededor)
+                For Each Fila As DataRow In Tabla.Rows
+                    objOrden_Venta.id_almacen = Fila.Item("id_almacen")
+                Next
+                Tabla = nAlmacen.Listar(objOrden_Venta.id_almacen)
+                For Each Fila As DataRow In Tabla.Rows
+                    objOrden_Venta.id_sucursal = Fila.Item("id_sucursal")
+                Next
+                Me.cboSucursal.SelectedValue = objOrden_Venta.id_sucursal
+            Else
+                Me.cboSucursal.SelectedValue = "1"
+            End If
             LlenaAlmacen()
             Dim Moneda As DataTable = nMoneda.Listar
             Me.cboMoneda.ValueMember = "id_moneda"
@@ -728,6 +795,7 @@ Public Class frmOrden_Venta
             TipoPago.Rows.Add("0", "Elija una opción")
             TipoPago.Rows.Add("E", "EFECTIVO")
             TipoPago.Rows.Add("C", "CREDITO")
+            TipoPago.Rows.Add("T", "TARJETA")
             Me.cboTipoPago.DataSource = TipoPago
             Me.cboTipoPago.ValueMember = "ID"
             Me.cboTipoPago.DisplayMember = "VALOR"
@@ -754,6 +822,7 @@ Public Class frmOrden_Venta
             Me.cboAlmacen.DisplayMember = "descripcion"
             Me.cboAlmacen.SelectedValue = "0"
             Me.btnGrabar.Enabled = False
+            Me.btnAgregar.Enabled = False
         End If
     End Sub
     Sub LenarDocumento()
@@ -777,7 +846,7 @@ Public Class frmOrden_Venta
     Sub LenarPersonal()
         Dim Personal As DataTable = nPersonal.Listar()
         Me.cboVendedor.ValueMember = "id_personal"
-        Me.cboVendedor.DisplayMember = "nombres"
+        Me.cboVendedor.DisplayMember = "NombreCompleto"
         Me.cboVendedor.DataSource = Personal
     End Sub
     Sub LlenaUnidad(ByVal Id_Unidad As Integer)

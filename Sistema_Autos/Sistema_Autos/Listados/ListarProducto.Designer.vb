@@ -36,11 +36,16 @@ Partial Class frmListarProducto
         Me.chprecio_venta = New System.Windows.Forms.ColumnHeader
         Me.btnAceptar = New System.Windows.Forms.Button
         Me.btnCancelar = New System.Windows.Forms.Button
+        Me.chProcedencia = New System.Windows.Forms.ColumnHeader
+        Me.txtbuscar_procedencia = New System.Windows.Forms.TextBox
+        Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.txtbuscar_procedencia)
+        Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.txtbuscar_codigo)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.txtbuscar_nombre)
@@ -54,15 +59,15 @@ Partial Class frmListarProducto
         '
         'txtbuscar_codigo
         '
-        Me.txtbuscar_codigo.Location = New System.Drawing.Point(460, 32)
+        Me.txtbuscar_codigo.Location = New System.Drawing.Point(316, 32)
         Me.txtbuscar_codigo.Name = "txtbuscar_codigo"
-        Me.txtbuscar_codigo.Size = New System.Drawing.Size(175, 20)
+        Me.txtbuscar_codigo.Size = New System.Drawing.Size(128, 20)
         Me.txtbuscar_codigo.TabIndex = 3
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(349, 35)
+        Me.Label2.Location = New System.Drawing.Point(205, 35)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(105, 13)
         Me.Label2.TabIndex = 2
@@ -70,15 +75,15 @@ Partial Class frmListarProducto
         '
         'txtbuscar_nombre
         '
-        Me.txtbuscar_nombre.Location = New System.Drawing.Point(76, 32)
+        Me.txtbuscar_nombre.Location = New System.Drawing.Point(49, 32)
         Me.txtbuscar_nombre.Name = "txtbuscar_nombre"
-        Me.txtbuscar_nombre.Size = New System.Drawing.Size(267, 20)
+        Me.txtbuscar_nombre.Size = New System.Drawing.Size(141, 20)
         Me.txtbuscar_nombre.TabIndex = 1
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(23, 35)
+        Me.Label1.Location = New System.Drawing.Point(6, 35)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(47, 13)
         Me.Label1.TabIndex = 0
@@ -89,13 +94,13 @@ Partial Class frmListarProducto
         Me.lstProductos.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lstProductos.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chId_codigo, Me.chNombre, Me.chCodigo_Producto, Me.chmodelo, Me.chprecio_compra, Me.chprecio_venta})
+        Me.lstProductos.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chId_codigo, Me.chNombre, Me.chCodigo_Producto, Me.chmodelo, Me.chProcedencia, Me.chprecio_compra, Me.chprecio_venta})
         Me.lstProductos.FullRowSelect = True
         Me.lstProductos.GridLines = True
         Me.lstProductos.HideSelection = False
         Me.lstProductos.Location = New System.Drawing.Point(13, 98)
         Me.lstProductos.Name = "lstProductos"
-        Me.lstProductos.Size = New System.Drawing.Size(660, 322)
+        Me.lstProductos.Size = New System.Drawing.Size(662, 322)
         Me.lstProductos.TabIndex = 1
         Me.lstProductos.UseCompatibleStateImageBehavior = False
         Me.lstProductos.View = System.Windows.Forms.View.Details
@@ -103,12 +108,12 @@ Partial Class frmListarProducto
         'chId_codigo
         '
         Me.chId_codigo.Text = "Código"
-        Me.chId_codigo.Width = 50
+        Me.chId_codigo.Width = 45
         '
         'chNombre
         '
         Me.chNombre.Text = "Nombre"
-        Me.chNombre.Width = 160
+        Me.chNombre.Width = 121
         '
         'chCodigo_Producto
         '
@@ -118,7 +123,7 @@ Partial Class frmListarProducto
         'chmodelo
         '
         Me.chmodelo.Text = "Modelo"
-        Me.chmodelo.Width = 130
+        Me.chmodelo.Width = 90
         '
         'chprecio_compra
         '
@@ -148,12 +153,33 @@ Partial Class frmListarProducto
         Me.btnCancelar.Text = "&Cancelar"
         Me.btnCancelar.UseVisualStyleBackColor = True
         '
+        'chProcedencia
+        '
+        Me.chProcedencia.Text = "Procedencia"
+        Me.chProcedencia.Width = 90
+        '
+        'txtbuscar_procedencia
+        '
+        Me.txtbuscar_procedencia.Location = New System.Drawing.Point(526, 32)
+        Me.txtbuscar_procedencia.Name = "txtbuscar_procedencia"
+        Me.txtbuscar_procedencia.Size = New System.Drawing.Size(128, 20)
+        Me.txtbuscar_procedencia.TabIndex = 5
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(456, 36)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(70, 13)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "Procedencia:"
+        '
         'frmListarProducto
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
-        Me.ClientSize = New System.Drawing.Size(685, 459)
+        Me.ClientSize = New System.Drawing.Size(687, 459)
         Me.Controls.Add(Me.btnAceptar)
         Me.Controls.Add(Me.btnCancelar)
         Me.Controls.Add(Me.lstProductos)
@@ -184,4 +210,7 @@ Partial Class frmListarProducto
     Friend WithEvents chmodelo As System.Windows.Forms.ColumnHeader
     Friend WithEvents chprecio_compra As System.Windows.Forms.ColumnHeader
     Friend WithEvents chprecio_venta As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chProcedencia As System.Windows.Forms.ColumnHeader
+    Friend WithEvents txtbuscar_procedencia As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 End Class

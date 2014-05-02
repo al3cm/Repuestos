@@ -115,7 +115,19 @@ Public Class frmListarPersonal
             Item.SubItems.Add(CStr(Fila.Item("ap_materno")))
             Item.SubItems.Add(CStr(Fila.Item("dni")))
             Item.SubItems.Add(CStr(Fila.Item("direccion")))
-            Item.SubItems.Add(CStr(Fila.Item("telefono")).Trim & "-" & CStr(Fila.Item("celular")).Trim)
+            If Fila.Item("telefono") Is DBNull.Value Then
+                If Fila.Item("celular") Is DBNull.Value Then
+                    Item.SubItems.Add("Sin Telefono")
+                Else
+                    Item.SubItems.Add(CStr(Fila.Item("celular")).Trim)
+                End If
+            Else
+                If Fila.Item("celular") Is DBNull.Value Then
+                    Item.SubItems.Add(CStr(Fila.Item("telefono")).Trim)
+                Else
+                    Item.SubItems.Add(CStr(Fila.Item("telefono")).Trim & "-" & CStr(Fila.Item("celular")).Trim)
+                End If
+            End If
             If Fila.Item("cargo") = "A" Then
                 Item.SubItems.Add("Administrador")
             ElseIf Fila.Item("cargo") = "V" Then
@@ -127,8 +139,19 @@ Public Class frmListarPersonal
             objP.ap_materno = Fila.Item("ap_materno")
             objP.dni = Fila.Item("dni")
             objP.direccion = Fila.Item("direccion")
-            objP.telefono = Fila.Item("telefono")
-            objP.celular = Fila.Item("celular")
+            If Fila.Item("telefono") Is DBNull.Value Then
+                If Fila.Item("celular") Is DBNull.Value Then
+                Else
+                    objP.celular = Fila.Item("celular")
+                End If
+            Else
+                If Fila.Item("celular") Is DBNull.Value Then
+                    objP.telefono = Fila.Item("telefono")
+                Else
+                    objP.telefono = Fila.Item("telefono")
+                    objP.celular = Fila.Item("celular")
+                End If
+            End If
             objP.estado = Fila.Item("estado")
             objP.cargo = Fila.Item("cargo")
             objP.usuario = Fila.Item("usuario")
@@ -151,7 +174,19 @@ Public Class frmListarPersonal
                 Item.SubItems.Add(CStr(Fila.Item("ap_materno")))
                 Item.SubItems.Add(CStr(Fila.Item("dni")))
                 Item.SubItems.Add(CStr(Fila.Item("direccion")))
-                Item.SubItems.Add(CStr(Fila.Item("telefono")).Trim & "-" & CStr(Fila.Item("celular")).Trim)
+                If Fila.Item("telefono") Is DBNull.Value Then
+                    If Fila.Item("celular") Is DBNull.Value Then
+                        Item.SubItems.Add("Sin Telefono")
+                    Else
+                        Item.SubItems.Add(CStr(Fila.Item("celular")).Trim)
+                    End If
+                Else
+                    If Fila.Item("celular") Is DBNull.Value Then
+                        Item.SubItems.Add(CStr(Fila.Item("telefono")).Trim)
+                    Else
+                        Item.SubItems.Add(CStr(Fila.Item("telefono")).Trim & "-" & CStr(Fila.Item("celular")).Trim)
+                    End If
+                End If
                 If Fila.Item("cargo") = "A" Then
                     Item.SubItems.Add("Administrador")
                 ElseIf Fila.Item("cargo") = "V" Then
@@ -163,8 +198,19 @@ Public Class frmListarPersonal
                 objP.ap_materno = Fila.Item("ap_materno")
                 objP.dni = Fila.Item("dni")
                 objP.direccion = Fila.Item("direccion")
-                objP.telefono = Fila.Item("telefono")
-                objP.celular = Fila.Item("celular")
+                If Fila.Item("telefono") Is DBNull.Value Then
+                    If Fila.Item("celular") Is DBNull.Value Then
+                    Else
+                        objP.celular = Fila.Item("celular")
+                    End If
+                Else
+                    If Fila.Item("celular") Is DBNull.Value Then
+                        objP.telefono = Fila.Item("telefono")
+                    Else
+                        objP.telefono = Fila.Item("telefono")
+                        objP.celular = Fila.Item("celular")
+                    End If
+                End If
                 objP.estado = Fila.Item("estado")
                 objP.cargo = Fila.Item("cargo")
                 objP.usuario = Fila.Item("usuario")

@@ -3,10 +3,13 @@
     Private mfecha As Date
     Private mnumero_documento As String
     Private mserie_documento As String
+    Private mruc_dni As String
+    Private mNombre As String
     Private mid_tipodocumento As String
     Private mid_producto As Integer
     Private mid_almacen As Integer
     Private mid_sucursal As Integer
+    Private mid_movimiento As Integer
     Private mstock As Integer
     Private mcantidad As Integer
     Private mprecio As Double
@@ -54,6 +57,22 @@
             mserie_documento = value
         End Set
     End Property
+    Public Property ruc_dni() As String
+        Get
+            Return mruc_dni
+        End Get
+        Set(ByVal value As String)
+            mruc_dni = value
+        End Set
+    End Property
+    Public Property Nombre() As String
+        Get
+            Return mNombre
+        End Get
+        Set(ByVal value As String)
+            mNombre = value
+        End Set
+    End Property
     Public Property id_tipodocumento() As String
         Get
             Return mid_tipodocumento
@@ -84,6 +103,14 @@
         End Get
         Set(ByVal value As Integer)
             mid_producto = value
+        End Set
+    End Property
+    Public Property id_movimiento() As Integer
+        Get
+            Return mid_movimiento
+        End Get
+        Set(ByVal value As Integer)
+            mid_movimiento = value
         End Set
     End Property
     Public Property stock() As Integer

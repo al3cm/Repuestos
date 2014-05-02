@@ -218,6 +218,17 @@ Public Class RNOrden_Compra
         End Try
         Return ds
     End Function
+    Public Function ListarTodos() As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim da As New SqlDataAdapter("sp_ListarTodosCompra", cn)
+        Try
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw
+        End Try
+        Return ds
+    End Function
     Public Function Listar(ByVal Id_Compra As Integer) As DataTable
         Dim ds As New DataTable
         Dim cn As New SqlConnection(My.Settings.conexion)

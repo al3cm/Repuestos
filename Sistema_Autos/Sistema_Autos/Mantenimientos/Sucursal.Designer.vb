@@ -100,6 +100,7 @@ Partial Class frmSucursal
         'txttelefono
         '
         Me.txttelefono.Location = New System.Drawing.Point(99, 130)
+        Me.txttelefono.MaxLength = 9
         Me.txttelefono.Name = "txttelefono"
         Me.txttelefono.Size = New System.Drawing.Size(131, 20)
         Me.txttelefono.TabIndex = 7

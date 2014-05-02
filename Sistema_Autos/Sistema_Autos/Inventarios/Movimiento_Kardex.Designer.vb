@@ -33,22 +33,25 @@ Partial Class frmMovimiento_Kardex
         Me.btnConsultar = New System.Windows.Forms.Button
         Me.btnSalir = New System.Windows.Forms.Button
         Me.btnExportar = New System.Windows.Forms.Button
-        Me.lstProducto = New System.Windows.Forms.ListView
-        Me.chProducto = New System.Windows.Forms.ColumnHeader
-        Me.chUnidad = New System.Windows.Forms.ColumnHeader
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.lstMovimientos = New System.Windows.Forms.ListView
-        Me.chFecha = New System.Windows.Forms.ColumnHeader
-        Me.chMotivo = New System.Windows.Forms.ColumnHeader
-        Me.chDocumento = New System.Windows.Forms.ColumnHeader
-        Me.chPersona = New System.Windows.Forms.ColumnHeader
-        Me.chStockInicial = New System.Windows.Forms.ColumnHeader
-        Me.chCantidad_ingreso = New System.Windows.Forms.ColumnHeader
-        Me.chCantidad_Salida = New System.Windows.Forms.ColumnHeader
-        Me.chStock_Final = New System.Windows.Forms.ColumnHeader
         Me.Label5 = New System.Windows.Forms.Label
         Me.txtStock_Final = New System.Windows.Forms.TextBox
+        Me.chProducto = New System.Windows.Forms.ColumnHeader
+        Me.chUnidad = New System.Windows.Forms.ColumnHeader
+        Me.lstProducto = New System.Windows.Forms.ListView
+        Me.dgvMovimientos = New System.Windows.Forms.DataGridView
+        Me.Chid_kardex = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChFecha = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChMotivo = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChDocumento = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChRuc_DNI = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.chPersona = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChStock_Inic = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChCant_Ing = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChCant_Sal = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChStock_Fin = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.GroupBox1.SuspendLayout()
+        CType(Me.dgvMovimientos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -154,28 +157,6 @@ Partial Class frmMovimiento_Kardex
         Me.btnExportar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnExportar.UseVisualStyleBackColor = True
         '
-        'lstProducto
-        '
-        Me.lstProducto.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chProducto, Me.chUnidad})
-        Me.lstProducto.FullRowSelect = True
-        Me.lstProducto.GridLines = True
-        Me.lstProducto.HideSelection = False
-        Me.lstProducto.Location = New System.Drawing.Point(13, 116)
-        Me.lstProducto.Name = "lstProducto"
-        Me.lstProducto.Size = New System.Drawing.Size(280, 238)
-        Me.lstProducto.TabIndex = 53
-        Me.lstProducto.UseCompatibleStateImageBehavior = False
-        Me.lstProducto.View = System.Windows.Forms.View.Details
-        '
-        'chProducto
-        '
-        Me.chProducto.Text = "Producto"
-        Me.chProducto.Width = 210
-        '
-        'chUnidad
-        '
-        Me.chUnidad.Text = "Unidad"
-        '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.dtpfecha_desde)
@@ -193,54 +174,6 @@ Partial Class frmMovimiento_Kardex
         Me.GroupBox1.TabIndex = 54
         Me.GroupBox1.TabStop = False
         '
-        'lstMovimientos
-        '
-        Me.lstMovimientos.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chFecha, Me.chMotivo, Me.chDocumento, Me.chPersona, Me.chStockInicial, Me.chCantidad_ingreso, Me.chCantidad_Salida, Me.chStock_Final})
-        Me.lstMovimientos.FullRowSelect = True
-        Me.lstMovimientos.GridLines = True
-        Me.lstMovimientos.HideSelection = False
-        Me.lstMovimientos.Location = New System.Drawing.Point(299, 116)
-        Me.lstMovimientos.Name = "lstMovimientos"
-        Me.lstMovimientos.Size = New System.Drawing.Size(540, 238)
-        Me.lstMovimientos.TabIndex = 55
-        Me.lstMovimientos.UseCompatibleStateImageBehavior = False
-        Me.lstMovimientos.View = System.Windows.Forms.View.Details
-        '
-        'chFecha
-        '
-        Me.chFecha.Text = "Fecha"
-        Me.chFecha.Width = 55
-        '
-        'chMotivo
-        '
-        Me.chMotivo.Text = "Motivo"
-        '
-        'chDocumento
-        '
-        Me.chDocumento.Text = "Documento"
-        Me.chDocumento.Width = 70
-        '
-        'chPersona
-        '
-        Me.chPersona.Text = "Proveedor/Cliente"
-        Me.chPersona.Width = 110
-        '
-        'chStockInicial
-        '
-        Me.chStockInicial.Text = "Stock Inic"
-        '
-        'chCantidad_ingreso
-        '
-        Me.chCantidad_ingreso.Text = "Cant Ing"
-        '
-        'chCantidad_Salida
-        '
-        Me.chCantidad_Salida.Text = "Cant Sal"
-        '
-        'chStock_Final
-        '
-        Me.chStock_Final.Text = "Stock Fin"
-        '
         'Label5
         '
         Me.Label5.AutoSize = True
@@ -257,15 +190,100 @@ Partial Class frmMovimiento_Kardex
         Me.txtStock_Final.Size = New System.Drawing.Size(80, 20)
         Me.txtStock_Final.TabIndex = 57
         '
+        'chProducto
+        '
+        Me.chProducto.Text = "Producto"
+        Me.chProducto.Width = 210
+        '
+        'chUnidad
+        '
+        Me.chUnidad.Text = "Unidad"
+        '
+        'lstProducto
+        '
+        Me.lstProducto.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chProducto, Me.chUnidad})
+        Me.lstProducto.FullRowSelect = True
+        Me.lstProducto.GridLines = True
+        Me.lstProducto.HideSelection = False
+        Me.lstProducto.Location = New System.Drawing.Point(13, 116)
+        Me.lstProducto.Name = "lstProducto"
+        Me.lstProducto.Size = New System.Drawing.Size(280, 238)
+        Me.lstProducto.TabIndex = 53
+        Me.lstProducto.UseCompatibleStateImageBehavior = False
+        Me.lstProducto.View = System.Windows.Forms.View.Details
+        '
+        'dgvMovimientos
+        '
+        Me.dgvMovimientos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMovimientos.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Chid_kardex, Me.ChFecha, Me.ChMotivo, Me.ChDocumento, Me.ChRuc_DNI, Me.chPersona, Me.ChStock_Inic, Me.ChCant_Ing, Me.ChCant_Sal, Me.ChStock_Fin})
+        Me.dgvMovimientos.Location = New System.Drawing.Point(299, 116)
+        Me.dgvMovimientos.Name = "dgvMovimientos"
+        Me.dgvMovimientos.Size = New System.Drawing.Size(540, 238)
+        Me.dgvMovimientos.TabIndex = 82
+        '
+        'Chid_kardex
+        '
+        Me.Chid_kardex.HeaderText = "id_kardex"
+        Me.Chid_kardex.Name = "Chid_kardex"
+        Me.Chid_kardex.ReadOnly = True
+        Me.Chid_kardex.Visible = False
+        '
+        'ChFecha
+        '
+        Me.ChFecha.HeaderText = "Fecha"
+        Me.ChFecha.Name = "ChFecha"
+        Me.ChFecha.ReadOnly = True
+        '
+        'ChMotivo
+        '
+        Me.ChMotivo.HeaderText = "Motivo"
+        Me.ChMotivo.Name = "ChMotivo"
+        '
+        'ChDocumento
+        '
+        Me.ChDocumento.HeaderText = "Documento"
+        Me.ChDocumento.Name = "ChDocumento"
+        '
+        'ChRuc_DNI
+        '
+        Me.ChRuc_DNI.HeaderText = "Ruc DNI"
+        Me.ChRuc_DNI.Name = "ChRuc_DNI"
+        Me.ChRuc_DNI.Visible = False
+        '
+        'chPersona
+        '
+        Me.chPersona.HeaderText = "Proveedor/Cliente"
+        Me.chPersona.Name = "chPersona"
+        '
+        'ChStock_Inic
+        '
+        Me.ChStock_Inic.HeaderText = "Stock Inic"
+        Me.ChStock_Inic.Name = "ChStock_Inic"
+        '
+        'ChCant_Ing
+        '
+        Me.ChCant_Ing.HeaderText = "Cant Ing"
+        Me.ChCant_Ing.Name = "ChCant_Ing"
+        '
+        'ChCant_Sal
+        '
+        Me.ChCant_Sal.HeaderText = "Cant Sal"
+        Me.ChCant_Sal.Name = "ChCant_Sal"
+        '
+        'ChStock_Fin
+        '
+        Me.ChStock_Fin.HeaderText = "Stock Fin"
+        Me.ChStock_Fin.Name = "ChStock_Fin"
+        '
         'frmMovimiento_Kardex
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.ClientSize = New System.Drawing.Size(846, 401)
+        Me.Controls.Add(Me.dgvMovimientos)
         Me.Controls.Add(Me.txtStock_Final)
         Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.lstMovimientos)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.lstProducto)
         Me.Controls.Add(Me.btnSalir)
@@ -279,6 +297,7 @@ Partial Class frmMovimiento_Kardex
         Me.Text = "MOVIMIENTO DE KARDEX"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.dgvMovimientos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -294,19 +313,21 @@ Partial Class frmMovimiento_Kardex
     Friend WithEvents btnConsultar As System.Windows.Forms.Button
     Friend WithEvents btnSalir As System.Windows.Forms.Button
     Friend WithEvents btnExportar As System.Windows.Forms.Button
-    Friend WithEvents lstProducto As System.Windows.Forms.ListView
-    Friend WithEvents chProducto As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chUnidad As System.Windows.Forms.ColumnHeader
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents lstMovimientos As System.Windows.Forms.ListView
-    Friend WithEvents chFecha As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chMotivo As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chDocumento As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chPersona As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chStockInicial As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chCantidad_ingreso As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chCantidad_Salida As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chStock_Final As System.Windows.Forms.ColumnHeader
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents txtStock_Final As System.Windows.Forms.TextBox
+    Friend WithEvents chProducto As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chUnidad As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lstProducto As System.Windows.Forms.ListView
+    Friend WithEvents dgvMovimientos As System.Windows.Forms.DataGridView
+    Friend WithEvents Chid_kardex As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChFecha As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChMotivo As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChDocumento As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChRuc_DNI As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents chPersona As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChStock_Inic As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChCant_Ing As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChCant_Sal As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChStock_Fin As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

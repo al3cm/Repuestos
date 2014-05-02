@@ -38,9 +38,10 @@ Partial Class frmResumen_Caja
         Me.chCliente = New System.Windows.Forms.ColumnHeader
         Me.chDocumento = New System.Windows.Forms.ColumnHeader
         Me.chMoneda = New System.Windows.Forms.ColumnHeader
-        Me.chMonto = New System.Windows.Forms.ColumnHeader
+        Me.chEntrada = New System.Windows.Forms.ColumnHeader
         Me.chSucursal = New System.Windows.Forms.ColumnHeader
         Me.chFecha = New System.Windows.Forms.ColumnHeader
+        Me.chSalida = New System.Windows.Forms.ColumnHeader
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -164,7 +165,7 @@ Partial Class frmResumen_Caja
         '
         'lstListaVentas
         '
-        Me.lstListaVentas.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chCuenta, Me.chCliente, Me.chDocumento, Me.chMoneda, Me.chMonto, Me.chSucursal, Me.chFecha})
+        Me.lstListaVentas.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chCuenta, Me.chCliente, Me.chDocumento, Me.chMoneda, Me.chEntrada, Me.chSalida, Me.chSucursal, Me.chFecha})
         Me.lstListaVentas.FullRowSelect = True
         Me.lstListaVentas.GridLines = True
         Me.lstListaVentas.HideSelection = False
@@ -194,20 +195,27 @@ Partial Class frmResumen_Caja
         '
         Me.chMoneda.Text = "Moneda"
         '
-        'chMonto
+        'chEntrada
         '
-        Me.chMonto.Text = "Monto"
-        Me.chMonto.Width = 70
+        Me.chEntrada.Text = "Entrada"
+        Me.chEntrada.Width = 70
         '
         'chSucursal
         '
+        Me.chSucursal.DisplayIndex = 5
         Me.chSucursal.Text = "Sucursal"
         Me.chSucursal.Width = 120
         '
         'chFecha
         '
+        Me.chFecha.DisplayIndex = 6
         Me.chFecha.Text = "Fecha"
         Me.chFecha.Width = 70
+        '
+        'chSalida
+        '
+        Me.chSalida.Text = "Salida"
+        Me.chSalida.Width = 70
         '
         'frmResumen_Caja
         '
@@ -245,7 +253,8 @@ Partial Class frmResumen_Caja
     Friend WithEvents chCliente As System.Windows.Forms.ColumnHeader
     Friend WithEvents chDocumento As System.Windows.Forms.ColumnHeader
     Friend WithEvents chMoneda As System.Windows.Forms.ColumnHeader
-    Friend WithEvents chMonto As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chEntrada As System.Windows.Forms.ColumnHeader
     Friend WithEvents chSucursal As System.Windows.Forms.ColumnHeader
     Friend WithEvents chFecha As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chSalida As System.Windows.Forms.ColumnHeader
 End Class

@@ -1,0 +1,9 @@
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\bin\Debug\Entidades.exe
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\bin\Debug\Entidades.pdb
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\bin\Debug\Entidades.xml
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\obj\Debug\ResolveAssemblyReference.cache
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\obj\Debug\Entidades.Resources.resources
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\obj\Debug\Entidades.vbproj.GenerateResource.Cache
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\obj\Debug\Entidades.exe
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\obj\Debug\Entidades.xml
+D:\Mis Documentos\GitHub\Repuestos\Sistema_Autos\Entidades\obj\Debug\Entidades.pdb

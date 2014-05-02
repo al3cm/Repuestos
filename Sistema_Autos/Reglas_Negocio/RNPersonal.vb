@@ -19,7 +19,6 @@ Public Class RNPersonal
             .AddWithValue("@usuario", objPersonal.usuario)
             .AddWithValue("@clave", objPersonal.clave)
         End With
-
         Try
             cn.Open()
             cmd.ExecuteNonQuery()
@@ -33,12 +32,134 @@ Public Class RNPersonal
                 cn.Close()
             End If
             cn.Dispose()
-
             cn = Nothing
         End Try
         Return objPersonal
     End Function
-
+    Public Function RegistrarSinTelefono(ByVal objPersonal As Personal) As Personal
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_RegistrarPersonalSinTelefono", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .Add("@id_personal", SqlDbType.TinyInt).Direction = ParameterDirection.Output
+            .AddWithValue("@nombres", objPersonal.nombres)
+            .AddWithValue("@ap_paterno", objPersonal.ap_paterno)
+            .AddWithValue("@ap_materno", objPersonal.ap_materno)
+            .AddWithValue("@dni", objPersonal.dni)
+            .AddWithValue("@direccion", objPersonal.direccion)
+            .AddWithValue("@celular", objPersonal.celular)
+            .AddWithValue("@estado", objPersonal.estado)
+            .AddWithValue("@cargo", objPersonal.cargo)
+            .AddWithValue("@usuario", objPersonal.usuario)
+            .AddWithValue("@clave", objPersonal.clave)
+        End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            objPersonal.id_personal = CInt(cmd.Parameters.Item("@id_personal").Value)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return objPersonal
+    End Function
+    Public Function RegistrarSinCelular(ByVal objPersonal As Personal) As Personal
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_RegistrarPersonalSinCelular", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .Add("@id_personal", SqlDbType.TinyInt).Direction = ParameterDirection.Output
+            .AddWithValue("@nombres", objPersonal.nombres)
+            .AddWithValue("@ap_paterno", objPersonal.ap_paterno)
+            .AddWithValue("@ap_materno", objPersonal.ap_materno)
+            .AddWithValue("@dni", objPersonal.dni)
+            .AddWithValue("@direccion", objPersonal.direccion)
+            .AddWithValue("@telefono", objPersonal.telefono)
+            .AddWithValue("@estado", objPersonal.estado)
+            .AddWithValue("@cargo", objPersonal.cargo)
+            .AddWithValue("@usuario", objPersonal.usuario)
+            .AddWithValue("@clave", objPersonal.clave)
+        End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            objPersonal.id_personal = CInt(cmd.Parameters.Item("@id_personal").Value)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return objPersonal
+    End Function
+    Public Function RegistrarSinTelefonoYCelular(ByVal objPersonal As Personal) As Personal
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_RegistrarPersonalSinTelefonoYCelular", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .Add("@id_personal", SqlDbType.TinyInt).Direction = ParameterDirection.Output
+            .AddWithValue("@nombres", objPersonal.nombres)
+            .AddWithValue("@ap_paterno", objPersonal.ap_paterno)
+            .AddWithValue("@ap_materno", objPersonal.ap_materno)
+            .AddWithValue("@dni", objPersonal.dni)
+            .AddWithValue("@direccion", objPersonal.direccion)
+            .AddWithValue("@estado", objPersonal.estado)
+            .AddWithValue("@cargo", objPersonal.cargo)
+            .AddWithValue("@usuario", objPersonal.usuario)
+            .AddWithValue("@clave", objPersonal.clave)
+        End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            objPersonal.id_personal = CInt(cmd.Parameters.Item("@id_personal").Value)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return objPersonal
+    End Function
+    Sub RegistrarAlmacen_Personal(ByVal objPersonal As Personal)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_RegistrarAlmacen_Personal", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_almacen", objPersonal.id_almacen)
+            .AddWithValue("@id_personal", objPersonal.id_personal)
+        End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+    End Sub
     Sub Modificar(ByVal objPersonal As Personal)
         Dim cn As New SqlConnection(My.Settings.conexion)
         Dim cmd As New SqlCommand("sp_ModificarPersonal", cn)
@@ -57,6 +178,121 @@ Public Class RNPersonal
             .AddWithValue("@usuario", objPersonal.usuario)
             .AddWithValue("@clave", objPersonal.clave)
         End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+    End Sub
+    Sub ModificarSinTelefono(ByVal objPersonal As Personal)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ModificarPersonalSinTelefono", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_personal", objPersonal.id_personal)
+            .AddWithValue("@nombres", objPersonal.nombres)
+            .AddWithValue("@ap_paterno", objPersonal.ap_paterno)
+            .AddWithValue("@ap_materno", objPersonal.ap_materno)
+            .AddWithValue("@dni", objPersonal.dni)
+            .AddWithValue("@direccion", objPersonal.direccion)
+            .AddWithValue("@celular", objPersonal.celular)
+            .AddWithValue("@estado", objPersonal.estado)
+            .AddWithValue("@cargo", objPersonal.cargo)
+            .AddWithValue("@usuario", objPersonal.usuario)
+            .AddWithValue("@clave", objPersonal.clave)
+        End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+    End Sub
+    Sub ModificarSinCelular(ByVal objPersonal As Personal)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ModificarPersonalSinCelular", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_personal", objPersonal.id_personal)
+            .AddWithValue("@nombres", objPersonal.nombres)
+            .AddWithValue("@ap_paterno", objPersonal.ap_paterno)
+            .AddWithValue("@ap_materno", objPersonal.ap_materno)
+            .AddWithValue("@dni", objPersonal.dni)
+            .AddWithValue("@direccion", objPersonal.direccion)
+            .AddWithValue("@telefono", objPersonal.telefono)
+            .AddWithValue("@estado", objPersonal.estado)
+            .AddWithValue("@cargo", objPersonal.cargo)
+            .AddWithValue("@usuario", objPersonal.usuario)
+            .AddWithValue("@clave", objPersonal.clave)
+        End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+    End Sub
+    Sub ModificarSinTelefonoYCelular(ByVal objPersonal As Personal)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ModificarPersonalSinTelefonoYCelular", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .AddWithValue("@id_personal", objPersonal.id_personal)
+            .AddWithValue("@nombres", objPersonal.nombres)
+            .AddWithValue("@ap_paterno", objPersonal.ap_paterno)
+            .AddWithValue("@ap_materno", objPersonal.ap_materno)
+            .AddWithValue("@dni", objPersonal.dni)
+            .AddWithValue("@direccion", objPersonal.direccion)
+            .AddWithValue("@estado", objPersonal.estado)
+            .AddWithValue("@cargo", objPersonal.cargo)
+            .AddWithValue("@usuario", objPersonal.usuario)
+            .AddWithValue("@clave", objPersonal.clave)
+        End With
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+    End Sub
+    Sub Eliminar(ByVal id_personal As String)
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_EliminarPersonal", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_personal", id_personal)
 
         Try
             cn.Open()
@@ -74,9 +310,9 @@ Public Class RNPersonal
             cn = Nothing
         End Try
     End Sub
-    Sub Eliminar(ByVal id_personal As String)
+    Sub EliminarAlmacen_Personal(ByVal id_personal As String)
         Dim cn As New SqlConnection(My.Settings.conexion)
-        Dim cmd As New SqlCommand("sp_EliminarPersonal", cn)
+        Dim cmd As New SqlCommand("sp_EliminarAlmacen_Personal", cn)
         cmd.CommandType = CommandType.StoredProcedure
         cmd.Parameters.AddWithValue("@id_personal", id_personal)
 
@@ -132,7 +368,86 @@ Public Class RNPersonal
         End Try
         Return ds
     End Function
+    Public Function ListarAlmacen_Personal(ByVal Id_Personal As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarAlmacen_Personal", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_Personal", Id_Personal)
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function ContraAlmacen_Personal(ByVal objPersonal As Personal) As Integer
+        Dim Cantidad As Integer
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ContraAlmacen_Personal", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .Add("@Cantidad", SqlDbType.TinyInt).Direction = ParameterDirection.Output
+            .AddWithValue("@id_personal", objPersonal.id_personal)
+        End With
 
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Cantidad = CInt(cmd.Parameters.Item("@Cantidad").Value)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+        Return Cantidad
+    End Function
+    Public Function ContraAlmacen_Personal(ByVal Id_Personal As Integer) As Integer
+        Dim Cantidad As Integer
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ContraAlmacen_Personal", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        With cmd.Parameters
+            .Add("@Cantidad", SqlDbType.TinyInt).Direction = ParameterDirection.Output
+            .AddWithValue("@id_personal", Id_Personal)
+        End With
+
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Cantidad = CInt(cmd.Parameters.Item("@Cantidad").Value)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
+        End Try
+        Return Cantidad
+    End Function
 
     'ADD: 2014.03.04
     Shared Function Login(ByVal usuario As String, ByVal clave As String) As DataTable

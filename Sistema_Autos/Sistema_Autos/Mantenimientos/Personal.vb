@@ -3,6 +3,8 @@ Imports Reglas_Negocio
 Public Class frmPersonal
     Dim objPersonal As New Personal
     Dim nPersonal As New RNPersonal
+    Dim nAlmacen As New RNAlmacen
+    Dim Tabla As DataTable
     '---------------------------------------------
     '-----------------EVENTOS
     '---------------------------------------------
@@ -19,7 +21,15 @@ Public Class frmPersonal
             btnBuscar.Enabled = True
         End If
     End Sub
-
+    Private Sub btnPermisos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPermisos.Click
+        If cboCargo.SelectedValue = "0" Then
+            MessageBox.Show("Selecionar un Cargar")
+        ElseIf cboCargo.SelectedValue = "A" Then
+            MessageBox.Show("Los Admintradores tiene premiso a todos los Almacene")
+        ElseIf frmPermiso_Almacenes.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Me.objPersonal.id_almacen = frmPermiso_Almacenes.objPersonal.id_almacen
+        End If
+    End Sub
     Private Sub btnSalir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSalir.Click
         Me.Close()
     End Sub
@@ -90,7 +100,7 @@ Public Class frmPersonal
                 btnModificar.Text = "&Cancelar"
                 btnNuevo.Enabled = False
                 btnEliminar.Enabled = False
-                btnBuscar.Enabled = False
+                btnBuscar.Enabled = True
                 ' LÓGICA PERMISOS -------------------------------------------------
                 If CType(Me.Tag, Personal_SubMenu).nuevo = False Then
                     Me.btnGrabar.Visible = True
@@ -140,13 +150,35 @@ Public Class frmPersonal
                 objPersonal.dni = Me.txtDNI.Text.Trim
                 objPersonal.cargo = Me.cboCargo.SelectedValue
                 objPersonal.direccion = Me.txtDireccion.Text.Trim
-                objPersonal.telefono = Me.txtTelefono.Text.Trim
-                objPersonal.celular = Me.txtCelular.Text.Trim
                 objPersonal.usuario = Me.txtUsuario.Text.Trim
                 objPersonal.clave = Me.txtClave.Text.Trim
                 objPersonal.estado = Me.cboEstado.SelectedValue
                 If MessageBox.Show("¿Desea registrar los datos de esta persona?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
-                    objPersonal = nPersonal.Registrar(objPersonal)
+                    If Me.txtTelefono.Text = "" Then
+                        If Me.txtCelular.Text = "" Then
+                            objPersonal = nPersonal.RegistrarSinTelefonoYCelular(objPersonal)
+                        Else
+                            objPersonal.celular = Me.txtCelular.Text.Trim
+                            objPersonal = nPersonal.RegistrarSinTelefono(objPersonal)
+                        End If
+                    Else
+                        objPersonal.telefono = Me.txtTelefono.Text.Trim
+                        If Me.txtCelular.Text = "" Then
+                            objPersonal = nPersonal.RegistrarSinCelular(objPersonal)
+                        Else
+                            objPersonal.celular = Me.txtCelular.Text.Trim
+                            objPersonal = nPersonal.Registrar(objPersonal)
+                        End If
+                    End If
+                    If Me.cboCargo.SelectedValue <> "A" Then
+                        nPersonal.RegistrarAlmacen_Personal(objPersonal)
+                    Else
+                        Tabla = nAlmacen.Listar
+                        For Each Fila As DataRow In Tabla.Rows
+                            objPersonal.id_almacen = Fila.Item("id_almacen")
+                           nPersonal.RegistrarAlmacen_Personal(objPersonal)
+                        Next
+                    End If
                     MessageBox.Show("Los datos se guardaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Me.lblCodigo.Text = objPersonal.id_personal
                     Me.lblCodigo.Visible = True
@@ -157,11 +189,7 @@ Public Class frmPersonal
                     Me.btnModificar.Tag = "Modificar"
                     Habilitar(False)
                 End If
-
-
-
             End If
-
         Catch ex As Exception
             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -169,9 +197,45 @@ Public Class frmPersonal
 
     Sub Modificar()
         Try
-            'Modified 2014.03.22
-
-            nPersonal.Modificar(New Personal(CInt(Me.lblCodigo.Text.Trim), Me.txtNombres.Text.Trim, Me.txtApellidoPat.Text.Trim, Me.txtApellidoMat.Text.Trim, Me.txtDNI.Text.Trim, Me.txtDireccion.Text.Trim, Me.txtTelefono.Text.Trim, Me.txtCelular.Text.Trim, Me.cboEstado.SelectedValue, Me.cboCargo.SelectedValue, Me.txtUsuario.Text.Trim, Me.txtClave.Text.Trim))
+            objPersonal.id_personal = Me.lblCodigo.Text.Trim
+            objPersonal.nombres = Me.txtNombres.Text.Trim
+            objPersonal.ap_paterno = Me.txtApellidoPat.Text.Trim
+            objPersonal.ap_materno = Me.txtApellidoMat.Text.Trim
+            objPersonal.dni = Me.txtDNI.Text.Trim
+            objPersonal.cargo = Me.cboCargo.SelectedValue
+            objPersonal.direccion = Me.txtDireccion.Text.Trim
+            objPersonal.usuario = Me.txtUsuario.Text.Trim
+            objPersonal.clave = Me.txtClave.Text.Trim
+            objPersonal.estado = Me.cboEstado.SelectedValue
+            If Me.txtTelefono.Text = "" Then
+                If Me.txtCelular.Text = "" Then
+                    nPersonal.ModificarSinTelefonoYCelular(objPersonal)
+                Else
+                    objPersonal.celular = Me.txtCelular.Text.Trim
+                    nPersonal.ModificarSinTelefono(objPersonal)
+                End If
+            Else
+                objPersonal.telefono = Me.txtTelefono.Text.Trim
+                If Me.txtCelular.Text = "" Then
+                    nPersonal.ModificarSinCelular(objPersonal)
+                Else
+                    objPersonal.celular = Me.txtCelular.Text.Trim
+                    nPersonal.Modificar(objPersonal)
+                End If
+            End If
+            Dim Cantidad As Integer
+            Cantidad = nPersonal.ContraAlmacen_Personal(objPersonal)
+            If Me.cboCargo.SelectedValue <> "A" And Cantidad <> 0 Then
+                nPersonal.EliminarAlmacen_Personal(objPersonal.id_personal)
+                nPersonal.RegistrarAlmacen_Personal(objPersonal)
+            ElseIf Cantidad <> 0 Then
+                nPersonal.EliminarAlmacen_Personal(objPersonal.id_personal)
+                Tabla = nAlmacen.Listar
+                For Each Fila As DataRow In Tabla.Rows
+                    objPersonal.id_almacen = Fila.Item("id_almacen")
+                    nPersonal.RegistrarAlmacen_Personal(objPersonal)
+                Next
+            End If
             MessageBox.Show("Los datos se actualizaron satisfactoriamente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information)
             'Si la modificación fue exitosa se actualiza al objeto temporal
             objPersonal.id_personal = Me.lblCodigo.Text
@@ -206,7 +270,7 @@ Public Class frmPersonal
     End Sub
     Sub Cargar()
         Try
-
+            Dim Tabla As DataTable
             Me.lblCodigo.Text = objPersonal.id_personal
             Me.txtNombres.Text = objPersonal.nombres
             Me.txtApellidoPat.Text = objPersonal.ap_paterno
@@ -220,9 +284,11 @@ Public Class frmPersonal
             Me.txtClave.Text = objPersonal.clave
             Me.txtClave2.Text = objPersonal.clave
             Me.cboEstado.SelectedValue = objPersonal.estado
-
             Me.lblCodigo.Visible = True
-
+            Tabla = nPersonal.ListarAlmacen_Personal(objPersonal.id_personal)
+            For Each Fila As DataRow In Tabla.Rows
+                objPersonal.id_almacen = Fila.Item("id_almacen")
+            Next
             btnModificar.Enabled = True
             btnEliminar.Enabled = True
             btnGrabar.Enabled = False
@@ -244,6 +310,7 @@ Public Class frmPersonal
         Me.txtUsuario.Enabled = Estado
         Me.txtClave.Enabled = Estado
         Me.txtClave2.Enabled = Estado
+        Me.btnPermisos.Enabled = Estado
     End Sub
     '---------------------------------------------
     '-----------------INICIALIZAR
@@ -362,12 +429,6 @@ Public Class frmPersonal
         If Me.txtDireccion.Text.Trim = "" Then
             TextoError = TextoError & "- Debe ingresar una dirección." & vbCrLf
         End If
-        If Me.txtTelefono.Text.Trim = "" Then
-            TextoError = TextoError & "- Debe ingresar un telefóno." & vbCrLf
-        End If
-        If Me.txtCelular.Text.Trim = "" Then
-            TextoError = TextoError & "- Debe ingresar un celular." & vbCrLf
-        End If
         If Me.cboCargo.SelectedValue = "0" Then
             TextoError = TextoError & "- Debe seleccionar una cargo." & vbCrLf
         End If
@@ -390,11 +451,4 @@ Public Class frmPersonal
             Return True
         End If
     End Function
-
-
-
-
-    Private Sub btnPermisos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPermisos.Click
-        frmPermiso_Almacenes.ShowDialog()
-    End Sub
 End Class

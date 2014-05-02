@@ -5,6 +5,7 @@ Public Class frmListar_Orden_Compra
     Dim Vista As DataView
     Dim Tabla As DataTable
     Public objOrden_Compra As Orden_Compra
+    Public accion As Integer
     '---------------------------------------------
     '-----------------EVENTOS
     '---------------------------------------------
@@ -56,7 +57,11 @@ Public Class frmListar_Orden_Compra
     Sub ActualizaLista()
         Try
             Me.lstOrden_Compra.Items.Clear()
-            Tabla = nOrden_Compra.Listar
+            If accion = 1 Then
+                Tabla = nOrden_Compra.Listar
+            Else
+                Tabla = nOrden_Compra.ListarTodos
+            End If
             LlenaLista(Tabla)
             Vista = Tabla.DefaultView
         Catch ex As Exception

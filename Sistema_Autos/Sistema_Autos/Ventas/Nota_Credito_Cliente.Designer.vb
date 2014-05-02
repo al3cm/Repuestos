@@ -90,6 +90,7 @@ Partial Class frmNota_Credito_Cliente
         Me.Chdescuento = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ChTotal = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.TxtidProducto = New System.Windows.Forms.TextBox
+        Me.TxtDni = New System.Windows.Forms.TextBox
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         CType(Me.dtvListado_Productos, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -153,6 +154,7 @@ Partial Class frmNota_Credito_Cliente
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TxtDni)
         Me.GroupBox2.Controls.Add(Me.dtpfecha_comprobante)
         Me.GroupBox2.Controls.Add(Me.TxtIdOrden)
         Me.GroupBox2.Controls.Add(Me.rbtKardex)
@@ -713,6 +715,13 @@ Partial Class frmNota_Credito_Cliente
         Me.TxtidProducto.Size = New System.Drawing.Size(48, 20)
         Me.TxtidProducto.TabIndex = 111
         '
+        'TxtDni
+        '
+        Me.TxtDni.Location = New System.Drawing.Point(213, 125)
+        Me.TxtDni.Name = "TxtDni"
+        Me.TxtDni.Size = New System.Drawing.Size(66, 20)
+        Me.TxtDni.TabIndex = 82
+        '
         'frmNota_Credito_Cliente
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -838,4 +847,5 @@ Partial Class frmNota_Credito_Cliente
     Friend WithEvents ChTotal As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents TxtidProducto As System.Windows.Forms.TextBox
     Friend WithEvents dtpfecha_comprobante As System.Windows.Forms.DateTimePicker
+    Friend WithEvents TxtDni As System.Windows.Forms.TextBox
 End Class

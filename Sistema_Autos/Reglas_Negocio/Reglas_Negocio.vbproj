@@ -84,11 +84,14 @@
     <Compile Include="RNAlmacen.vb" />
     <Compile Include="RNCaja.vb" />
     <Compile Include="RNCliente.vb" />
+    <Compile Include="RNCodigo_Facturacion.vb" />
     <Compile Include="RNConcepto.vb" />
+    <Compile Include="RNCuenta.vb" />
     <Compile Include="RNDetalle_Caja.vb" />
     <Compile Include="RNEmpresa.vb" />
     <Compile Include="RNFacturacion.vb" />
     <Compile Include="RNKardex.vb" />
+    <Compile Include="RNLetras.vb" />
     <Compile Include="RNLinea.vb" />
     <Compile Include="RNMarca.vb" />
     <Compile Include="RNMoneda.vb" />

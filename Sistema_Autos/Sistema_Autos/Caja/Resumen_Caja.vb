@@ -24,6 +24,7 @@ Public Class frmResumen_Caja
                 MessageBox.Show("Debe asignar al personal logeado un almacen, consultar con el Administrador", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 Me.Close()
             End If
+            Me.lstListaVentas.Items.Clear()
             LlenaCombos(id_almacenLogin)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -56,5 +57,38 @@ Public Class frmResumen_Caja
 
             Me.lstListaVentas.Items.Add(Item)
         Next
+    End Sub
+
+    Private Sub btnExportar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExportar.Click
+        Try
+            Dim xla As New Microsoft.Office.Interop.Excel.Application()
+            xla.Visible = True
+
+            Dim wb As Microsoft.Office.Interop.Excel.Workbook = xla.Workbooks.Add(Microsoft.Office.Interop.Excel.XlSheetType.xlWorksheet)
+
+            Dim ws As Microsoft.Office.Interop.Excel.Worksheet = DirectCast(xla.ActiveSheet, Microsoft.Office.Interop.Excel.Worksheet)
+
+            Dim i As Integer = 1
+            Dim j As Integer = 1
+            Dim jj As Integer = lstListaVentas.Columns.Count
+
+            For rr = 0 To lstListaVentas.Columns.Count - 1
+                ws.Cells(i, j) = lstListaVentas.Columns(rr).Text
+                j = j + 1
+            Next
+            i = 2
+            j = 1
+            For Each comp As ListViewItem In lstListaVentas.Items
+                ws.Cells(i, j) = comp.Text.ToString()
+                For Each drv As ListViewItem.ListViewSubItem In comp.SubItems
+                    ws.Cells(i, j) = drv.Text.ToString()
+                    j += 1
+                Next
+                j = 1
+                i += 1
+            Next
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 End Class

@@ -73,15 +73,15 @@ Public Class frmListarVehiculo
             Item.Text = CStr(Fila.Item("id_vehiculo"))
             Item.SubItems.Add(CStr(Fila.Item("razon_social"))) 'Modified 2014.03.23
             Item.SubItems.Add(CStr(Fila.Item("placa")))
+            Item.SubItems.Add(CStr(Fila.Item("tipo_vehiculo")))
             Item.SubItems.Add(CStr(Fila.Item("id_marca")))
             Item.SubItems.Add(CStr(Fila.Item("modelo")))
-            Item.SubItems.Add(CStr(Fila.Item("tipo_vehiculo")))
             objV.id_vehiculo = Fila.Item("id_vehiculo")
             objV.id_cliente = Fila.Item("id_cliente")
             objV.placa = Fila.Item("placa")
+            objV.tipo_vehiculo = Fila.Item("tipo_vehiculo")
             objV.id_marca = Fila.Item("id_marca")
             objV.modelo = Fila.Item("modelo")
-            objV.tipo_vehiculo = Fila.Item("tipo_vehiculo")
             Item.Tag = objV
             Me.lstVehiculos.Items.Add(Item)
         Next
@@ -97,16 +97,15 @@ Public Class frmListarVehiculo
                 Item.Text = CStr(Fila.Item("id_vehiculo"))
                 Item.SubItems.Add(CStr(Fila.Item("razon_social"))) 'Modified 2014.03.23
                 Item.SubItems.Add(CStr(Fila.Item("placa")))
+                Item.SubItems.Add(CStr(Fila.Item("tipo_vehiculo")))
                 Item.SubItems.Add(CStr(Fila.Item("id_marca")))
                 Item.SubItems.Add(CStr(Fila.Item("modelo")))
-                Item.SubItems.Add(CStr(Fila.Item("tipo_vehiculo")))
-
                 objV.id_vehiculo = Fila.Item("id_vehiculo")
                 objV.id_cliente = Fila.Item("id_cliente")
                 objV.placa = Fila.Item("placa")
+                objV.tipo_vehiculo = Fila.Item("tipo_vehiculo")
                 objV.id_marca = Fila.Item("id_marca")
                 objV.modelo = Fila.Item("modelo")
-                objV.tipo_vehiculo = Fila.Item("tipo_vehiculo")
                 Item.Tag = objV
                 Me.lstVehiculos.Items.Add(Item)
             Next

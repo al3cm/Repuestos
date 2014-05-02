@@ -125,24 +125,175 @@ Public Class RNFacturacion
             cn = Nothing
         End Try
     End Sub
-    Public Function buscarid(ByVal Serie As String, ByVal Domnento As Integer) As Integer
-        Dim id As Integer
+    Sub EleminarFacturacionTotal(ByVal id_Facturacion As String)
         Dim cn As New SqlConnection(My.Settings.conexion)
-        Dim cmd As New SqlCommand("sp_BuscarIdMovimiento", cn)
+        Dim cmd As New SqlCommand("sp_EliminarMovimientoTotal", cn)
         cmd.CommandType = CommandType.StoredProcedure
-        With cmd.Parameters
-            .Add("@id_Movimiento", SqlDbType.TinyInt).Direction = ParameterDirection.Output
-            .AddWithValue("@id_tipodocumento", Domnento)
-            .AddWithValue("@numero_documento", Serie)
-        End With
+        cmd.Parameters.AddWithValue("@id_movimiento", id_Facturacion)
+
         Try
             cn.Open()
             cmd.ExecuteNonQuery()
-            id = CInt(cmd.Parameters.Item("@id_Movimiento").Value)
         Catch ex As Exception
-            Throw
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+
+            cn = Nothing
         End Try
-        Return id
+    End Sub
+    Public Function Listar() As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarFacturacion", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function Listar(ByVal objFacturacion As Facturacion) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarFacturacionXID", cn)
+        cmd.Parameters.AddWithValue("@id_movimiento", objFacturacion.id_movimiento)
+        cmd.CommandType = CommandType.StoredProcedure
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function Listar(ByVal Id_almacen As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarFacturacionXAlmacen", cn)
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        cmd.CommandType = CommandType.StoredProcedure
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function Listar(ByVal Fecha_ini As Date, ByVal Fecha_Fin As Date) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarFacturacionXFecha", cn)
+        cmd.Parameters.AddWithValue("@fechaIni", Fecha_ini)
+        cmd.Parameters.AddWithValue("@fechaFin", Fecha_Fin)
+        cmd.CommandType = CommandType.StoredProcedure
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function Listar(ByVal Fecha_ini As Date, ByVal Fecha_Fin As Date, ByVal Id_almacen As Integer) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_ListarFacturacionXAlmacenYFecha", cn)
+        cmd.Parameters.AddWithValue("@fechaIni", Fecha_ini)
+        cmd.Parameters.AddWithValue("@fechaFin", Fecha_Fin)
+        cmd.Parameters.AddWithValue("@id_almacen", Id_almacen)
+        cmd.CommandType = CommandType.StoredProcedure
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
+    End Function
+    Public Function buscarid(ByVal Serie As String, ByVal Domnento As String) As DataTable
+        Dim ds As New DataTable
+        Dim cn As New SqlConnection(My.Settings.conexion)
+        Dim cmd As New SqlCommand("sp_BuscarIdMovimiento", cn)
+        cmd.CommandType = CommandType.StoredProcedure
+        cmd.Parameters.AddWithValue("@id_tipodocumento", Domnento)
+        cmd.Parameters.AddWithValue("@numero_documento", Serie)
+        cmd.CommandType = CommandType.StoredProcedure
+        Try
+            cn.Open()
+            cmd.ExecuteNonQuery()
+            Dim da As New SqlDataAdapter(cmd)
+            da.Fill(ds)
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cmd.Dispose()
+            cmd = Nothing
+            If cn.State = ConnectionState.Open Then
+                cn.Close()
+            End If
+            cn.Dispose()
+            cn = Nothing
+        End Try
+        Return ds
     End Function
 
     Shared Function resumenCaja(ByVal fechaIni As Date, ByVal fechaFin As Date, ByVal id_Caja As Integer, ByVal id_Almacen As Integer) As DataTable

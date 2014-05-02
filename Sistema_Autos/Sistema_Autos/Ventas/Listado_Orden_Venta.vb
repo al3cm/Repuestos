@@ -5,6 +5,7 @@ Public Class frmListado_Orden_Venta
     Dim Vista As DataView
     Dim Tabla As DataTable
     Public objOrden_Venta As Orden_Venta
+    Public accion As Integer
     '---------------------------------------------
     '-----------------EVENTOS
     '---------------------------------------------
@@ -55,7 +56,11 @@ Public Class frmListado_Orden_Venta
     Sub ActualizaLista()
         Try
             Me.lstOrden_Venta.Items.Clear()
-            Tabla = nOrden_Venta.Listar
+            If accion = 1 Then
+                Tabla = nOrden_Venta.Listar
+            Else
+                Tabla = nOrden_Venta.ListarTodos
+            End If
             LlenaLista(Tabla)
             Vista = Tabla.DefaultView
         Catch ex As Exception
@@ -70,11 +75,14 @@ Public Class frmListado_Orden_Venta
             Item.Text = CStr(Fila.Item("razon_social"))
             Item.SubItems.Add("OV/ " & CStr(Fila.Item("numero_documento")) & " - " & CStr(Fila.Item("serie_documento")))
             Item.SubItems.Add(CStr(Fila.Item("fecha_emision")))
-            If CStr(Fila.Item("tipo_pago")) = "E" Then
-                Item.SubItems.Add("Efetivo")
-            Else
-                Item.SubItems.Add("Credito")
-            End If
+            Select Case CStr(Fila.Item("tipo_pago"))
+                Case Is = "E"
+                    Item.SubItems.Add("Efectivo")
+                Case Is = "C"
+                    Item.SubItems.Add("Credito")
+                Case Is = "T"
+                    Item.SubItems.Add("Tarjeta")
+            End Select
             Item.SubItems.Add(CStr(Fila.Item("total")))
             Item.SubItems.Add(CStr(Fila.Item("Moneda")))
             Item.SubItems.Add(CStr(Fila.Item("nombres")) & "  " & CStr(Fila.Item("ap_paterno")) & "  " & CStr(Fila.Item("ap_materno")))
@@ -95,11 +103,14 @@ Public Class frmListado_Orden_Venta
                 Item.Text = CStr(Fila.Item("razon_social"))
                 Item.SubItems.Add("OV/ " & CStr(Fila.Item("numero_documento")) & " - " & CStr(Fila.Item("serie_documento")))
                 Item.SubItems.Add(CStr(Fila.Item("fecha_emision")))
-                If CStr(Fila.Item("tipo_pago")) = "E" Then
-                    Item.SubItems.Add("Efetivo")
-                Else
-                    Item.SubItems.Add("Credito")
-                End If
+                Select Case CStr(Fila.Item("tipo_pago"))
+                    Case Is = "E"
+                        Item.SubItems.Add("Efetivo")
+                    Case Is = "C"
+                        Item.SubItems.Add("Credito")
+                    Case Is = "T"
+                        Item.SubItems.Add("Tarjeta")
+                End Select
                 Item.SubItems.Add(CStr(Fila.Item("total")))
                 Item.SubItems.Add(CStr(Fila.Item("Moneda")))
                 Item.SubItems.Add(CStr(Fila.Item("nombres")) & "  " & CStr(Fila.Item("ap_paterno")) & "  " & CStr(Fila.Item("ap_materno")))

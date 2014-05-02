@@ -29,9 +29,16 @@ Partial Class frmPermiso_Almacenes
         Me.Label4 = New System.Windows.Forms.Label
         Me.btnAgregar = New System.Windows.Forms.Button
         Me.btnQuitar = New System.Windows.Forms.Button
-        Me.lstListado_Almacen = New System.Windows.Forms.ListBox
-        Me.lstAlmacen_permitidos = New System.Windows.Forms.ListBox
         Me.btnSalir = New System.Windows.Forms.Button
+        Me.dtvListado_Almacen = New System.Windows.Forms.DataGridView
+        Me.ChId_Almacen = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ChAlmacen = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.dtvAlmacen_permitidos = New System.Windows.Forms.DataGridView
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnAceptar = New System.Windows.Forms.Button
+        CType(Me.dtvListado_Almacen, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dtvAlmacen_permitidos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -101,22 +108,6 @@ Partial Class frmPermiso_Almacenes
         Me.btnQuitar.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnQuitar.UseVisualStyleBackColor = True
         '
-        'lstListado_Almacen
-        '
-        Me.lstListado_Almacen.FormattingEnabled = True
-        Me.lstListado_Almacen.Location = New System.Drawing.Point(18, 108)
-        Me.lstListado_Almacen.Name = "lstListado_Almacen"
-        Me.lstListado_Almacen.Size = New System.Drawing.Size(146, 160)
-        Me.lstListado_Almacen.TabIndex = 77
-        '
-        'lstAlmacen_permitidos
-        '
-        Me.lstAlmacen_permitidos.FormattingEnabled = True
-        Me.lstAlmacen_permitidos.Location = New System.Drawing.Point(226, 108)
-        Me.lstAlmacen_permitidos.Name = "lstAlmacen_permitidos"
-        Me.lstAlmacen_permitidos.Size = New System.Drawing.Size(146, 160)
-        Me.lstAlmacen_permitidos.TabIndex = 78
-        '
         'btnSalir
         '
         Me.btnSalir.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -130,15 +121,69 @@ Partial Class frmPermiso_Almacenes
         Me.btnSalir.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSalir.UseVisualStyleBackColor = True
         '
+        'dtvListado_Almacen
+        '
+        Me.dtvListado_Almacen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dtvListado_Almacen.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ChId_Almacen, Me.ChAlmacen})
+        Me.dtvListado_Almacen.Location = New System.Drawing.Point(15, 108)
+        Me.dtvListado_Almacen.Name = "dtvListado_Almacen"
+        Me.dtvListado_Almacen.Size = New System.Drawing.Size(149, 149)
+        Me.dtvListado_Almacen.TabIndex = 80
+        '
+        'ChId_Almacen
+        '
+        Me.ChId_Almacen.HeaderText = "Id_Almacen"
+        Me.ChId_Almacen.Name = "ChId_Almacen"
+        Me.ChId_Almacen.ReadOnly = True
+        Me.ChId_Almacen.Visible = False
+        '
+        'ChAlmacen
+        '
+        Me.ChAlmacen.HeaderText = "Almacen"
+        Me.ChAlmacen.Name = "ChAlmacen"
+        Me.ChAlmacen.ReadOnly = True
+        '
+        'dtvAlmacen_permitidos
+        '
+        Me.dtvAlmacen_permitidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dtvAlmacen_permitidos.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2})
+        Me.dtvAlmacen_permitidos.Location = New System.Drawing.Point(237, 108)
+        Me.dtvAlmacen_permitidos.Name = "dtvAlmacen_permitidos"
+        Me.dtvAlmacen_permitidos.Size = New System.Drawing.Size(149, 149)
+        Me.dtvAlmacen_permitidos.TabIndex = 81
+        '
+        'DataGridViewTextBoxColumn1
+        '
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Id_Almacen"
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        Me.DataGridViewTextBoxColumn1.Visible = False
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Almacen"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        '
+        'btnAceptar
+        '
+        Me.btnAceptar.Location = New System.Drawing.Point(161, 263)
+        Me.btnAceptar.Name = "btnAceptar"
+        Me.btnAceptar.Size = New System.Drawing.Size(75, 23)
+        Me.btnAceptar.TabIndex = 82
+        Me.btnAceptar.Text = "&Aceptar"
+        Me.btnAceptar.UseVisualStyleBackColor = True
+        '
         'frmPermiso_Almacenes
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.DarkSeaGreen
         Me.ClientSize = New System.Drawing.Size(398, 287)
+        Me.Controls.Add(Me.btnAceptar)
+        Me.Controls.Add(Me.dtvAlmacen_permitidos)
+        Me.Controls.Add(Me.dtvListado_Almacen)
         Me.Controls.Add(Me.btnSalir)
-        Me.Controls.Add(Me.lstAlmacen_permitidos)
-        Me.Controls.Add(Me.lstListado_Almacen)
         Me.Controls.Add(Me.btnAgregar)
         Me.Controls.Add(Me.btnQuitar)
         Me.Controls.Add(Me.Label4)
@@ -150,6 +195,8 @@ Partial Class frmPermiso_Almacenes
         Me.Name = "frmPermiso_Almacenes"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "PERMISO ALMACENES"
+        CType(Me.dtvListado_Almacen, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dtvAlmacen_permitidos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -161,7 +208,12 @@ Partial Class frmPermiso_Almacenes
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents btnAgregar As System.Windows.Forms.Button
     Friend WithEvents btnQuitar As System.Windows.Forms.Button
-    Friend WithEvents lstListado_Almacen As System.Windows.Forms.ListBox
-    Friend WithEvents lstAlmacen_permitidos As System.Windows.Forms.ListBox
     Friend WithEvents btnSalir As System.Windows.Forms.Button
+    Friend WithEvents dtvListado_Almacen As System.Windows.Forms.DataGridView
+    Friend WithEvents ChId_Almacen As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ChAlmacen As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents dtvAlmacen_permitidos As System.Windows.Forms.DataGridView
+    Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnAceptar As System.Windows.Forms.Button
 End Class
